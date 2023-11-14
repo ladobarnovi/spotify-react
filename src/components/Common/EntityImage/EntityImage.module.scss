@@ -1,0 +1,23 @@
+.entityImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #282828;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.rounded {
+    border-radius: 50%;
+  }
+
+  svg {
+    fill: #b3b3b3;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}

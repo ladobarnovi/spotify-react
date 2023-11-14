@@ -1,0 +1,199 @@
+.trackList {
+  &.playlist {
+    --columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [last] minmax(120px,1fr);
+  }
+
+  &.album {
+    --columns: [index] 16px [first] 4fr [last] minmax(120px,1fr);
+  }
+
+  &.topTracks {
+    --columns: [index] 16px [first] 4fr [var1] 2fr [last] minmax(120px,1fr);
+  }
+
+  .gridItem {
+    display: grid;
+    grid-template-columns: var(--columns);
+    grid-gap: 16px;
+    padding: 0 16px;
+    align-items: center;
+    color: #b3b3b3;
+    font-size: 0.875rem;
+
+    .colNumber {
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .colDuration {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 32px;
+      position: relative;
+    }
+  }
+
+  .listHeader {
+    margin-bottom: 16px;
+    border-bottom: 1px solid hsla(0,0%,100%,.1);
+    height: 36px;
+
+    .colDuration {
+      svg {
+        width: 16px;
+        height: 16px;
+        fill: #b3b3b3;
+      }
+    }
+  }
+
+  .listBody {
+    .trackItem {
+      height: 56px;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: background-color 0.1s;
+
+      .colNumber {
+        .index {
+          text-align: center;
+          font-size: 1rem;
+        }
+      }
+
+      &:hover {
+        background-color: hsla(0,0%,100%,.1);
+
+        .colNumber {
+          .index {
+            display: none;
+          }
+
+          .playbackActions {
+            display: block;
+          }
+        }
+
+        .colDuration {
+          .moreActions {
+            display: block;
+          }
+        }
+      }
+
+      &.selected {
+        background-color: hsla(0,0%,100%,.3);
+
+        .colNumber {
+          .index {
+            display: none;
+          }
+
+          .playbackActions {
+            display: block;
+          }
+        }
+
+        .colAlbum, .colTitle {
+          a {
+            color: white;
+          }
+        }
+
+        .colDuration {
+          .moreActions {
+            display: block;
+          }
+        }
+      }
+
+      .colNumber {
+        line-height: 1;
+
+        .playbackActions {
+          fill: white;
+          display: none;
+          font-size: 0;
+
+          svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+
+      .colTitle {
+        display: flex;
+        align-items: center;
+
+        img {
+          width: 40px;
+          height: 40px;
+          margin-right: 16px;
+        }
+
+        .trackInfo {
+          .name {
+            font-size: 1rem;
+            color: white;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            display: -webkit-box;
+            word-break: break-all;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.25;
+          }
+
+          .artists {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .explicit {
+              border-radius: 2px;
+              background-color: hsla(0,0%,100%,.6);
+              font-size: 9px;
+              height: 16px;
+              width: 16px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #121212;
+            }
+          }
+        }
+      }
+
+      .colAlbum {
+        a {
+          color: #b3b3b3;
+
+          &:hover {
+            color: white;
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .colDuration {
+        .moreActions {
+          position: absolute;
+          top: 50%;
+          right: 0;
+          transform: translateY(-50%);
+          cursor: pointer;
+          height: 16px;
+          display: none;
+
+          svg {
+            width: 16px;
+            height: 16px;
+            fill: #a7a7a7;
+          }
+        }
+      }
+    }
+  }
+}

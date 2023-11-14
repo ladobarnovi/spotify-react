@@ -1,0 +1,34 @@
+.cardsRow {
+  --card-count: 6;
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    a {
+      font-size: 0.875rem;
+      transition: color 0.3s;
+      font-weight: 700;
+      color: #a7a7a7;
+
+      &:hover {
+        color: white;
+      }
+    }
+  }
+
+  .cards {
+    display: grid;
+    grid-gap: 24px;
+    grid-template-columns: repeat(var(--card-count), minmax(0, 1fr));
+  }
+
+}

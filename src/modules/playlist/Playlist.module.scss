@@ -1,0 +1,11 @@
+.playlist {
+  .playlistBody {
+    position: relative;
+    z-index: 1;
+    padding: 24px;
+
+    .playlistControls {
+      margin-bottom: 24px;
+    }
+  }
+}

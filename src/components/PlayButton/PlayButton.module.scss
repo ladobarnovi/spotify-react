@@ -1,0 +1,20 @@
+.playButton {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  position: relative;
+  background-color: #1ed760;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

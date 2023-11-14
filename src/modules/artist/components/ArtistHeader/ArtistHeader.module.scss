@@ -1,0 +1,26 @@
+.imageContainer {
+  width: 232px;
+  height: 232px;
+  margin-right: 16px;
+  box-shadow: 0 4px 60px rgba(0,0,0,.5);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.infoContainer {
+  position: relative;
+  z-index: 1;
+  color: white;
+
+  .listeners {
+    margin-top: 16px;
+  }
+}

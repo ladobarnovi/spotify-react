@@ -1,0 +1,15 @@
+.entityHeaderTitle {
+  margin: 0.08em 0 0.12em;
+  font-size: 6rem;
+  font-weight: 900;
+  line-height: 1;
+  user-select: none;
+
+  &.medium {
+    font-size: 4.5rem;
+  }
+
+  &.small {
+    font-size: 3rem;
+  }
+}

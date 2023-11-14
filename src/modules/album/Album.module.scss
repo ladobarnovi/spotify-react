@@ -1,0 +1,26 @@
+.album {
+  .albumBody {
+    position: relative;
+    z-index: 1;
+    padding: 24px;
+
+    .albumControls {
+      margin-bottom: 24px;
+    }
+
+    .albumInfo {
+      margin-top: 32px;
+      margin-bottom: 48px;
+      color: #b3b3b3;
+
+      .releaseDate {
+        font-size: 0.875rem;
+      }
+
+      .copyrights {
+        font-size: 0.6875rem;
+        line-height: 1.25;
+      }
+    }
+  }
+}

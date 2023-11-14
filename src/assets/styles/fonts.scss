@@ -1,0 +1,63 @@
+//@font-face {
+//  font-family: "Regular";
+//  src: url("/fonts/regular.woff2") format("woff");
+//}
+//
+//@font-face {
+//  font-family: "Bold";
+//  src: url("/fonts/bold.woff2") format("woff");
+//}
+//
+//@font-face {
+//  font-family: "Light";
+//  src: url("/fonts/light.woff2") format("woff");
+//}
+//
+//@font-face {
+//  font-family: "Black";
+//  src: url("/fonts/black.woff2") format("woff");
+//}
+//
+//@font-face {
+//  font-family: "SpotIcon";
+//  src: url("/fonts/spoticons.woff2") format("woff");
+//}
+
+
+//@font-face {
+//  font-family: spotify-circular;
+//  src: url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Light.afd9ab26.woff2) format("woff2"),url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Light.2a78c017.woff) format("woff"),url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Light.89e4be2e.ttf) format("truetype");
+//  //src: url("/fonts/light.woff2") format("woff");
+//  font-weight: 200;
+//  font-style: normal;
+//  font-display: swap
+//}
+
+@font-face {
+  font-family: spotify-circular;
+  src: url(https://encore.scdn.co/fonts/CircularSp-Book-4eaffdf96f4c6f984686e93d5d9cb325.woff2) format("woff2");
+//url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Book.ea8d19db.woff) format("woff"),url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Book.a357677a.ttf) format("truetype");
+  //src: url("/fonts/regular.woff2") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap
+}
+
+@font-face {
+  font-family: spotify-circular;
+  src: url(https://encore.scdn.co/fonts/CircularSp-Bold-fe1cfc14b7498b187c78fa72fb72d148.woff2);
+//format("woff2"),url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Bold.10e93738.woff) format("woff"),url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Bold.7eb7d0f7.ttf) format("truetype");
+  //src: url("/fonts/bold.woff2") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap
+}
+
+//@font-face {
+//  font-family: spotify-circular;
+//  src: url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Black.c21e63c5.woff2) format("woff2"),url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Black.effa986f.woff) format("woff"),url(https://open.scdn.co/cdn/fonts/CircularSpUIv3T-Black.ce8ef887.ttf) format("truetype");
+//  //src: url("/fonts/black.woff2") format("woff");
+//  font-weight: 900;
+//  font-style: normal;
+//  font-display: swap
+//}

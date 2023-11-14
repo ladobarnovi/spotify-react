@@ -1,0 +1,80 @@
+.spoticon {
+  &:after {
+    font-size: 16px;
+    font-family: 'SpotIcon';
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  &.note {
+    &:after {
+      content: "\f156";
+    }
+  }
+
+  &.shuffle {
+    &:after {
+      content: "\f144";
+    }
+  }
+
+  &.previous {
+    &:after {
+      content: "\f146";
+    }
+  }
+
+  &.play {
+    &:after {
+      content: "\f132";
+    }
+  }
+
+  &.stop {
+    &:after {
+      content: "\f130";
+    }
+  }
+
+  &.next {
+    &:after {
+      content: "\f148";
+    }
+  }
+
+  &.repeat {
+    &:after {
+      content: "\f13e";
+    }
+  }
+
+  &.heart-hollow {
+    &:after {
+      content: "\f320";
+    }
+  }
+
+  &.heart-full {
+    &:after {
+      content: "\f322";
+    }
+  }
+
+  &.devices {
+    &:after {
+      content: "\f213";
+    }
+  }
+
+  &.queue {
+    &:after {
+      content: "\f13a";
+    }
+  }
+
+  &.ellipsis {
+    &:after {
+      content: "\f12c";
+    }
+  }
+}

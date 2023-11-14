@@ -1,0 +1,17 @@
+.artistList {
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  a {
+    color: #b3b3b3;
+
+    &:hover {
+      color: white;
+      text-decoration: underline;
+    }
+  }
+}

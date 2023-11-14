@@ -1,0 +1,20 @@
+.topTracks {
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: white;
+    line-height: 1;
+  }
+
+  .toggleExpand {
+    padding: 16px;
+    font-size: 0.875rem;
+    color: hsla(0,0%,100%,.7);
+    font-weight: 700;
+
+    &:hover {
+      color: white;
+    }
+  }
+}

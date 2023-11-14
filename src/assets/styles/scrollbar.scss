@@ -1,0 +1,36 @@
+/* width */
+::-webkit-scrollbar {
+  width: 0;
+  border-radius: 0;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+
+
+.os-scrollbar-vertical {
+  --os-size: 12px;
+  --os-handle-border-radius: 0;
+  --os-handle-bg: hsla(0,0%,100%,.3);
+
+  .os-scrollbar-handle {
+    max-height: none;
+    min-height: 30px;
+    transition: background-color 0.2s;
+    width: 12px;
+    background-color: hsla(0,0%,100%,.3);
+
+    &:hover {
+      background-color: hsla(0,0%,100%,.5);
+      width: 12px;
+    }
+  }
+}

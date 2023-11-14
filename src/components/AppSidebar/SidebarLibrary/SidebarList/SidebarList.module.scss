@@ -1,0 +1,13 @@
+.sidebarList {
+  min-height: 0;
+  overflow: hidden;
+  flex-grow: 1;
+
+  & > div {
+    height: 100%;
+  }
+
+  .scrollContent {
+    padding: 0 8px 8px;
+  }
+}
