@@ -5,11 +5,11 @@ import { api } from "api";
 import { useParams } from "react-router-dom";
 import { IArtist } from "types/artist";
 import { IAlbum } from "types/album";
-import { ITrack, ITrackContainer } from "types/track";
-import TrackList from "components/TrackList/TrackList";
+import { ITrack } from "types/track";
 import PlayButton from "components/PlayButton/PlayButton";
 import TopTracks from "modules/artist/components/TopTracks/TopTracks";
 import ArtistDiscography from "modules/artist/components/ArtistDiscography/ArtistDiscography";
+import CardsRow from "components/EntityCard/CardsRow/CardsRow";
 
 function Artist() {
   const [ isLoading, setIsLoading ] = useState(true);
@@ -66,6 +66,8 @@ function Artist() {
 
         <TopTracks arrTracks={arrTopTracks} />
         <ArtistDiscography arrAlbums={arrAlbums} artistId={artist.id} />
+
+        <CardsRow title={"Fans also like"} arrData={arrRelatedArtists} />
       </div>
     </div>
   );

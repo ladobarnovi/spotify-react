@@ -1,5 +1,6 @@
 import styles from "./HeaderLoggedIn.module.scss"
 import { useAuth } from "hooks/useAuth";
+import HeaderNavigation from "components/AppHeader/HeaderNavigation/HeaderNavigation";
 
 function HeaderLoggedIn () {
   const { user } = useAuth();
@@ -9,7 +10,7 @@ function HeaderLoggedIn () {
 
   return (
     <div className={styles.headerLoggedIn}>
-      <div className="nav"></div>
+      <HeaderNavigation />
       <div className={styles.profile}>
         <img src={profileImage} alt={userName} />
       </div>

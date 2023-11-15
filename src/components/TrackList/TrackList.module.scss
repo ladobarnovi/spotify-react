@@ -35,6 +35,9 @@
   }
 
   .listHeader {
+    position: sticky;
+    z-index: 1;
+    top: 64px;
     margin-bottom: 16px;
     border-bottom: 1px solid hsla(0,0%,100%,.1);
     height: 36px;
@@ -45,6 +48,14 @@
         height: 16px;
         fill: #b3b3b3;
       }
+    }
+
+    &.fixed {
+      background-color: #1a1a1a;
+      margin-left: -24px;
+      margin-right: -24px;
+      padding-left: 40px;
+      padding-right: 40px;
     }
   }
 

@@ -4,9 +4,11 @@ import ArtistList from "components/ArtistList/ArtistList";
 import { NavLink } from "react-router-dom";
 import IconDuration from "components/Icons/IconDuration";
 import IconEllipsis from "components/Icons/IconEllipsis";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import IconPlay from "components/Icons/IconPlay";
 import moment from "moment";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 type TLayoutType = "album" | "playlist" | "topTracks";
 
@@ -23,6 +25,18 @@ interface ITrackItemProps {
 }
 
 function TrackList({ arrTrackContainer, layoutType }: ITrackListProps) {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const scrollDistance = useSelector((state: RootState) => state.globalReducer.scrollDistance);
+  const [ isHeaderFixed, setIsHeaderFixed ] = useState(false);
+
+  useEffect(() => {
+    if (headerRef.current == null) return;
+
+    const top = headerRef.current.getBoundingClientRect().top;
+    top <= 72 ? setIsHeaderFixed(true) : setIsHeaderFixed(false);
+  }, [ scrollDistance ]);
+
+
   const elTrackItems = arrTrackContainer.map((trackContainer, index) => {
     const track = trackContainer.track;
     const date = trackContainer.added_at.split("T")[0];
@@ -50,8 +64,8 @@ function TrackList({ arrTrackContainer, layoutType }: ITrackListProps) {
     return null
   })()
 
-  const elHeader = layoutType === "topTracks" ?? (
-    <div className={`${styles.listHeader} ${styles.gridItem}`}>
+  const elHeader = layoutType === "topTracks" ? null : (
+    <div ref={headerRef} className={`${styles.listHeader} ${styles.gridItem} ${isHeaderFixed ? styles.fixed : ""}`}>
       <div className={styles.colNumber}>#</div>
       <div className={styles.colTitle}>Title</div>
       { elColAlbum }

@@ -1,6 +1,8 @@
 import styles from "./EntityHeaderWrapper.module.scss";
 import { ReactNode, useEffect, useRef } from "react";
 import { imageColor } from "utils/image";
+import { useDispatch } from "react-redux";
+import { setHeaderColor } from "store/global/globalSlice";
 
 type TPaddingOptions = "small" | "medium" | "large";
 
@@ -11,6 +13,7 @@ interface IProps {
 }
 
 function EntityHeaderWrapper({ children, imageUrl, padding }: IProps) {
+  const dispatch = useDispatch();
   const mainRef = useRef<HTMLDivElement>(null);
   const shadowRef = useRef<HTMLDivElement>(null);
 
@@ -27,6 +30,10 @@ function EntityHeaderWrapper({ children, imageUrl, padding }: IProps) {
 
       mainRef.current.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
       shadowRef.current.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+
+      dispatch(setHeaderColor(rgb));
+
+      return () => dispatch(setHeaderColor(null));
     })()
   }, [ imageUrl ])
 
