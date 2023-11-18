@@ -5,6 +5,9 @@ import { IArtist } from "types/artist";
 import { api } from "api";
 import { IAlbum } from "types/album";
 import DiscographyHeader, { EDiscographyLayoutTypes } from "modules/artist/discography/DiscographyHeader/DiscographyHeader";
+import DiscographyListView from "modules/artist/discography/DiscographyListView/DiscographyListView";
+import { albums } from "api/album";
+import DiscographyGridView from "modules/artist/discography/DiscographyGridView/DiscographyGridView";
 
 function Discography() {
   const { id } = useParams();
@@ -23,7 +26,7 @@ function Discography() {
   }
 
   function onLayoutChanged(type: EDiscographyLayoutTypes) {
-    console.log(type)
+    setLayoutType(type);
   }
 
   useEffect(() => {
@@ -33,6 +36,17 @@ function Discography() {
 
   if (artist == null) return null;
 
+  const elView = (() => {
+    if (layoutType === EDiscographyLayoutTypes.list) {
+      return <DiscographyListView arrAlbums={arrAlbums} />
+    }
+    else if (layoutType === EDiscographyLayoutTypes.grid) {
+      return <DiscographyGridView arrAlbums={arrAlbums} />
+    }
+
+    return null;
+  })();
+
   return (
     <div className={styles.discography}>
       <DiscographyHeader
@@ -40,6 +54,8 @@ function Discography() {
         layoutType={layoutType}
         onLayoutChanged={onLayoutChanged}
       />
+
+      { elView }
     </div>
   )
 }

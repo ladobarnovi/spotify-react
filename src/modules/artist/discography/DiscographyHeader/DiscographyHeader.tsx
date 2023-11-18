@@ -1,6 +1,9 @@
 import styles from "./DiscographyHeader.module.scss"
 import IconList from "components/Icons/IconList";
 import IconGrid from "components/Icons/IconGrid";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { useEffect, useState } from "react";
 
 export enum EDiscographyLayoutTypes {
   grid = "grid",
@@ -14,8 +17,15 @@ interface IProps {
 }
 
 function DiscographyHeader({ name, onLayoutChanged, layoutType }: IProps) {
+  const [ isScrolledClass, setIsScrolledClass ] = useState("");
+  const scrollDistance = useSelector((state: RootState) => state.globalReducer.scrollDistance);
+
+  useEffect(() => {
+    setIsScrolledClass(scrollDistance > 0 ? styles.scrolled : "");
+  }, [ scrollDistance ])
+
   return (
-    <div className={styles.discographyHeader}>
+    <div className={`${styles.discographyHeader} ${isScrolledClass}`}>
       <p className={styles.title}>{ name }</p>
 
       <div className={styles.controls}>

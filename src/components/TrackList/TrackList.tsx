@@ -13,8 +13,10 @@ import { RootState } from "store";
 type TLayoutType = "album" | "playlist" | "topTracks";
 
 interface ITrackListProps {
-  arrTrackContainer: ITrackContainer[];
+  arrTrackContainer: ITrackContainer[]|null;
   layoutType: TLayoutType;
+  totalTracks?: number;
+  canHeaderStick?: boolean; // default: true
 }
 
 interface ITrackItemProps {
@@ -24,34 +26,39 @@ interface ITrackItemProps {
   layoutType: TLayoutType;
 }
 
-function TrackList({ arrTrackContainer, layoutType }: ITrackListProps) {
+function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true }: ITrackListProps) {
   const headerRef = useRef<HTMLDivElement>(null);
   const scrollDistance = useSelector((state: RootState) => state.globalReducer.scrollDistance);
   const [ isHeaderFixed, setIsHeaderFixed ] = useState(false);
 
   useEffect(() => {
-    if (headerRef.current == null) return;
+    if (headerRef.current == null || !canHeaderStick) return;
 
     const top = headerRef.current.getBoundingClientRect().top;
     top <= 72 ? setIsHeaderFixed(true) : setIsHeaderFixed(false);
   }, [ scrollDistance ]);
 
+  const elTrackItems = (() => {
+    if (arrTrackContainer == null) {
+      return Array.from({length: 8}, () => <TrackItemShimmering />)
+    }
 
-  const elTrackItems = arrTrackContainer.map((trackContainer, index) => {
-    const track = trackContainer.track;
-    const date = trackContainer.added_at.split("T")[0];
-    const formattedDate = moment(date).format("MMM DD, yyyy");
+    return arrTrackContainer.map((trackContainer, index) => {
+      const track = trackContainer.track;
+      const date = trackContainer.added_at.split("T")[0];
+      const formattedDate = moment(date).format("MMM DD, yyyy");
 
-    return (
-      <TrackItem
-        key={track.id}
-        track={track}
-        date={formattedDate}
-        index={index + 1}
-        layoutType={layoutType}
-      />
-    );
-  });
+      return (
+        <TrackItem
+          key={track.id}
+          track={track}
+          date={formattedDate}
+          index={index + 1}
+          layoutType={layoutType}
+        />
+      );
+    });
+  })()
 
   const elColAlbum = layoutType === "playlist" ? (<div className={styles.colAlbum}>Album</div>) : null;
   const elColDateAdded = layoutType === "playlist" ? (<div className={styles.colDate}>Date added</div>) : null;
@@ -150,6 +157,23 @@ function TrackItem({ track, date, index, layoutType }: ITrackItemProps) {
       </div>
     </div>
   )
+}
+
+function TrackItemShimmering() {
+  return (
+    <div className={`${styles.trackItemShimmering} ${styles.gridItem}`}>
+      <div className={styles.colNumber}>
+        <div />
+      </div>
+      <div className={styles.colTitle}>
+        <div />
+        <div />
+      </div>
+      <div className={styles.colDuration}>
+        <div />
+      </div>
+    </div>
+  );
 }
 
 export default TrackList;
