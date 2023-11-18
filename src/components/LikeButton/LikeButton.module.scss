@@ -1,0 +1,24 @@
+.likeButton {
+  font-size: 0;
+  cursor: pointer;
+
+  &.active {
+    svg {
+      fill: #1ed760 !important;
+    }
+  }
+
+  svg {
+    fill: #a7a7a7;
+    width: var(--like-button-size);
+    height: var(--like-button-size);
+  }
+
+  &:hover {
+    transform: scale(1.03);
+
+    svg {
+      fill: white;
+    }
+  }
+}

@@ -6,12 +6,15 @@ import { useEntityFetch } from "hooks/useEntityFetch";
 import { IAlbum } from "types/album";
 import PlaylistListItem from "components/EntityListItems/PlaylistListItem/PlaylistListItem";
 import { IArtist } from "types/artist";
+import { useDispatch } from "react-redux";
+import { setFollowedEntityIds } from "store/user/userSlice";
 
 interface IProps {
   filterBy: string | null;
 }
 
 function SidebarList({ filterBy }: IProps) {
+  const dispatch = useDispatch();
   const scrollbarRef = useRef(null);
   const { fetchAllPlaylists, fetchAllAlbums, fetchAllArtist } = useEntityFetch();
   const [ arrAllEntities, setArrAllEntities ] = useState<(IPlaylist | IAlbum | IArtist)[]>([])
@@ -44,7 +47,11 @@ function SidebarList({ filterBy }: IProps) {
   async function fetchList(): Promise<void> {
     const [ arrAlbums, arrPlaylists, arrArtists ] = await Promise.all([ fetchAllAlbums(), fetchAllPlaylists(), fetchAllArtist() ]);
 
-    setArrAllEntities([ ...arrAlbums, ...arrPlaylists, ...arrArtists]);
+    const arrAll = [ ...arrAlbums, ...arrPlaylists, ...arrArtists];
+
+    dispatch(setFollowedEntityIds(arrAll.map((item) => item.id)));
+
+    setArrAllEntities(arrAll);
     setArrFilteredEntities([ ...arrAlbums, ...arrPlaylists, ...arrArtists]);
   }
 

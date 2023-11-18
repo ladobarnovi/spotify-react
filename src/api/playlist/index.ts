@@ -1,12 +1,13 @@
 import axios from "axios";
 import { IPlaylist } from "types/playlist";
 
-interface IFetchPlaylistRequest {
+interface IPlaylistBaseRequest {
   playlistId: string;
 }
 
-interface IEditPlaylistRequest {
-  playlistId: string;
+interface IFetchPlaylistRequest extends IPlaylistBaseRequest { }
+
+interface IEditPlaylistRequest extends IPlaylistBaseRequest {
   name: string;
   description: string | undefined;
 }
@@ -29,5 +30,13 @@ export const playlist = {
     })
 
     return data;
-  }
+  },
+
+  followPlaylist: async ({ playlistId }: IPlaylistBaseRequest): Promise<void> => {
+    await axios.put(`/playlists/${playlistId}/followers`)
+  },
+
+  unfollowPlaylist: async ({ playlistId }: IPlaylistBaseRequest): Promise<void> => {
+    await axios.delete(`/playlists/${playlistId}/followers`)
+  },
 };

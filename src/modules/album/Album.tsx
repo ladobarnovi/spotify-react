@@ -11,6 +11,7 @@ import { getFullDuration } from "utils/duration";
 import moment from "moment";
 import CardsRow from "components/EntityCard/CardsRow/CardsRow";
 import { ICardOptions } from "components/EntityCard/EntityCard";
+import LikeButton from "components/LikeButton/LikeButton";
 
 function Album() {
   const [ album, setAlbum ] = useState<IAlbum>();
@@ -72,6 +73,7 @@ function Album() {
       <div className={styles.albumBody}>
         <div className={styles.albumControls}>
           <PlayButton />
+          <LikeButton data={album} />
         </div>
 
         <TrackList layoutType={"album"} arrTrackContainer={arrTrackContainer} />

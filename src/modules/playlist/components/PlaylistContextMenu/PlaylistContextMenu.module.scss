@@ -4,9 +4,15 @@
     padding: 0;
 
     svg {
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
       fill: #a7a7a7;
+    }
+
+    &:hover {
+      svg {
+        fill: white;
+      }
     }
   }
 }

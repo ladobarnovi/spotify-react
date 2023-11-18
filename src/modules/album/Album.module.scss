@@ -6,6 +6,9 @@
 
     .albumControls {
       margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
 
     .albumInfo {

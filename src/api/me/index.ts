@@ -1,10 +1,8 @@
 import axios from "axios";
 import { IPlaylist } from "types/playlist";
 import { IAlbum } from "types/album";
-import {IArtist} from "types/artist";
-import {IImage} from "types/common";
-import {TEntityType} from "types/entityBase";
-import {IUser} from "types/user";
+import { IArtist } from "types/artist";
+import { IUser } from "types/user";
 
 interface IAlbumsRequest {
   limit?: number;
@@ -46,6 +44,14 @@ interface IFollowingResponse {
   }
 }
 
+interface IFollowAlbumRequest {
+  albumId: string;
+}
+
+interface IUnfollowAlbumRequest {
+  albumId: string;
+}
+
 interface IUserResponse extends IUser { }
 
 export const me = {
@@ -81,4 +87,20 @@ export const me = {
 
     return data;
   },
+
+  // https://developer.spotify.com/documentation/web-api/reference/save-albums-user
+  followAlbum: async ({ albumId }: IFollowAlbumRequest): Promise<void> => {
+    await axios.put("/me/albums", {
+      ids: [ albumId ],
+    });
+  },
+
+  // https://developer.spotify.com/documentation/web-api/reference/remove-albums-user
+  unfollowAlbum: async ({ albumId }: IUnfollowAlbumRequest): Promise<void> => {
+    await axios.delete("me/albums", {
+      data: {
+        ids: [ albumId ]
+      }
+    });
+  }
 }
