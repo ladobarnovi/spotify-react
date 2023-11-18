@@ -5,7 +5,10 @@
     padding: 24px;
 
     .playlistControls {
+      display: flex;
+      align-items: center;
       margin-bottom: 24px;
+      gap: 16px;
     }
   }
 }

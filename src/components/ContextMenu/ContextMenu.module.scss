@@ -1,0 +1,51 @@
+.contextMenu {
+  display: flex;
+  font-size: 0;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: #282828;
+  border-radius: 4px;
+  max-width: 350px;
+  min-width: 160px;
+  padding: 4px;
+
+  .section {
+    border-top: 1px solid hsla(0,0%,100%,.1);
+
+    &:first-child {
+      border: none;
+    }
+
+    .sectionTitle {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: #b3b3b3;
+      padding: 12px;
+      line-height: 1;
+    }
+
+    .sectionItems {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+
+      .sectionItem {
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-size: 0.875rem;
+        line-height: 1.15;
+        border-radius: 2px;
+
+        &:hover {
+          background-color: hsla(0,0%,100%,.1);
+        }
+      }
+    }
+  }
+}

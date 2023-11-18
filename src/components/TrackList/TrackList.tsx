@@ -25,12 +25,15 @@ interface ITrackItemProps {
   date: string;
   index: number;
   layoutType: TLayoutType;
+  isSelected: boolean;
+  onSelect: (string: string) => void;
 }
 
 function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true }: ITrackListProps) {
   const headerRef = useRef<HTMLDivElement>(null);
   const scrollDistance = useSelector((state: RootState) => state.globalReducer.scrollDistance);
   const [ isHeaderFixed, setIsHeaderFixed ] = useState(false);
+  const [ selectedTrackId, setSelectedTrackId ] = useState<string|null>(null);
 
   useEffect(() => {
     if (headerRef.current == null || !canHeaderStick) return;
@@ -56,6 +59,8 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true }: ITr
           date={formattedDate}
           index={index + 1}
           layoutType={layoutType}
+          isSelected={track.id === selectedTrackId}
+          onSelect={(id) => { setSelectedTrackId(id) }}
         />
       );
     });
@@ -94,9 +99,7 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true }: ITr
   );
 }
 
-function TrackItem({ track, date, index, layoutType }: ITrackItemProps) {
-  const [ selectedTrackId, setSelectedTrackId ] = useState<string|null>(null);
-
+function TrackItem({ track, date, index, layoutType, isSelected, onSelect }: ITrackItemProps) {
   const duration = (() => {
     const minutes = Math.floor(track.duration_ms / 1000 / 60) + "";
     const seconds = (
@@ -137,7 +140,7 @@ function TrackItem({ track, date, index, layoutType }: ITrackItemProps) {
   })()
 
   return (
-    <div onClick={() => setSelectedTrackId(track.id)} className={`${styles.trackItem} ${styles.gridItem} ${selectedTrackId === track.id ? styles.selected : null}`}>
+    <div onClick={() => onSelect(track.id)} className={`${styles.trackItem} ${styles.gridItem} ${isSelected ? styles.selected : null}`}>
       <div className={styles.colNumber}>
         <p className={styles.index}>{ index }</p>
         <div className={styles.playbackActions}>

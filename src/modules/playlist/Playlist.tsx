@@ -7,6 +7,7 @@ import TrackList from "components/TrackList/TrackList";
 import PlayButton from "components/PlayButton/PlayButton";
 import TrackListHeader, { ITrackListHeaderOptions } from "components/TrackList/TrackListHeader/TracklistHeader";
 import { getFullDuration } from "utils/duration";
+import PlaylistContextMenu from "modules/playlist/components/PlaylistContextMenu/PlaylistContextMenu";
 
 function Playlist() {
   const [ playlist, setPlaylist ] = useState<IPlaylist>();
@@ -38,6 +39,7 @@ function Playlist() {
       <div className={styles.playlistBody}>
         <div className={styles.playlistControls}>
           <PlayButton />
+          <PlaylistContextMenu playlist={playlist} />
         </div>
 
         <TrackList layoutType={"playlist"} arrTrackContainer={ playlist?.tracks.items } />
