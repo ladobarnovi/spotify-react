@@ -6,7 +6,6 @@ import { api } from "api";
 import { IAlbum } from "types/album";
 import DiscographyHeader, { EDiscographyLayoutTypes } from "modules/artist/discography/DiscographyHeader/DiscographyHeader";
 import DiscographyListView from "modules/artist/discography/DiscographyListView/DiscographyListView";
-import { albums } from "api/album";
 import DiscographyGridView from "modules/artist/discography/DiscographyGridView/DiscographyGridView";
 
 function Discography() {

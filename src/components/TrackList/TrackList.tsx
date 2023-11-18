@@ -9,6 +9,7 @@ import IconPlay from "components/Icons/IconPlay";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
+import { formatNumber } from "utils/number";
 
 type TLayoutType = "album" | "playlist" | "topTracks";
 
@@ -112,7 +113,11 @@ function TrackItem({ track, date, index, layoutType }: ITrackItemProps) {
     </div>
   ) : null;
   const elColDateAdded = layoutType === "playlist" ? (<div className={styles.colDate}>{ date }</div>) : null;
-  const elColPlays = layoutType === "topTracks" ? (<div className={styles.colPlays}>{ Math.floor(Math.random() * 10000) }</div>) : null;
+  const elColPlays = layoutType === "topTracks" ? (
+    <div className={styles.colPlays}>
+      { formatNumber(Math.floor(Math.random() * 10000)) }
+    </div>
+  ) : null;
 
   const elArtists = (() => {
     if (layoutType === "topTracks") return;
