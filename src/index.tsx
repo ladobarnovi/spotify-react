@@ -12,6 +12,7 @@ import Playlist from "modules/playlist/Playlist";
 import Album from "modules/album/Album";
 import Artist from "modules/artist/Artist";
 import Discography from "modules/artist/discography/Discography";
+import RelatedArtists from "modules/artist/related/RelatedArtists";
 
 setAxiosBaseUrl();
 
@@ -30,6 +31,7 @@ root.render(
             <Route path={"album/:id"} element={<Album />} />
             <Route path={"artist/:id"} element={<Artist />} />
             <Route path={"artist/:id/discography"} element={<Discography />} />
+            <Route path={"artist/:id/related"} element={<RelatedArtists />} />
           </Routes>
         </Main>
       </BrowserRouter>

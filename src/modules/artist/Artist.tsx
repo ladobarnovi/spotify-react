@@ -67,7 +67,11 @@ function Artist() {
         <TopTracks arrTracks={arrTopTracks} />
         <ArtistDiscography arrAlbums={arrAlbums} artistId={artist.id} />
 
-        <CardsRow title={"Fans also like"} arrData={arrRelatedArtists} />
+        <CardsRow
+          title={"Fans also like"}
+          arrData={arrRelatedArtists}
+          url={`/artist/${id}/related`}
+        />
       </div>
     </div>
   );

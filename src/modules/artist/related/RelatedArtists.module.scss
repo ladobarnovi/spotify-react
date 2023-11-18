@@ -1,0 +1,16 @@
+.relatedArtists {
+  padding: 80px 24px 24px;
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 16px;
+  }
+
+  .gridView {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-gap: 24px;
+  }
+}
