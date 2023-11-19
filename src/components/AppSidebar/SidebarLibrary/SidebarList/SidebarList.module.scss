@@ -9,5 +9,11 @@
 
   .scrollContent {
     padding: 0 8px 8px;
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
 }

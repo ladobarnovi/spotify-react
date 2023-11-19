@@ -3,7 +3,7 @@ import { IAlbum } from "types/album";
 import { IPlaylist } from "types/playlist";
 import { IArtist } from "types/artist";
 
-const ENTITY_LIMIT = 10;
+const ENTITY_LIMIT = 50;
 
 export function useEntityFetch() {
   async function fetchAllPlaylists(): Promise<IPlaylist[]> {

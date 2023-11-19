@@ -1,13 +1,19 @@
 import styles from "./SidebarList.module.scss";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { OverlayScrollbars } from "overlayscrollbars";
 import { IPlaylist } from "types/playlist";
 import { useEntityFetch } from "hooks/useEntityFetch";
 import { IAlbum } from "types/album";
-import PlaylistListItem from "components/EntityListItems/PlaylistListItem/PlaylistListItem";
 import { IArtist } from "types/artist";
 import { useDispatch } from "react-redux";
 import { setFollowedEntityIds } from "store/user/userSlice";
+import SidebarViewTypeContextMenu, {
+  ESortingOptions,
+  EViewOptions
+} from "components/AppSidebar/SidebarLibrary/SidebarViewTypeContextMenu/SidebarViewTypeContextMenu";
+import SidebarCompactView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarCompactView/SidebarCompactView";
+import SidebarListView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarListView/SidebarListView";
+import SidebarGridView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarGridView/SidebarGridView";
 
 interface IProps {
   filterBy: string | null;
@@ -19,6 +25,8 @@ function SidebarList({ filterBy }: IProps) {
   const { fetchAllPlaylists, fetchAllAlbums, fetchAllArtist } = useEntityFetch();
   const [ arrAllEntities, setArrAllEntities ] = useState<(IPlaylist | IAlbum | IArtist)[]>([])
   const [ arrFilteredEntities, setArrFilteredEntities ] = useState<(IPlaylist | IAlbum | IArtist)[]>([]);
+  const [ viewType, setViewType ] = useState(EViewOptions.list);
+  const [ sortBy, setSortBy ] = useState(ESortingOptions.recent);
 
   useEffect(() => {
     if (scrollbarRef.current) {
@@ -55,15 +63,33 @@ function SidebarList({ filterBy }: IProps) {
     setArrFilteredEntities([ ...arrAlbums, ...arrPlaylists, ...arrArtists]);
   }
 
-  const items = arrFilteredEntities.map((item) => (
-    <PlaylistListItem data={ item } key={ item.id } />
-  ));
+  const elView = (() => {
+    if (viewType === EViewOptions.list) {
+      return <SidebarListView arrData={arrFilteredEntities} />;
+    }
+    else if (viewType === EViewOptions.compact) {
+      return <SidebarCompactView arrData={arrFilteredEntities} />;
+    }
+    else if (viewType === EViewOptions.grid) {
+      return <SidebarGridView arrData={arrFilteredEntities} />;
+    }
+
+    return null;
+  })()
 
   return (
     <div className={ styles.sidebarList }>
       <div ref={ scrollbarRef }>
         <div className={styles.scrollContent}>
-          { items }
+          <div className={styles.header}>
+            <SidebarViewTypeContextMenu
+              onViewTypeChanged={setViewType}
+              onSortingChanged={setSortBy}
+            />
+          </div>
+          <div className={styles.items}>
+            { elView }
+          </div>
         </div>
       </div>
     </div>

@@ -108,6 +108,12 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
 }
 
 function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCompact }: ITrackItemProps) {
+  const [ numPlays, setNumPlays ] = useState("");
+
+  useEffect(() => {
+    setNumPlays(formatNumber(Math.floor(Math.random() * 10000)));
+  }, [ ])
+
   const duration = (() => {
     const minutes = Math.floor(track.duration_ms / 1000 / 60) + "";
     const seconds = (
@@ -126,7 +132,7 @@ function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCom
   const elColDateAdded = layoutType === "playlist" ? (<div className={styles.colDate}>{ date }</div>) : null;
   const elColPlays = layoutType === "topTracks" ? (
     <div className={styles.colPlays}>
-      { formatNumber(Math.floor(Math.random() * 10000)) }
+      { numPlays }
     </div>
   ) : null;
 

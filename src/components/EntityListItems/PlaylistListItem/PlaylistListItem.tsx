@@ -40,7 +40,6 @@ function PlaylistListItem({ data }: IProps) {
   const nodeTitle = (<p className={ styles.title }>{ name }</p>);
   const nodeImage = (<EntityImage isRounded={ entityType === "artist" } image={ image } />);
   const nodeOwner = owner == null ? null : (<span className={ styles.owner }> •  { owner }</span>);
-  const nodeDivider = (<span> • </span>);
   const nodeSubtitle = (
     <div className={ styles.subTitle } >
       <span className={ styles.entityType } >{ entityType }</span>

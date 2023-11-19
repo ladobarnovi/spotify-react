@@ -1,0 +1,20 @@
+.sidebarCompactView {
+  .item {
+    padding: 0 8px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #a7a7a7;
+    font-size: 0.875rem;
+
+    .title {
+      font-size: 1rem;
+      color: white;
+    }
+
+    &:hover {
+      background-color: #1a1a1a;
+    }
+  }
+}
