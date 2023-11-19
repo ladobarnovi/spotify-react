@@ -8,6 +8,7 @@ export interface IContextMenuItem {
   title: string;
   onClick: () => void;
   isActive?: boolean;
+  closeOnAction?: boolean;
 }
 
 export interface IContextMenuSection {
@@ -23,16 +24,22 @@ export interface IContextMenuOptions {
 interface IProps {
   options: IContextMenuOptions;
   children: ReactNode;
+  onMenuToggled?: (status: boolean) => void;
 }
 
-function ContextMenu({ options, children }: IProps) {
+function ContextMenu({ options, children, onMenuToggled }: IProps) {
   const [ isMenuActive, setIsMenuActive ] = useState(false);
 
   const contentRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   function toggleMenu() {
-    setIsMenuActive(!isMenuActive);
+    const newState = !isMenuActive;
+    setIsMenuActive(newState);
+
+    if (onMenuToggled != null) {
+      onMenuToggled(newState);
+    }
   }
 
   useEffect(() => {
@@ -59,6 +66,7 @@ function ContextMenu({ options, children }: IProps) {
     <ContextMenuSection
       arrItems={section.arrItems}
       title={section.title}
+      onClose={toggleMenu}
     />
   ));
 
@@ -83,16 +91,30 @@ function ContextMenu({ options, children }: IProps) {
   )
 }
 
-interface IContextMenuSectionProps extends IContextMenuSection {}
+interface IContextMenuSectionProps extends IContextMenuSection {
+  onClose: () => void
+}
 
-function ContextMenuSection({ title, arrItems }: IContextMenuSectionProps) {
+function ContextMenuSection({ title, arrItems, onClose }: IContextMenuSectionProps) {
   const elTitle = title == null ? null : <p className={styles.sectionTitle}>{ title }</p>
+
+  function onMenuItemClick(item: IContextMenuItem) {
+    if (item.isActive) {
+      return;
+    }
+
+    item.onClick();
+
+    if (item.closeOnAction) {
+      onClose();
+    }
+  }
 
   const elItems = arrItems.map((item) => {
     return (
       <button
-        className={styles.sectionItem}
-        onClick={item.onClick}
+        className={`${styles.sectionItem} ${item.isActive ? styles.active : ""}`}
+        onClick={() => onMenuItemClick(item)}
       >
         { item.title }
       </button>

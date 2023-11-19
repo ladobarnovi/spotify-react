@@ -3,9 +3,11 @@ import { IEntityBase } from "types/entityBase";
 import { IArtist } from "types/artist";
 
 export enum EAlbumType {
+  all = "all",
   album = "album",
   single = "single",
   ep = "ep",
+  compilation = "compilation",
 }
 
 export interface ICopyright {

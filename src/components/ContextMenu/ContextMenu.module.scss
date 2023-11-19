@@ -42,6 +42,10 @@
         line-height: 1.15;
         border-radius: 2px;
 
+        &.active {
+          color: #1ed760 !important;
+        }
+
         &:hover {
           background-color: hsla(0,0%,100%,.1);
         }

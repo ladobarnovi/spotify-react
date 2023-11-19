@@ -4,6 +4,9 @@ import IconGrid from "components/Icons/IconGrid";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import { useEffect, useState } from "react";
+import DiscographyFilterContextMenu
+  from "modules/artist/discography/DiscographyHeader/DiscographyFilterContextMenu/DiscographyFilterContextMenu";
+import { EAlbumType } from "types/album";
 
 export enum EDiscographyLayoutTypes {
   grid = "grid",
@@ -14,9 +17,10 @@ interface IProps {
   name: string;
   layoutType: EDiscographyLayoutTypes;
   onLayoutChanged: (type: EDiscographyLayoutTypes) => void;
+  onAlbumTypeChanged: (type: EAlbumType) => void;
 }
 
-function DiscographyHeader({ name, onLayoutChanged, layoutType }: IProps) {
+function DiscographyHeader({ name, onLayoutChanged, layoutType, onAlbumTypeChanged }: IProps) {
   const [ isScrolledClass, setIsScrolledClass ] = useState("");
   const scrollDistance = useSelector((state: RootState) => state.globalReducer.scrollDistance);
 
@@ -29,6 +33,8 @@ function DiscographyHeader({ name, onLayoutChanged, layoutType }: IProps) {
       <p className={styles.title}>{ name }</p>
 
       <div className={styles.controls}>
+
+        <DiscographyFilterContextMenu onAlbumTypeChanged={onAlbumTypeChanged} />
         <div className={styles.layouts}>
           <button
             onClick={() => onLayoutChanged(EDiscographyLayoutTypes.list)}

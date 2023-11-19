@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IArtist } from "types/artist";
 import { api } from "api";
-import { IAlbum } from "types/album";
+import { EAlbumType, IAlbum } from "types/album";
 import DiscographyHeader, { EDiscographyLayoutTypes } from "modules/artist/discography/DiscographyHeader/DiscographyHeader";
 import DiscographyListView from "modules/artist/discography/DiscographyListView/DiscographyListView";
 import DiscographyGridView from "modules/artist/discography/DiscographyGridView/DiscographyGridView";
@@ -12,7 +12,10 @@ function Discography() {
   const { id } = useParams();
   const [ artist, setArtist ] = useState<IArtist>();
   const [ arrAlbums, setArrAlbums ] = useState<IAlbum[]>([])
+  const [ arrFilteredAlbums, setArrFilteredAlbums ] = useState<IAlbum[]>([])
   const [ layoutType, setLayoutType ] = useState<EDiscographyLayoutTypes>(EDiscographyLayoutTypes.grid);
+  const [ albumType, setAlbumType ] = useState(EAlbumType.all);
+
 
   async function fetchArtistInfo() {
     const response = await api.artists.getArtist({ artistId: id as string })
@@ -24,23 +27,30 @@ function Discography() {
     setArrAlbums(response.items);
   }
 
-  function onLayoutChanged(type: EDiscographyLayoutTypes) {
-    setLayoutType(type);
-  }
-
   useEffect(() => {
     fetchArtistInfo();
     fetchArtistAlbums();
   }, [ ])
 
+  useEffect(() => {
+    if (albumType === EAlbumType.all) {
+      setArrFilteredAlbums(arrAlbums);
+    }
+    else {
+      setArrFilteredAlbums(arrAlbums.filter((album) => (
+        album.album_type === albumType
+      )));
+    }
+  }, [ albumType, arrAlbums ])
+
   if (artist == null) return null;
 
   const elView = (() => {
     if (layoutType === EDiscographyLayoutTypes.list) {
-      return <DiscographyListView arrAlbums={arrAlbums} />
+      return <DiscographyListView arrAlbums={arrFilteredAlbums} />
     }
     else if (layoutType === EDiscographyLayoutTypes.grid) {
-      return <DiscographyGridView arrAlbums={arrAlbums} />
+      return <DiscographyGridView arrAlbums={arrFilteredAlbums} />
     }
 
     return null;
@@ -51,7 +61,8 @@ function Discography() {
       <DiscographyHeader
         name={artist.name}
         layoutType={layoutType}
-        onLayoutChanged={onLayoutChanged}
+        onLayoutChanged={setLayoutType}
+        onAlbumTypeChanged={setAlbumType}
       />
 
       { elView }
