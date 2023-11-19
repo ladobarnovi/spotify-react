@@ -1,6 +1,6 @@
 import styles from "./DiscographyListItem.module.scss"
 import { IAlbum } from "types/album";
-import TrackList from "components/TrackList/TrackList";
+import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
 import { ITrackContainer } from "types/track";
 import { useEffect, useRef, useState } from "react";
 import { api } from "api";
@@ -50,7 +50,7 @@ function DiscographyListItem({ album }: IProps) {
 
       <TrackList
         arrTrackContainer={arrTrackContainers}
-        layoutType={"album"}
+        layoutType={ETrackListLayoutType.album}
         canHeaderStick={false}
       />
     </div>

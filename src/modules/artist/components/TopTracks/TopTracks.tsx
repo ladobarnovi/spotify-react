@@ -1,6 +1,6 @@
 import styles from "./TopTracks.module.scss";
 import { ITrack, ITrackContainer } from "types/track";
-import TrackList from "components/TrackList/TrackList";
+import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
 import { useState } from "react";
 
 interface IProps {
@@ -24,7 +24,7 @@ function TopTracks({ arrTracks }: IProps) {
   return (
     <div className={styles.topTracks}>
       <p className={styles.title}>Popular</p>
-      <TrackList arrTrackContainer={arrTrackContainers} layoutType={"topTracks"} />
+      <TrackList arrTrackContainer={arrTrackContainers} layoutType={ETrackListLayoutType.topTracks} />
 
       { elToggleExpandButton }
     </div>

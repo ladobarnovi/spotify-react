@@ -11,7 +11,7 @@ export enum ETracklistViewType {
 }
 
 interface IProps {
-  onViewChanged: (type: ETracklistViewType) => void
+  onViewChanged: (isCompact: boolean) => void
 }
 
 function TracklistViewContextMenu({ onViewChanged }: IProps) {
@@ -19,7 +19,7 @@ function TracklistViewContextMenu({ onViewChanged }: IProps) {
 
   function contextMenuClickHandler(type: ETracklistViewType) {
     setViewType(type);
-    onViewChanged(type);
+    onViewChanged(type === ETracklistViewType.compact);
   }
 
   const contextMenuOptions: IContextMenuOptions = {
@@ -33,12 +33,14 @@ function TracklistViewContextMenu({ onViewChanged }: IProps) {
             onClick: () => contextMenuClickHandler(ETracklistViewType.list),
             isActive: viewType === ETracklistViewType.list,
             icon: (<IconList />),
+            closeOnAction: true,
           },
           {
             title: "Compact",
             onClick: () => contextMenuClickHandler(ETracklistViewType.compact),
             isActive: viewType === ETracklistViewType.compact,
             icon: (<IconListCompact />),
+            closeOnAction: true,
           }
         ]
       }

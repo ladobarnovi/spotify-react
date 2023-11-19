@@ -3,18 +3,17 @@ import { useEffect, useState } from "react";
 import { IPlaylist } from "types/playlist";
 import { api } from "api";
 import { useParams } from 'react-router-dom';
-import TrackList from "components/TrackList/TrackList";
+import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
 import PlayButton from "components/PlayButton/PlayButton";
 import TrackListHeader, { ITrackListHeaderOptions } from "components/TrackList/TrackListHeader/TracklistHeader";
 import { getFullDuration } from "utils/duration";
 import PlaylistContextMenu from "modules/playlist/components/PlaylistContextMenu/PlaylistContextMenu";
 import LikeButton from "components/LikeButton/LikeButton";
-import TracklistViewContextMenu, { ETracklistViewType } from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
+import TracklistViewContextMenu from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
 
 function Playlist() {
   const [ playlist, setPlaylist ] = useState<IPlaylist>();
-  const [ viewType, setViewType ] = useState(ETracklistViewType.list);
-  const [ layoutType, setLayoutType ] = useState("playlist");
+  const [ isCompact, setIsCompact ] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -47,11 +46,15 @@ function Playlist() {
           <PlaylistContextMenu playlist={playlist} />
 
           <div className={styles.viewSelector}>
-            <TracklistViewContextMenu onViewChanged={() => {}} />
+            <TracklistViewContextMenu onViewChanged={setIsCompact} />
           </div>
         </div>
 
-        <TrackList layoutType={"playlist"} arrTrackContainer={ playlist?.tracks.items } />
+        <TrackList
+          layoutType={ETrackListLayoutType.playlist}
+          arrTrackContainer={playlist?.tracks.items}
+          isCompact={isCompact}
+        />
       </div>
     </div>
   )

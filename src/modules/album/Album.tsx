@@ -5,7 +5,7 @@ import { IAlbum } from "types/album";
 import { api } from "api";
 import TracklistHeader, { ITrackListHeaderOptions } from "components/TrackList/TrackListHeader/TracklistHeader";
 import PlayButton from "components/PlayButton/PlayButton";
-import TrackList  from "components/TrackList/TrackList";
+import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
 import { ITrackContainer } from "types/track";
 import { getFullDuration } from "utils/duration";
 import moment from "moment";
@@ -78,7 +78,7 @@ function Album() {
           <AlbumContextMenu />
         </div>
 
-        <TrackList layoutType={"album"} arrTrackContainer={arrTrackContainer} />
+        <TrackList layoutType={ETrackListLayoutType.album} arrTrackContainer={arrTrackContainer} />
 
         <div className={styles.albumInfo}>
           <p className={styles.releaseDate}>{ formattedDate }</p>

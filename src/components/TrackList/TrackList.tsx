@@ -11,33 +11,31 @@ import { useSelector } from "react-redux";
 import { RootState } from "store";
 import { formatNumber } from "utils/number";
 
-export type TLayoutType = "album" | "playlist" | "topTracks";
-
 export enum ETrackListLayoutType {
   album = "album",
-  albumCompact = "albumCompact",
   playlist = "playlist",
-  playlistCompact = "playlistCompact",
   topTracks = "topTracks",
 }
 
 interface ITrackListProps {
   arrTrackContainer: ITrackContainer[]|null;
-  layoutType: TLayoutType;
+  layoutType: ETrackListLayoutType;
   totalTracks?: number;
   canHeaderStick?: boolean; // default: true
+  isCompact?: boolean;
 }
 
 interface ITrackItemProps {
   track: ITrack;
   date: string;
   index: number;
-  layoutType: TLayoutType;
+  layoutType: ETrackListLayoutType;
   isSelected: boolean;
   onSelect: (string: string) => void;
+  isCompact?: boolean;
 }
 
-function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true }: ITrackListProps) {
+function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCompact }: ITrackListProps) {
   const headerRef = useRef<HTMLDivElement>(null);
   const scrollDistance = useSelector((state: RootState) => state.globalReducer.scrollDistance);
   const [ isHeaderFixed, setIsHeaderFixed ] = useState(false);
@@ -69,6 +67,7 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true }: ITr
           layoutType={layoutType}
           isSelected={track.id === selectedTrackId}
           onSelect={(id) => { setSelectedTrackId(id) }}
+          isCompact={isCompact}
         />
       );
     });
@@ -76,29 +75,30 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true }: ITr
 
   const elColAlbum = layoutType === "playlist" ? (<div className={styles.colAlbum}>Album</div>) : null;
   const elColDateAdded = layoutType === "playlist" ? (<div className={styles.colDate}>Date added</div>) : null;
+  const elColArtist = isCompact ? (<div className={styles.colArtist}>Artist</div>) : null;
 
   const trackListLayoutClass = (() => {
-    if (layoutType === "playlist") { return styles.playlist; }
-    if (layoutType === "album") { return styles.album; }
-    if (layoutType === "topTracks") { return styles.topTracks; }
-
+    if (layoutType === ETrackListLayoutType.playlist) { return styles.playlist; }
+    if (layoutType === ETrackListLayoutType.album) { return styles.album; }
+    if (layoutType === ETrackListLayoutType.topTracks) { return styles.topTracks; }
     return null
-  })()
+  })();
 
   const elHeader = layoutType === "topTracks" ? null : (
     <div ref={headerRef} className={`${styles.listHeader} ${styles.gridItem} ${isHeaderFixed ? styles.fixed : ""}`}>
       <div className={styles.colNumber}>#</div>
       <div className={styles.colTitle}>Title</div>
+      { elColArtist }
       { elColAlbum }
       { elColDateAdded }
       <div className={styles.colDuration}>
         <IconDuration />
       </div>
     </div>
-  )
+  );
 
   return (
-    <div className={`${styles.trackList} ${trackListLayoutClass}`}>
+    <div className={`${styles.trackList} ${trackListLayoutClass} ${isCompact ? styles.compact : ""}`}>
       { elHeader }
       <div className={styles.listBody}>
         { elTrackItems }
@@ -107,7 +107,7 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true }: ITr
   );
 }
 
-function TrackItem({ track, date, index, layoutType, isSelected, onSelect }: ITrackItemProps) {
+function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCompact }: ITrackItemProps) {
   const duration = (() => {
     const minutes = Math.floor(track.duration_ms / 1000 / 60) + "";
     const seconds = (
@@ -117,7 +117,7 @@ function TrackItem({ track, date, index, layoutType, isSelected, onSelect }: ITr
     return `${minutes}:${seconds}`;
   })();
 
-  const elImage = track.album == null ? null : <img src={track.album.images[0]?.url} alt={track.album.name} />
+  const elImage = isCompact ? null : <img src={track.album.images[0]?.url} alt={track.album.name} />
   const elColAlbum = layoutType === "playlist" ? (
     <div className={styles.colAlbum}>
       <NavLink to={`/album/${track.album.id}`}>{ track.album.name }</NavLink>
@@ -130,8 +130,10 @@ function TrackItem({ track, date, index, layoutType, isSelected, onSelect }: ITr
     </div>
   ) : null;
 
+  const elColArtist = isCompact ? (<ArtistList artists={track.artists} />) : null;
+
   const elArtists = (() => {
-    if (layoutType === "topTracks") return;
+    if (layoutType === "topTracks" || isCompact) return;
 
     const elExplicit = track.explicit ? (
       <div className={styles.explicit}>
@@ -162,6 +164,7 @@ function TrackItem({ track, date, index, layoutType, isSelected, onSelect }: ITr
           { elArtists }
         </div>
       </div>
+      { elColArtist }
       { elColAlbum }
       { elColDateAdded }
       { elColPlays }
