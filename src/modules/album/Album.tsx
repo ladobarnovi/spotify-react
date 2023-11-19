@@ -12,6 +12,7 @@ import moment from "moment";
 import CardsRow from "components/EntityCard/CardsRow/CardsRow";
 import { ICardOptions } from "components/EntityCard/EntityCard";
 import LikeButton from "components/LikeButton/LikeButton";
+import AlbumContextMenu from "modules/album/components/AlbumContextMenu/AlbumContextMenu";
 
 function Album() {
   const [ album, setAlbum ] = useState<IAlbum>();
@@ -74,6 +75,7 @@ function Album() {
         <div className={styles.albumControls}>
           <PlayButton />
           <LikeButton data={album} />
+          <AlbumContextMenu />
         </div>
 
         <TrackList layoutType={"album"} arrTrackContainer={arrTrackContainer} />

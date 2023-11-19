@@ -1,5 +1,4 @@
-import styles from "./PlaylistContextMenu.module.scss"
-import { IPlaylist } from "types/playlist";
+import styles from "./AlbumContextMenu.module.scss"
 import ContextMenu, { IContextMenuOptions } from "components/ContextMenu/ContextMenu";
 import IconEllipsis from "components/Icons/IconEllipsis";
 import IconCirclePlus from "components/Icons/IconCirclePlus";
@@ -9,36 +8,37 @@ import IconPlus from "components/Icons/IconPlus";
 import IconShare from "components/Icons/IconShare";
 
 interface IProps {
-  playlist: IPlaylist;
+
 }
 
-function PlaylistContextMenu({ playlist }: IProps) {
+function AlbumContextMenu({  }: IProps) {
   const contextMenuOptions: IContextMenuOptions = {
+    alignment: "left",
     arrSections: [
       {
         arrItems: [
           {
             title: "Add to Your Library",
-            onClick: () => { },
+            onClick: () => {},
             icon: (<IconCirclePlus />),
           },
           {
             title: "Add to queue",
-            onClick: () => { },
+            onClick: () => {},
             icon: (<IconAddQueue />),
           },
           {
             title: "Go to artist radio",
-            onClick: () => { },
+            onClick: () => {},
             icon: (<IconRadio />),
           }
-        ]
+        ],
       },
       {
         arrItems: [
           {
             title: "Add to playlist",
-            onClick: () => { },
+            onClick: () => {},
             icon: (<IconPlus />),
           }
         ]
@@ -47,17 +47,16 @@ function PlaylistContextMenu({ playlist }: IProps) {
         arrItems: [
           {
             title: "Share",
-            onClick: () => { },
+            onClick: () => {},
             icon: (<IconShare />),
           }
         ]
       }
-    ],
-    alignment: "left",
+    ]
   }
 
   return (
-    <div className={ styles.playlistContextMenu }>
+    <div className={ styles.albumContextMenu }>
       <ContextMenu options={contextMenuOptions}>
         <button>
           <IconEllipsis />
@@ -67,4 +66,4 @@ function PlaylistContextMenu({ playlist }: IProps) {
   )
 }
 
-export default PlaylistContextMenu;
+export default AlbumContextMenu;

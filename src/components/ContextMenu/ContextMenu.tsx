@@ -9,6 +9,7 @@ export interface IContextMenuItem {
   onClick: () => void;
   isActive?: boolean;
   closeOnAction?: boolean;
+  icon?: ReactNode;
 }
 
 export interface IContextMenuSection {
@@ -116,7 +117,8 @@ function ContextMenuSection({ title, arrItems, onClose }: IContextMenuSectionPro
         className={`${styles.sectionItem} ${item.isActive ? styles.active : ""}`}
         onClick={() => onMenuItemClick(item)}
       >
-        { item.title }
+        { item.icon }
+        <span>{ item.title }</span>
       </button>
     )
   })
