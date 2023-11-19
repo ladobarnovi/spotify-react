@@ -52,6 +52,14 @@ interface IUnfollowAlbumRequest {
   albumId: string;
 }
 
+interface IFollowArtistRequest {
+  artistId: string;
+}
+
+interface IUnfollowArtistRequest {
+  artistId: string;
+}
+
 interface IUserResponse extends IUser { }
 
 export const me = {
@@ -97,10 +105,25 @@ export const me = {
 
   // https://developer.spotify.com/documentation/web-api/reference/remove-albums-user
   unfollowAlbum: async ({ albumId }: IUnfollowAlbumRequest): Promise<void> => {
-    await axios.delete("me/albums", {
+    await axios.delete("/me/albums", {
       data: {
         ids: [ albumId ]
       }
     });
+  },
+
+  // https://developer.spotify.com/documentation/web-api/reference/follow-artists-users
+  followArtist: async ({ artistId }: IFollowArtistRequest): Promise<void> => {
+    await axios.put("/me/following?type=artist", {
+      ids: [ artistId ]
+    })
+  },
+
+  unfollowArtist: async ({ artistId }: IUnfollowArtistRequest): Promise<void> => {
+    await axios.delete("/me/following?type=artist", {
+      data: {
+        ids: [ artistId ]
+      }
+    })
   }
 }

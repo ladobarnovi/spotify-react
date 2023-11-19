@@ -13,10 +13,12 @@ import CardsRow from "components/EntityCard/CardsRow/CardsRow";
 import { ICardOptions } from "components/EntityCard/EntityCard";
 import LikeButton from "components/LikeButton/LikeButton";
 import AlbumContextMenu from "modules/album/components/AlbumContextMenu/AlbumContextMenu";
+import TracklistViewContextMenu from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
 
 function Album() {
   const [ album, setAlbum ] = useState<IAlbum>();
   const [ arrRelatedAlbums, setArrRelatedAlbums ] = useState<IAlbum[]>([ ])
+  const [ isCompact, setIsCompact ] = useState(false);
   const { id } = useParams();
 
   async function fetchCurrentAlbum() {
@@ -76,9 +78,17 @@ function Album() {
           <PlayButton />
           <LikeButton data={album} />
           <AlbumContextMenu />
+
+          <div className={styles.viewSelector}>
+            <TracklistViewContextMenu onViewChanged={setIsCompact} />
+          </div>
         </div>
 
-        <TrackList layoutType={ETrackListLayoutType.album} arrTrackContainer={arrTrackContainer} />
+        <TrackList
+          layoutType={ETrackListLayoutType.album}
+          arrTrackContainer={arrTrackContainer}
+          isCompact={isCompact}
+        />
 
         <div className={styles.albumInfo}>
           <p className={styles.releaseDate}>{ formattedDate }</p>

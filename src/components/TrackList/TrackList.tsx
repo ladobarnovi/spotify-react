@@ -117,7 +117,7 @@ function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCom
     return `${minutes}:${seconds}`;
   })();
 
-  const elImage = isCompact ? null : <img src={track.album.images[0]?.url} alt={track.album.name} />
+  const elImage = track.album == null || isCompact ? null : <img src={track.album.images[0]?.url} alt={track.album.name} />
   const elColAlbum = layoutType === "playlist" ? (
     <div className={styles.colAlbum}>
       <NavLink to={`/album/${track.album.id}`}>{ track.album.name }</NavLink>

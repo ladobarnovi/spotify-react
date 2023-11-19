@@ -10,6 +10,8 @@ import PlayButton from "components/PlayButton/PlayButton";
 import TopTracks from "modules/artist/components/TopTracks/TopTracks";
 import ArtistDiscography from "modules/artist/components/ArtistDiscography/ArtistDiscography";
 import CardsRow from "components/EntityCard/CardsRow/CardsRow";
+import FollowButton from "modules/artist/components/FollowButton/FollowButton";
+import ArtistContextMenu from "modules/artist/components/ArtistContextMenu/ArtistContextMenu";
 
 function Artist() {
   const [ isLoading, setIsLoading ] = useState(true);
@@ -62,6 +64,8 @@ function Artist() {
       <div className={styles.artistBody}>
         <div className={styles.artistControls}>
           <PlayButton />
+          <FollowButton artist={artist} />
+          <ArtistContextMenu artist={artist} />
         </div>
 
         <TopTracks arrTracks={arrTopTracks} />
