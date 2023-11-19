@@ -1,6 +1,7 @@
 import styles from "./ContextMenu.module.scss"
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import IconCheck from "components/Icons/IconCheck";
 
 type TAlignment = "left" | "right";
 
@@ -112,6 +113,8 @@ function ContextMenuSection({ title, arrItems, onClose }: IContextMenuSectionPro
   }
 
   const elItems = arrItems.map((item) => {
+    const elIconCheck = item.isActive ? <IconCheck /> : null;
+
     return (
       <button
         className={`${styles.sectionItem} ${item.isActive ? styles.active : ""}`}
@@ -119,6 +122,7 @@ function ContextMenuSection({ title, arrItems, onClose }: IContextMenuSectionPro
       >
         { item.icon }
         <span>{ item.title }</span>
+        { elIconCheck }
       </button>
     )
   })

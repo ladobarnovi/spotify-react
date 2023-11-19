@@ -45,6 +45,10 @@
         align-items: center;
         gap: 12px;
 
+        span {
+          margin-right: auto;
+        }
+
         svg {
           fill: #a7a7a7;
           width: 16px;
@@ -53,6 +57,10 @@
 
         &.active {
           color: #1ed760 !important;
+
+          svg {
+            fill: #1ed760;
+          }
         }
 
         &:hover {

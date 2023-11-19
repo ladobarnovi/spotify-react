@@ -9,9 +9,12 @@ import TrackListHeader, { ITrackListHeaderOptions } from "components/TrackList/T
 import { getFullDuration } from "utils/duration";
 import PlaylistContextMenu from "modules/playlist/components/PlaylistContextMenu/PlaylistContextMenu";
 import LikeButton from "components/LikeButton/LikeButton";
+import TracklistViewContextMenu, { ETracklistViewType } from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
 
 function Playlist() {
   const [ playlist, setPlaylist ] = useState<IPlaylist>();
+  const [ viewType, setViewType ] = useState(ETracklistViewType.list);
+  const [ layoutType, setLayoutType ] = useState("playlist");
   const { id } = useParams();
 
   useEffect(() => {
@@ -36,13 +39,16 @@ function Playlist() {
 
   return (
     <div className={styles.playlist}>
-      <TrackListHeader options={headerOptions} />;
+      <TrackListHeader options={headerOptions} />
       <div className={styles.playlistBody}>
         <div className={styles.playlistControls}>
           <PlayButton />
           <LikeButton data={playlist} />
-
           <PlaylistContextMenu playlist={playlist} />
+
+          <div className={styles.viewSelector}>
+            <TracklistViewContextMenu onViewChanged={() => {}} />
+          </div>
         </div>
 
         <TrackList layoutType={"playlist"} arrTrackContainer={ playlist?.tracks.items } />

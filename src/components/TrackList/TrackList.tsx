@@ -11,7 +11,15 @@ import { useSelector } from "react-redux";
 import { RootState } from "store";
 import { formatNumber } from "utils/number";
 
-type TLayoutType = "album" | "playlist" | "topTracks";
+export type TLayoutType = "album" | "playlist" | "topTracks";
+
+export enum ETrackListLayoutType {
+  album = "album",
+  albumCompact = "albumCompact",
+  playlist = "playlist",
+  playlistCompact = "playlistCompact",
+  topTracks = "topTracks",
+}
 
 interface ITrackListProps {
   arrTrackContainer: ITrackContainer[]|null;
