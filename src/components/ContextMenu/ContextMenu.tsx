@@ -44,7 +44,7 @@ function ContextMenu({ options, children, onMenuToggled }: IProps) {
     }
   }
 
-  useEffect(() => {
+  function setMenuPositions() {
     if (contentRef.current == null || menuRef.current == null) return;
 
     const { top, left, width: contentWidth, height: contentHeight } = contentRef.current.getBoundingClientRect();
@@ -62,10 +62,39 @@ function ContextMenu({ options, children, onMenuToggled }: IProps) {
 
     menuRef.current.style.top = `${posY}px`;
     menuRef.current.style.left = `${posX}px`;
+  }
+
+  function clickListener(event: MouseEvent) {
+    if (contentRef.current == null || menuRef.current == null) return;
+
+    if (contentRef.current.contains(event.target as HTMLElement)) {
+      return;
+    }
+
+    if (!menuRef.current.contains(event.target as HTMLElement)) {
+      toggleMenu();
+    }
+  }
+
+  function toggleListener() {
+    if (isMenuActive) {
+      window.addEventListener("click", clickListener);
+    }
+    else {
+      window.removeEventListener("click", clickListener);
+    }
+  }
+
+  useEffect(() => {
+    setMenuPositions();
+    toggleListener();
+
+    return window.removeEventListener("click", clickListener);
   }, [ isMenuActive ])
 
-  const elSections = options.arrSections.map((section) => (
+  const elSections = options.arrSections.map((section, index) => (
     <ContextMenuSection
+      key={index}
       arrItems={section.arrItems}
       title={section.title}
       onClose={toggleMenu}
@@ -112,11 +141,12 @@ function ContextMenuSection({ title, arrItems, onClose }: IContextMenuSectionPro
     }
   }
 
-  const elItems = arrItems.map((item) => {
+  const elItems = arrItems.map((item, index) => {
     const elIconCheck = item.isActive ? <IconCheck /> : null;
 
     return (
       <button
+        key={index}
         className={`${styles.sectionItem} ${item.isActive ? styles.active : ""}`}
         onClick={() => onMenuItemClick(item)}
       >

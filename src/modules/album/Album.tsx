@@ -21,20 +21,12 @@ function Album() {
   const [ isCompact, setIsCompact ] = useState(false);
   const { id } = useParams();
 
-  async function fetchCurrentAlbum() {
-    const response = await api.albums.getAlbum({ albumId: id as string });
-    setAlbum(response);
-  }
-
-  async function fetchRelatedAlbums() {
-    const response = await api.artists.albums({ artistId: album?.artists[0].id as string })
-    setArrRelatedAlbums(response.items)
-  }
-
   useEffect(() => {
     (async () => {
-      await fetchCurrentAlbum()
-      await fetchRelatedAlbums();
+      const albumResponse = await api.albums.getAlbum({ albumId: id as string });
+      const artistResponse = await api.artists.albums({ artistId: albumResponse.artists[0].id });
+      setAlbum(albumResponse);
+      setArrRelatedAlbums(artistResponse.items)
     })()
   }, [ id ])
 
@@ -56,18 +48,19 @@ function Album() {
   }));
 
   const formattedDate = moment(album.release_date).format("MMMM D, yyyy");
-  const elCopyright = <ul className={styles.copyrights}>{
+  const elCopyright = (<ul className={styles.copyrights}>{
     album.copyrights.map((copyright, index) => (
       <li key={index}>
         { copyright.type === "C" ? "©" : "©" } { copyright.text }
       </li>
     ))
-  }</ul>
+  }</ul>);
+
   const cardsRowOptions: ICardOptions = {
     album: {
       showReleaseYear: true,
     }
-  }
+  };
 
   return (
     <div className={styles.album}>
