@@ -8,6 +8,7 @@ import { setUser } from "store/auth/authSlice";
 import { setScrollDistance } from "store/global/globalSlice";
 import { useDispatch } from "react-redux";
 import { OverlayScrollbars } from "overlayscrollbars";
+import AppPlayer from "components/AppPlayer/AppPlayer";
 
 type Props = {
   children: ReactNode
@@ -61,7 +62,8 @@ function Main({ children }: Props) {
           </div>
         </div>
       </div>
-      <AppFooter />
+      <AppPlayer />
+      {/*<AppFooter />*/}
     </div> : null;
 
 

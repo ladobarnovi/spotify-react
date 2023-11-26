@@ -3,11 +3,11 @@
   height: var(--play-button-size);
   border-radius: 50%;
   position: relative;
-  background-color: #1ed760;
+  background-color: var(--play-button-color);
 
   &:hover {
     transform: scale(1.05);
-    background-color: #1fdf64;
+    background-color: var(--play-button-highlight-color);
   }
 
   svg {

@@ -24,7 +24,11 @@ function TopTracks({ arrTracks }: IProps) {
   return (
     <div className={styles.topTracks}>
       <p className={styles.title}>Popular</p>
-      <TrackList arrTrackContainer={arrTrackContainers} layoutType={ETrackListLayoutType.topTracks} />
+      <TrackList
+        arrTrackContainer={arrTrackContainers}
+        layoutType={ETrackListLayoutType.topTracks}
+        onPlay={() => {}}
+      />
 
       { elToggleExpandButton }
     </div>

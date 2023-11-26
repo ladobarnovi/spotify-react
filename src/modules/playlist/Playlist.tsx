@@ -10,11 +10,13 @@ import { getFullDuration } from "utils/duration";
 import PlaylistContextMenu from "modules/playlist/components/PlaylistContextMenu/PlaylistContextMenu";
 import LikeButton from "components/LikeButton/LikeButton";
 import TracklistViewContextMenu from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
+import { usePlayer } from "hooks/usePlayer";
 
 function Playlist() {
   const [ playlist, setPlaylist ] = useState<IPlaylist>();
   const [ isCompact, setIsCompact ] = useState(false);
   const { id } = useParams();
+  const { playPlaylist } = usePlayer();
 
   useEffect(() => {
     (async () => {
@@ -41,7 +43,7 @@ function Playlist() {
       <TrackListHeader options={headerOptions} />
       <div className={styles.playlistBody}>
         <div className={styles.playlistControls}>
-          <PlayButton />
+          <PlayButton onPlay={() => {}} />
           <LikeButton data={playlist} />
           <PlaylistContextMenu playlist={playlist} />
 
@@ -54,6 +56,7 @@ function Playlist() {
           layoutType={ETrackListLayoutType.playlist}
           arrTrackContainer={playlist?.tracks.items}
           isCompact={isCompact}
+          onPlay={(index) => { playPlaylist(playlist.uri, index) }}
         />
       </div>
     </div>

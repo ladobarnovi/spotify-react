@@ -10,6 +10,7 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import { formatNumber } from "utils/number";
+import { usePlayer } from "hooks/usePlayer";
 
 export enum ETrackListLayoutType {
   album = "album",
@@ -23,6 +24,7 @@ interface ITrackListProps {
   totalTracks?: number;
   canHeaderStick?: boolean; // default: true
   isCompact?: boolean;
+  onPlay: (index: number) => void;
 }
 
 interface ITrackItemProps {
@@ -33,9 +35,10 @@ interface ITrackItemProps {
   isSelected: boolean;
   onSelect: (string: string) => void;
   isCompact?: boolean;
+  onPlay: () => void;
 }
 
-function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCompact }: ITrackListProps) {
+function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCompact, onPlay }: ITrackListProps) {
   const headerRef = useRef<HTMLDivElement>(null);
   const scrollDistance = useSelector((state: RootState) => state.globalReducer.scrollDistance);
   const [ isHeaderFixed, setIsHeaderFixed ] = useState(false);
@@ -68,6 +71,7 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
           isSelected={track.id === selectedTrackId}
           onSelect={(id) => { setSelectedTrackId(id) }}
           isCompact={isCompact}
+          onPlay={() => onPlay(index)}
         />
       );
     });
@@ -107,8 +111,9 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
   );
 }
 
-function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCompact }: ITrackItemProps) {
+function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCompact, onPlay }: ITrackItemProps) {
   const [ numPlays, setNumPlays ] = useState("");
+  const { playTrack } = usePlayer();
 
   useEffect(() => {
     setNumPlays(formatNumber(Math.floor(Math.random() * 10000)));
@@ -159,7 +164,7 @@ function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCom
     <div onClick={() => onSelect(track.id)} className={`${styles.trackItem} ${styles.gridItem} ${isSelected ? styles.selected : null}`}>
       <div className={styles.colNumber}>
         <p className={styles.index}>{ index }</p>
-        <div className={styles.playbackActions}>
+        <div onClick={onPlay} className={styles.playbackActions}>
           <IconPlay />
         </div>
       </div>

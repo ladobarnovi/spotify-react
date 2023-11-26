@@ -1,0 +1,31 @@
+.playbackControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  .play {
+    margin: 0 8px;
+    --play-button-size: 32px;
+    --play-button-icon-size: 19px;
+    --play-button-color: white;
+    --play-button-highlight-color: white;
+  }
+
+  & > button {
+    padding: 8px;
+    font-size: 0;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: #a7a7a7;
+    }
+
+    &:hover {
+      svg {
+        fill: white;
+      }
+    }
+  }
+}

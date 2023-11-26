@@ -20,6 +20,9 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": "src",
+    "types": [
+      "spotify-web-playback-sdk",
+    ]
   },
   "include": [
     "src"

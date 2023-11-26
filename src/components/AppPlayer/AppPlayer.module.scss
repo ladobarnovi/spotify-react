@@ -1,0 +1,10 @@
+.appPlayer {
+  height: 72px;
+  width: 100%;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+}

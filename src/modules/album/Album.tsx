@@ -68,7 +68,7 @@ function Album() {
 
       <div className={styles.albumBody}>
         <div className={styles.albumControls}>
-          <PlayButton />
+          <PlayButton onPlay={() => {}} />
           <LikeButton data={album} />
           <AlbumContextMenu />
 
@@ -81,6 +81,7 @@ function Album() {
           layoutType={ETrackListLayoutType.album}
           arrTrackContainer={arrTrackContainer}
           isCompact={isCompact}
+          onPlay={() => {}}
         />
 
         <div className={styles.albumInfo}>

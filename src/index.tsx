@@ -13,7 +13,9 @@ import Album from "modules/album/Album";
 import Artist from "modules/artist/Artist";
 import Discography from "modules/artist/discography/Discography";
 import RelatedArtists from "modules/artist/related/RelatedArtists";
+import { initPlayer } from "hooks/usePlayer";
 
+initPlayer();
 setAxiosBaseUrl();
 
 const root = ReactDOM.createRoot(

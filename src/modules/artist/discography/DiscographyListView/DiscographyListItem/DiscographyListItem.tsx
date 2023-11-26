@@ -52,6 +52,7 @@ function DiscographyListItem({ album }: IProps) {
         arrTrackContainer={arrTrackContainers}
         layoutType={ETrackListLayoutType.album}
         canHeaderStick={false}
+        onPlay={() => {}}
       />
     </div>
   )
