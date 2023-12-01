@@ -4,14 +4,16 @@ import IconPrev from "components/Icons/IconPrev";
 import IconShuffle from "components/Icons/IconShuffle";
 import IconNext from "components/Icons/IconNext";
 import IconRepeat from "components/Icons/IconRepeat";
-import { usePlayer } from "hooks/usePlayer";
+import { ESpotifyRepeatMode, usePlayer } from "hooks/usePlayer";
 
 function PlaybackControls() {
-  const { playNext, playPrevious } = usePlayer();
+  const { playNext, playPrevious, isShuffle, repeatMode, toggleShuffle, toggleRepeat } = usePlayer();
+
+  const isRepeatActive = repeatMode === ESpotifyRepeatMode.ONCE_REPEAT || repeatMode === ESpotifyRepeatMode.FULL_REPEAT;
 
   return (
     <div className={ styles.playbackControls }>
-      <button className={styles.buttonShuffle}>
+      <button className={`${styles.buttonShuffle} ${isShuffle ? styles.active : null}`} onClick={toggleShuffle} >
         <IconShuffle />
       </button>
       <button className={styles.buttonPrev} onClick={playPrevious}>
@@ -25,7 +27,7 @@ function PlaybackControls() {
       <button className={styles.buttonNext} onClick={playNext}>
         <IconNext />
       </button>
-      <button className={styles.buttonRepeat}>
+      <button className={`${styles.buttonRepeat} ${isRepeatActive ? styles.active : null}`} onClick={toggleRepeat} >
         <IconRepeat />
       </button>
     </div>

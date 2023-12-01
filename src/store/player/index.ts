@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IAlbum } from "types/album";
 import { IArtist } from "types/artist";
+import { ESpotifyRepeatMode } from "hooks/usePlayer";
 
 export interface IPlayerTrackData {
   trackId: string|null
@@ -19,6 +20,7 @@ export interface IPlayerControls {
   isPlaying: boolean;
   isPaused: boolean;
   isRepeat: boolean;
+  repeatMode: ESpotifyRepeatMode;
 }
 
 
@@ -38,6 +40,7 @@ const initialState: PlayerState = {
   isPlaying: false,
   isPaused: false,
   isRepeat: false,
+  repeatMode: 0,
 
   trackId: null,
   trackDuration: null,
@@ -80,7 +83,7 @@ export const playerSlice = createSlice({
       const {
         isPlaying,
         isPaused,
-        isRepeat,
+        repeatMode,
         isShuffle,
         isExpanded,
         volume
@@ -88,7 +91,7 @@ export const playerSlice = createSlice({
 
       state.isPlaying = isPlaying;
       state.isPaused = isPaused;
-      state.isRepeat = isRepeat;
+      state.repeatMode = repeatMode;
       state.isShuffle = isShuffle;
       state.isExpanded = isExpanded;
       state.volume = volume;

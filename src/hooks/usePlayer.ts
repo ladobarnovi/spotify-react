@@ -10,8 +10,12 @@ import {
 import store, { RootState } from "store";
 import { useSelector } from "react-redux";
 import { api } from "api";
-import { retry } from "@reduxjs/toolkit/query";
-import { Root } from "react-dom/client";
+
+export enum ESpotifyRepeatMode {
+  NO_REPEAT,
+  ONCE_REPEAT,
+  FULL_REPEAT
+}
 
 let trackPositionIntervalId: any = null;
 
@@ -55,8 +59,9 @@ function playerStateChangedListener(state: Spotify.PlaybackState): void {
     isPlaying: !state.paused,
     isPaused: state.paused,
     isShuffle: state.shuffle,
-    isRepeat: false,
     isExpanded: false,
+    repeatMode: state.repeat_mode,
+    isRepeat: state.repeat_mode !== ESpotifyRepeatMode.NO_REPEAT,
     volume: 0.5,
   }
 
@@ -92,9 +97,10 @@ export function usePlayer() {
 
   const isPlaying = useSelector((state: RootState) => state.playerReducer.isPlaying);
   const isPaused = useSelector((state: RootState) => state.playerReducer.isPaused);
-  const isRepeat = useSelector((state: RootState) => state.playerReducer.isRepeat);
+  const repeatMode = useSelector((state: RootState) => state.playerReducer.repeatMode);
   const isShuffle = useSelector((state: RootState) => state.playerReducer.isShuffle);
   const isExpanded = useSelector((state: RootState) => state.playerReducer.isExpanded);
+  const isRepeat = useSelector((state: RootState) => state.playerReducer.isRepeat);
 
   const trackPosition = useSelector((state: RootState) => state.playerReducer.trackPosition);
   const trackId = useSelector((state: RootState) => state.playerReducer.trackId);
@@ -151,6 +157,25 @@ export function usePlayer() {
     }
   }
 
+  async function toggleShuffle(): Promise<void> {
+    if (player == null || deviceId == null) return;
+    await api.player.shuffle({
+      device_id: deviceId,
+      state: !isShuffle,
+    })
+  }
+
+  async function toggleRepeat(): Promise<void> {
+    if (player == null || deviceId == null) return;
+
+    const state = isRepeat ? "off" : "track";
+
+    await api.player.repeat({
+      device_id: deviceId,
+      state,
+    })
+  }
+
   function getUriType(uri: string): string {
     return uri.split(":")[1];
   }
@@ -168,7 +193,7 @@ export function usePlayer() {
     trackDuration,
     isPlaying,
     isPaused,
-    isRepeat,
+    repeatMode,
     isShuffle,
     isExpanded,
     contextUri,
@@ -179,6 +204,8 @@ export function usePlayer() {
     playPrevious,
     resumePlayer,
     pausePlayer,
+    toggleShuffle,
+    toggleRepeat,
 
     getUriId,
     getUriType,

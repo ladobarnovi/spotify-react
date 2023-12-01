@@ -27,5 +27,25 @@
         fill: white;
       }
     }
+
+    &.active {
+      position: relative;
+
+      svg {
+        fill: #1db954;
+      }
+
+      &:after {
+        content: "";
+        width: 4px;
+        height: 4px;
+        background-color: #1db954;
+        border-radius: 50%;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%, -2px);
+      }
+    }
   }
 }
