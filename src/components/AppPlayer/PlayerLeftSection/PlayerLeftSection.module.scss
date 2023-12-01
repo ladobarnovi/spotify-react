@@ -1,0 +1,41 @@
+.playerLeftSection {
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+
+  .imageContainer {
+    width: 56px;
+    height: 56px;
+    overflow: hidden;
+    border-radius: 2px;
+    background-color: #a7a7a7;
+    margin-right: 16px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-position: center;
+      object-fit: cover;
+    }
+  }
+
+  .infoContainer {
+    display: flex;
+    flex-direction: column;
+
+    .name {
+      font-size: 0.875rem;
+      color: white;
+    }
+
+    .album {
+      font-size: 0.6875rem;
+      color: #a7a7a7;
+    }
+
+    a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+  }
+}

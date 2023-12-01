@@ -10,6 +10,8 @@ import {
 import store, { RootState } from "store";
 import { useSelector } from "react-redux";
 import { api } from "api";
+import { retry } from "@reduxjs/toolkit/query";
+import { Root } from "react-dom/client";
 
 let trackPositionIntervalId: any = null;
 
@@ -101,6 +103,9 @@ export function usePlayer() {
   const trackName = useSelector((state: RootState) => state.playerReducer.trackName);
   const trackDuration = useSelector((state: RootState) => state.playerReducer.trackDuration);
 
+  const contextUri = useSelector((state: RootState) => state.playerReducer.contextUri);
+
+
   async function playTrack(uris: string[]): Promise<void> {
     await api.player.play({
       deviceId,
@@ -110,7 +115,7 @@ export function usePlayer() {
     })
   }
 
-  async function playPlaylist(contextUri: string, position = 0): Promise<void> {
+  async function playContext(contextUri: string, position = 0): Promise<void> {
     await api.player.play({
       deviceId,
       data: {
@@ -123,16 +128,12 @@ export function usePlayer() {
   }
 
   async function playNext(): Promise<void> {
-    console.log("play Next before")
     if (player == null) return;
-    console.log("Play Next");
     await player.nextTrack();
   }
 
   async function playPrevious(): Promise<void> {
-    console.log("play prev before")
     if (player == null) return;
-    console.log("Play Prev");
     await player.previousTrack();
   }
 
@@ -150,6 +151,14 @@ export function usePlayer() {
     }
   }
 
+  function getUriType(uri: string): string {
+    return uri.split(":")[1];
+  }
+
+  function getUriId(uri: string): string {
+    return uri.split(":")[2];
+  }
+
   return {
     trackPosition,
     trackId,
@@ -162,12 +171,16 @@ export function usePlayer() {
     isRepeat,
     isShuffle,
     isExpanded,
+    contextUri,
 
     playTrack,
-    playPlaylist,
+    playContext,
     playNext,
     playPrevious,
     resumePlayer,
     pausePlayer,
+
+    getUriId,
+    getUriType,
   }
 }

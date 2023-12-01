@@ -11,12 +11,14 @@ import PlaylistContextMenu from "modules/playlist/components/PlaylistContextMenu
 import LikeButton from "components/LikeButton/LikeButton";
 import TracklistViewContextMenu from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
 import { usePlayer } from "hooks/usePlayer";
+import { Simulate } from "react-dom/test-utils";
+import play = Simulate.play;
 
 function Playlist() {
   const [ playlist, setPlaylist ] = useState<IPlaylist>();
   const [ isCompact, setIsCompact ] = useState(false);
   const { id } = useParams();
-  const { playPlaylist } = usePlayer();
+  const { playContext } = usePlayer();
 
   useEffect(() => {
     (async () => {
@@ -26,6 +28,12 @@ function Playlist() {
   }, [ id ]);
 
   if (playlist == null) return null;
+
+  async function onPlayTrack(index: number): Promise<void> {
+    if (playlist == null) return;
+
+    await playContext(playlist.uri, index)
+  }
 
   const headerOptions: ITrackListHeaderOptions = {
     id: playlist.id,
@@ -56,7 +64,7 @@ function Playlist() {
           layoutType={ETrackListLayoutType.playlist}
           arrTrackContainer={playlist?.tracks.items}
           isCompact={isCompact}
-          onPlay={(index) => { playPlaylist(playlist.uri, index) }}
+          onPlay={onPlayTrack}
         />
       </div>
     </div>

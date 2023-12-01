@@ -14,12 +14,14 @@ import { ICardOptions } from "components/EntityCard/EntityCard";
 import LikeButton from "components/LikeButton/LikeButton";
 import AlbumContextMenu from "modules/album/components/AlbumContextMenu/AlbumContextMenu";
 import TracklistViewContextMenu from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
+import { usePlayer } from "hooks/usePlayer";
 
 function Album() {
   const [ album, setAlbum ] = useState<IAlbum>();
   const [ arrRelatedAlbums, setArrRelatedAlbums ] = useState<IAlbum[]>([ ])
   const [ isCompact, setIsCompact ] = useState(false);
   const { id } = useParams();
+  const { playContext } = usePlayer();
 
   useEffect(() => {
     (async () => {
@@ -62,6 +64,12 @@ function Album() {
     }
   };
 
+  async function onPlayTrack(index: number): Promise<void> {
+    if (album == null) return;
+
+    await playContext(album.uri, index);
+  }
+
   return (
     <div className={styles.album}>
       <TracklistHeader options={headerOptions} />
@@ -81,7 +89,7 @@ function Album() {
           layoutType={ETrackListLayoutType.album}
           arrTrackContainer={arrTrackContainer}
           isCompact={isCompact}
-          onPlay={() => {}}
+          onPlay={onPlayTrack}
         />
 
         <div className={styles.albumInfo}>
