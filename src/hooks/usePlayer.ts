@@ -5,7 +5,7 @@ import {
   setPlayerControls,
   setPlayerTrackData,
   setTrackPosition,
-  setPlayer
+  setPlayerVolume
 } from "store/player";
 import store, { RootState } from "store";
 import { useSelector } from "react-redux";
@@ -16,6 +16,8 @@ export enum ESpotifyRepeatMode {
   ONCE_REPEAT,
   FULL_REPEAT
 }
+
+let player: Spotify.Player;
 
 let trackPositionIntervalId: any = null;
 
@@ -67,11 +69,9 @@ function playerStateChangedListener(state: Spotify.PlaybackState): void {
     isExpanded: false,
     repeatMode: state.repeat_mode,
     isRepeat: state.repeat_mode !== ESpotifyRepeatMode.NO_REPEAT,
-    volume: 0.5,
+    volume: store.getState().playerReducer.volume,
   }
 
-  console.log(playerControls);
-  console.log(playerTrackData);
   store.dispatch(setPlayerControls(playerControls));
   store.dispatch(setPlayerTrackData(playerTrackData));
 
@@ -80,24 +80,22 @@ function playerStateChangedListener(state: Spotify.PlaybackState): void {
 
 export function initPlayer() {
   window.onSpotifyWebPlaybackSDKReady = async () => {
-    const player: Spotify.Player = new Spotify.Player({
+    player = new Spotify.Player({
       name: "Custom Web Player",
       getOAuthToken(cb: (token: string) => void) {
         cb(localStorage.token);
       },
-      volume: 0.5
+      volume: 1
     });
 
     player.addListener("ready", playerReadyListener);
     player.addListener("player_state_changed", playerStateChangedListener);
 
     await player.connect();
-    store.dispatch(setPlayer(player));
   };
 }
 
 export function usePlayer() {
-  const player = useSelector((state: RootState) => state.playerReducer.player);
   const deviceId = useSelector((state: RootState) => state.playerReducer.deviceId) as string;
 
   const isPlaying = useSelector((state: RootState) => state.playerReducer.isPlaying);
@@ -106,6 +104,7 @@ export function usePlayer() {
   const isShuffle = useSelector((state: RootState) => state.playerReducer.isShuffle);
   const isExpanded = useSelector((state: RootState) => state.playerReducer.isExpanded);
   const isRepeat = useSelector((state: RootState) => state.playerReducer.isRepeat);
+  const volume = useSelector((state: RootState) => state.playerReducer.volume);
 
   const trackPosition = useSelector((state: RootState) => state.playerReducer.trackPosition);
   const trackId = useSelector((state: RootState) => state.playerReducer.trackId);
@@ -184,15 +183,17 @@ export function usePlayer() {
   }
 
   async function togglePlay(): Promise<void> {
-    if (player == null) return;
-
     await player.togglePlay();
   }
 
   async function seek(position: number): Promise<void> {
-    if (player == null) return;
-
     await player.seek(position);
+  }
+
+  async function setVolume(value: number): Promise<void> {
+    console.log(volume);
+    store.dispatch(setPlayerVolume(value));
+    await player.setVolume(value);
   }
 
   function getUriType(uri: string): string {
@@ -219,6 +220,7 @@ export function usePlayer() {
     contextUri,
     uriId,
     uriType,
+    volume,
 
     playTrack,
     playContext,
@@ -230,6 +232,7 @@ export function usePlayer() {
     toggleRepeat,
     togglePlay,
     seek,
+    setVolume,
 
     getUriId,
     getUriType,

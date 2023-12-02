@@ -1,0 +1,22 @@
+.playerRightSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  button {
+    padding: 8px;
+    font-size: 0;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: #a7a7a7;
+    }
+
+    &:hover {
+      svg {
+        fill: white;
+      }
+    }
+  }
+}

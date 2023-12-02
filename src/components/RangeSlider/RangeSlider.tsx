@@ -7,13 +7,14 @@ interface IProps {
   onPositionUpdated: (value: number) => void;
   maxValue?: number;
   minValue?: number;
+  value?: number;
 }
 
-function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue = 0, minValue = 0 }: IProps) {
+function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue = 0, minValue = 0, value = 0 }: IProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const [ isActive, setIsActive ] = useState(false);
-  const [ position, setPosition ] = useState(0);
+  const [ position, setPosition ] = useState(value);
 
   function calculatePosition(x: number): void {
     if (sliderRef.current == null) return;
@@ -21,19 +22,11 @@ function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue
     const sliderWidth = sliderRef.current.clientWidth;
 
     const posX = ((x - sliderOffset) / sliderWidth) * maxValue;
+    const normalisedPosX = Math.min(maxValue, Math.max(minValue, posX));
 
-    if (posX < minValue) {
-      setPosition(minValue);
-    }
-    else if (posX > maxValue) {
-      setPosition(maxValue)
-    }
-    else {
-      setPosition(posX);
-    }
-
-    onPositionUpdated(posX);
-    setFillWidth(posX);
+    setPosition(normalisedPosX);
+    onPositionUpdated(normalisedPosX);
+    setFillWidth(normalisedPosX);
   }
 
   function setFillWidth(posX: number) {
@@ -43,6 +36,7 @@ function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue
   }
 
   const mouseDownHandler = (event: MouseEvent): void => {
+    console.log(sliderRef.current)
     if (sliderRef.current == null) return;
     if (!event.composedPath().includes(sliderRef.current)) return;
 
@@ -58,6 +52,8 @@ function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue
   }
 
   const mouseUpHandler = (): void => {
+    if (!isActive) return;
+
     setIsActive(false);
     onSlideEnded();
   }

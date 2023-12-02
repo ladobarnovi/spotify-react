@@ -36,7 +36,7 @@ const initialState: PlayerState = {
   player: null,
 
   deviceId: null,
-  volume: 0.5,
+  volume: 1,
   isExpanded: false,
   isShuffle: false,
   isPlaying: false,
@@ -109,8 +109,8 @@ export const playerSlice = createSlice({
       state.trackPosition = action.payload;
     },
 
-    setPlayer: (state, action: PayloadAction<Spotify.Player>) => {
-      state.player = action.payload;
+    setPlayerVolume: (state, action: PayloadAction<number>) => {
+      state.volume = action.payload;
     }
   }
 });
@@ -120,6 +120,6 @@ export const {
   setPlayerTrackData,
   setPlayerControls,
   setTrackPosition,
-  setPlayer,
+  setPlayerVolume,
 } = playerSlice.actions;
 export default playerSlice.reducer;
