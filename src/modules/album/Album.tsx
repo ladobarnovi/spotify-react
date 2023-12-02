@@ -15,6 +15,7 @@ import LikeButton from "components/LikeButton/LikeButton";
 import AlbumContextMenu from "modules/album/components/AlbumContextMenu/AlbumContextMenu";
 import TracklistViewContextMenu from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
 import { usePlayer } from "hooks/usePlayer";
+import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 
 function Album() {
   const [ album, setAlbum ] = useState<IAlbum>();
@@ -76,7 +77,7 @@ function Album() {
 
       <div className={styles.albumBody}>
         <div className={styles.albumControls}>
-          <PlayButton onPlay={() => {}} />
+          <ContextPlayButton uri={album.uri} />
           <LikeButton data={album} />
           <AlbumContextMenu />
 

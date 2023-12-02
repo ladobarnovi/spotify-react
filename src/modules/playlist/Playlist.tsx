@@ -13,6 +13,7 @@ import TracklistViewContextMenu from "components/TrackList/TrackListViewContextM
 import { usePlayer } from "hooks/usePlayer";
 import { Simulate } from "react-dom/test-utils";
 import play = Simulate.play;
+import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 
 function Playlist() {
   const [ playlist, setPlaylist ] = useState<IPlaylist>();
@@ -51,7 +52,7 @@ function Playlist() {
       <TrackListHeader options={headerOptions} />
       <div className={styles.playlistBody}>
         <div className={styles.playlistControls}>
-          <PlayButton onPlay={() => {}} />
+          <ContextPlayButton uri={playlist.uri} />
           <LikeButton data={playlist} />
           <PlaylistContextMenu playlist={playlist} />
 

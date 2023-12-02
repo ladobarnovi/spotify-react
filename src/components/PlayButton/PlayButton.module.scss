@@ -4,6 +4,7 @@
   border-radius: 50%;
   position: relative;
   background-color: var(--play-button-color);
+  cursor: pointer;
 
   &:hover {
     transform: scale(1.05);

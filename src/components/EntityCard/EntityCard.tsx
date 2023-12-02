@@ -57,7 +57,7 @@ function EntityCard({ data, options }: IProps) {
         </div>
 
         <div className={styles.buttonContainer}>
-          <PlayButton onPlay={() => {}} />
+          <PlayButton />
         </div>
       </div>
       <div className={styles.infoContainer}>

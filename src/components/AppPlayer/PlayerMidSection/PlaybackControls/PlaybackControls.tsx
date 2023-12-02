@@ -7,7 +7,7 @@ import IconRepeat from "components/Icons/IconRepeat";
 import { ESpotifyRepeatMode, usePlayer } from "hooks/usePlayer";
 
 function PlaybackControls() {
-  const { playNext, playPrevious, isShuffle, repeatMode, toggleShuffle, toggleRepeat } = usePlayer();
+  const { playNext, playPrevious, isShuffle, repeatMode, toggleShuffle, toggleRepeat, isPlaying, togglePlay } = usePlayer();
 
   const isRepeatActive = repeatMode === ESpotifyRepeatMode.ONCE_REPEAT || repeatMode === ESpotifyRepeatMode.FULL_REPEAT;
 
@@ -21,7 +21,7 @@ function PlaybackControls() {
       </button>
 
       <div className={styles.play}>
-        <PlayButton onPlay={() => {}} />
+        <PlayButton isPlaying={isPlaying} onClick={togglePlay} />
       </div>
 
       <button className={styles.buttonNext} onClick={playNext}>

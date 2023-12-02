@@ -17,14 +17,14 @@ function PlayerLeftSection() {
   return (
     <div className={ styles.playerLeftSection }>
       <NavLink to={`/${contextType}/${contextId}`} className={styles.imageContainer}>
-        <img src={trackAlbum.images[0].url} />
+        <img src={trackAlbum.images[0].url} alt={trackName} />
       </NavLink>
 
       <div className={styles.infoContainer}>
         <NavLink to={`/album/${albumId}`} className={styles.name}>
           { trackName }
         </NavLink>
-        <NavLink to={`/artist/${artistId}`} className={styles.album}>
+        <NavLink to={`/artist/${artistId}`} className={styles.artist}>
           { trackArtists[0].name }
         </NavLink>
       </div>

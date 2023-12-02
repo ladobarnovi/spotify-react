@@ -63,7 +63,7 @@ function Artist() {
 
       <div className={styles.artistBody}>
         <div className={styles.artistControls}>
-          <PlayButton onPlay={() => {}} />
+          <PlayButton />
           <FollowButton artist={artist} />
           <ArtistContextMenu artist={artist} />
         </div>
