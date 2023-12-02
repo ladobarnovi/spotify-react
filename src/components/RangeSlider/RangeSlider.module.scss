@@ -37,13 +37,11 @@
 
   &:hover,
   &.active {
-    .slider-wrapper {
-      .fill {
-        background-color: #1db954;
+    .fill {
+      background-color: #1db954;
 
-        &:after {
-          display: block;
-        }
+      &:after {
+        display: block;
       }
     }
   }

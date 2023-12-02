@@ -21,12 +21,12 @@ let trackPositionIntervalId: any = null;
 
 function setPlaybackInterval(state: Spotify.PlaybackState) {
   const { position, paused } = state;
-
   clearInterval(trackPositionIntervalId);
 
-  if (position > 0 && !paused) {
+  if (position >= 0 && !paused) {
     trackPositionIntervalId = setInterval(() => {
-      store.dispatch(setTrackPosition(position + 500));
+      const trackPosition = store.getState().playerReducer.trackPosition || 0;
+      store.dispatch(setTrackPosition(trackPosition + 500));
     }, 500);
   }
 }
@@ -189,6 +189,12 @@ export function usePlayer() {
     await player.togglePlay();
   }
 
+  async function seek(position: number): Promise<void> {
+    if (player == null) return;
+
+    await player.seek(position);
+  }
+
   function getUriType(uri: string): string {
     return uri.split(":")[1];
   }
@@ -198,6 +204,7 @@ export function usePlayer() {
   }
 
   return {
+    deviceId,
     trackPosition,
     trackId,
     trackArtists,
@@ -222,6 +229,7 @@ export function usePlayer() {
     toggleShuffle,
     toggleRepeat,
     togglePlay,
+    seek,
 
     getUriId,
     getUriType,

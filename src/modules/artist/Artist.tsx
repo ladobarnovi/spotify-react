@@ -12,6 +12,7 @@ import ArtistDiscography from "modules/artist/components/ArtistDiscography/Artis
 import CardsRow from "components/EntityCard/CardsRow/CardsRow";
 import FollowButton from "modules/artist/components/FollowButton/FollowButton";
 import ArtistContextMenu from "modules/artist/components/ArtistContextMenu/ArtistContextMenu";
+import { usePlayer } from "hooks/usePlayer";
 
 function Artist() {
   const [ isLoading, setIsLoading ] = useState(true);
@@ -19,7 +20,11 @@ function Artist() {
   const [ arrAlbums, setArrAlbums ] = useState<IAlbum[]>([])
   const [ arrTopTracks, setArrTopTracks ] = useState<ITrack[]>([])
   const [ arrRelatedArtists, setArrRelatedArtists ] = useState<IArtist[]>([]);
+  const [ arrTrackUris, setArrTrackUris ] = useState<string[]>([]);
+  const [ isContextPlaying, setIsContextPlaying ] = useState(false);
+  const [ isContextPaused, setIsContextPaused ] = useState(false)
 
+  const { deviceId, trackId, togglePlay, isPlaying, isPaused } = usePlayer();
   const { id } = useParams();
 
   async function fetchArtistInfo() {
@@ -42,6 +47,23 @@ function Artist() {
     setArrRelatedArtists(response.artists);
   }
 
+  async function onPlayButtonClicked(): Promise<void> {
+    if (isContextPlaying || isContextPaused) {
+      await togglePlay()
+    }
+    else {
+      await api.player.play({
+        deviceId,
+        data: {
+          uris: arrTrackUris,
+          offset: {
+            position: 0,
+          },
+        },
+      });
+    }
+  }
+
   useEffect(() => {
     (async () => {
       await Promise.all([
@@ -53,7 +75,17 @@ function Artist() {
 
       setIsLoading(false);
     })()
-  }, [ ])
+  }, [ ]);
+
+  useEffect(() => {
+    setArrTrackUris(arrTopTracks == null ? [] : arrTopTracks.map(track => track.uri));
+  }, [ arrTopTracks ]);
+
+  useEffect(() => {
+    const isTopTrackActive = arrTopTracks.find((track) => track.id === trackId) != null;
+    setIsContextPlaying(isPlaying && isTopTrackActive);
+    setIsContextPaused(isPaused && isTopTrackActive);
+  }, [ trackId, isPlaying, isPaused ]);
 
   if (isLoading || artist == null) return null;
 
@@ -63,7 +95,7 @@ function Artist() {
 
       <div className={styles.artistBody}>
         <div className={styles.artistControls}>
-          <PlayButton />
+          <PlayButton isPlaying={isContextPlaying} onClick={onPlayButtonClicked} />
           <FollowButton artist={artist} />
           <ArtistContextMenu artist={artist} />
         </div>

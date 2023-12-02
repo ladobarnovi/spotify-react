@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 interface IProps {
   onSlideStarted: () => void;
   onSlideEnded: () => void;
-  onPositionUpdated: (posX: number) => void;
+  onPositionUpdated: (value: number) => void;
   maxValue?: number;
   minValue?: number;
 }
@@ -46,8 +46,8 @@ function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue
     if (sliderRef.current == null) return;
     if (!event.composedPath().includes(sliderRef.current)) return;
 
-    calculatePosition(event.clientX);
     setIsActive(true);
+    calculatePosition(event.clientX);
     onSlideStarted();
   }
 
@@ -59,6 +59,7 @@ function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue
 
   const mouseUpHandler = (): void => {
     setIsActive(false);
+    onSlideEnded();
   }
 
   useEffect(() => {
@@ -73,9 +74,10 @@ function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue
     }
   }, [ position, isActive ]);
 
+  const classIsActive = isActive ? styles.active : null;
 
   return (
-    <div className={ styles.rangeSlider } onMouseDown={() => { return false; }}>
+    <div className={`${styles.rangeSlider} ${classIsActive}`} onMouseDown={() => { return false; }}>
       <div ref={sliderRef} className={styles.sliderWrapper}>
         <div className={styles.track}></div>
         <div ref={fillRef} className={styles.fill}></div>
