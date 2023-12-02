@@ -91,6 +91,7 @@ function Album() {
           arrTrackContainer={arrTrackContainer}
           isCompact={isCompact}
           onPlay={onPlayTrack}
+          maxColCount={isCompact ? 4 : 3}
         />
 
         <div className={styles.albumInfo}>

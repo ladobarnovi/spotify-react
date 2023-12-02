@@ -1,22 +1,35 @@
 .trackList {
-  &.playlist {
+  //&.playlist {
+  //  --columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [last] minmax(120px,1fr);
+  //
+  //  &.compact {
+  //    --columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [var3] minmax(120px,2fr) [last] minmax(120px,1fr);
+  //  }
+  //}
+  //
+  //&.album {
+  //  --columns: [index] 16px [first] 4fr [last] minmax(120px,1fr);
+  //
+  //  &.compact {
+  //    --columns: [index] 16px [first] 4fr [var1] 2fr [last] minmax(120px,1fr);
+  //  }
+  //}
+  //
+  //&.topTracks {
+  //  --columns: [index] 16px [first] 4fr [var1] 2fr [last] minmax(120px,1fr);
+  //}
+
+  &.col6 {
+    --columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [var3] minmax(120px,2fr) [last] minmax(120px,1fr);
+  }
+  &.col5 {
     --columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [last] minmax(120px,1fr);
-
-    &.compact {
-      --columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [var3] minmax(120px,2fr) [last] minmax(120px,1fr);
-    }
   }
-
-  &.album {
-    --columns: [index] 16px [first] 4fr [last] minmax(120px,1fr);
-
-    &.compact {
-      --columns: [index] 16px [first] 4fr [var1] 2fr [last] minmax(120px,1fr);
-    }
-  }
-
-  &.topTracks {
+  &.col4 {
     --columns: [index] 16px [first] 4fr [var1] 2fr [last] minmax(120px,1fr);
+  }
+  &.col3 {
+    --columns: [index] 16px [first] 4fr [last] minmax(120px,1fr);
   }
 
   .gridItem {
@@ -247,7 +260,11 @@
       }
 
       .colAlbum {
+        overflow: hidden;
+        text-overflow: ellipsis;
+
         a {
+          white-space: nowrap;
           color: #b3b3b3;
 
           &:hover {
@@ -255,6 +272,12 @@
             text-decoration: underline;
           }
         }
+      }
+
+      .colDate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .colDuration {

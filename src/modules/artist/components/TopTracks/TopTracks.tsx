@@ -28,6 +28,7 @@ function TopTracks({ arrTracks }: IProps) {
         arrTrackContainer={arrTrackContainers}
         layoutType={ETrackListLayoutType.topTracks}
         onPlay={() => {}}
+        maxColCount={4}
       />
 
       { elToggleExpandButton }

@@ -12,6 +12,7 @@ import { RootState } from "store";
 import { formatNumber } from "utils/number";
 import { usePlayer } from "hooks/usePlayer";
 import IconPause from "components/Icons/IconPause";
+import { useResize } from "hooks/useResize";
 
 export enum ETrackListLayoutType {
   album = "album",
@@ -26,6 +27,7 @@ interface ITrackListProps {
   canHeaderStick?: boolean; // default: true
   isCompact?: boolean;
   onPlay: (index: number) => void;
+  maxColCount?: number;
 }
 
 interface ITrackItemProps {
@@ -37,13 +39,50 @@ interface ITrackItemProps {
   onSelect: (string: string) => void;
   isCompact?: boolean;
   onPlay: () => void;
+  isColDateHidden: boolean,
+  isColAlbumHidden: boolean,
+  isColArtistHidden: boolean,
+  isColPlaysHidden: boolean,
 }
 
-function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCompact, onPlay }: ITrackListProps) {
+function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCompact, onPlay, maxColCount = 6 }: ITrackListProps) {
   const headerRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
+
   const scrollDistance = useSelector((state: RootState) => state.globalReducer.scrollDistance);
   const [ isHeaderFixed, setIsHeaderFixed ] = useState(false);
   const [ selectedTrackId, setSelectedTrackId ] = useState<string|null>(null);
+  const [ colCount, setColCount ] = useState(maxColCount);
+
+  const [ isColDateHidden, setIsColDateHidden ] = useState(false);
+  const [ isColAlbumHidden, setIsColAlbumHidden ] = useState(false);
+  const [ isColArtistHidden, setIsColArtistHidden ] = useState(false);
+  const [ isColPlaysHidden, setIsColPlaysHidden ] = useState(false);
+
+
+  const { addOnResize } = useResize();
+
+  const classColCount = (() => {
+    if (colCount === 6) { return styles.col6; }
+    if (colCount === 5) { return styles.col5; }
+    if (colCount === 4) { return styles.col4; }
+    return styles.col3;
+  })();
+  const classIsCompact = isCompact ? styles.compact : "";
+
+  function onResize(): void {
+    const el = mainRef.current;
+    if (el == null) return;
+
+    const width = el.clientWidth;
+    let count = 3;
+
+    if (width > 980) { count = 6; }
+    else if (width > 725) { count = 5; }
+    else if (width > 510) { count = 4; }
+
+    setColCount(Math.min(count, maxColCount));
+  }
 
   useEffect(() => {
     if (headerRef.current == null || !canHeaderStick) return;
@@ -51,6 +90,44 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
     const top = headerRef.current.getBoundingClientRect().top;
     top <= 72 ? setIsHeaderFixed(true) : setIsHeaderFixed(false);
   }, [ scrollDistance ]);
+
+  useEffect(() => {
+    const destructor = addOnResize(onResize);
+    onResize();
+    return () => destructor();
+  }, [ isCompact ]);
+
+  useEffect(() => {
+    setIsColDateHidden(false);
+    setIsColArtistHidden(false);
+    setIsColAlbumHidden(false);
+    setIsColPlaysHidden(false);
+
+    if (colCount < 6) {
+      if (layoutType === ETrackListLayoutType.playlist) {
+        if (isCompact) { setIsColDateHidden(true); }
+      }
+    }
+    if (colCount < 5) {
+      if (layoutType === ETrackListLayoutType.playlist) {
+        if (isCompact) { setIsColArtistHidden(true) }
+        else { setIsColDateHidden(true) }
+      }
+    }
+    if (colCount < 4) {
+      if (layoutType === ETrackListLayoutType.playlist) {
+        if (isCompact) { setIsColAlbumHidden(true) }
+        else { setIsColAlbumHidden(true) }
+      }
+      else if (layoutType === ETrackListLayoutType.album) {
+        if (isCompact) { setIsColArtistHidden(true) }
+      }
+      else if (layoutType === ETrackListLayoutType.topTracks) {
+        setIsColPlaysHidden(true);
+      }
+    }
+
+  }, [ colCount ]);
 
   function toggleTrackSelection(id: string): void {
     setSelectedTrackId(selectedTrackId === id ? null : id);
@@ -77,14 +154,18 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
           onSelect={toggleTrackSelection}
           isCompact={isCompact}
           onPlay={() => onPlay(index)}
+          isColAlbumHidden={isColAlbumHidden}
+          isColArtistHidden={isColArtistHidden}
+          isColDateHidden={isColDateHidden}
+          isColPlaysHidden={isColPlaysHidden}
         />
       );
     });
   })()
 
-  const elColAlbum = layoutType === "playlist" ? (<div className={styles.colAlbum}>Album</div>) : null;
-  const elColDateAdded = layoutType === "playlist" ? (<div className={styles.colDate}>Date added</div>) : null;
-  const elColArtist = isCompact ? (<div className={styles.colArtist}>Artist</div>) : null;
+  const elColAlbum = layoutType === "playlist" && !isColAlbumHidden ? (<div className={styles.colAlbum}>Album</div>) : null;
+  const elColDateAdded = layoutType === "playlist" && !isColDateHidden ? (<div className={styles.colDate}>Date added</div>) : null;
+  const elColArtist = isCompact && !isColArtistHidden ? (<div className={styles.colArtist}>Artist</div>) : null;
 
   const trackListLayoutClass = (() => {
     if (layoutType === ETrackListLayoutType.playlist) { return styles.playlist; }
@@ -107,7 +188,7 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
   );
 
   return (
-    <div className={`${styles.trackList} ${trackListLayoutClass} ${isCompact ? styles.compact : ""}`}>
+    <div ref={mainRef} className={`${styles.trackList} ${trackListLayoutClass} ${classColCount} ${classIsCompact}`}>
       { elHeader }
       <div className={styles.listBody}>
         { elTrackItems }
@@ -116,7 +197,20 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
   );
 }
 
-function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCompact, onPlay }: ITrackItemProps) {
+function TrackItem({
+  track,
+  date,
+  index,
+  layoutType,
+  isSelected,
+  onSelect,
+  isCompact,
+  onPlay,
+  isColAlbumHidden,
+  isColArtistHidden,
+  isColDateHidden,
+  isColPlaysHidden
+}: ITrackItemProps) {
   const [ numPlays, setNumPlays ] = useState("");
   const { trackId, isPlaying, isPaused, togglePlay } = usePlayer();
 
@@ -148,19 +242,19 @@ function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCom
   })();
 
   const elImage = track.album == null || isCompact ? null : <img src={track.album.images[0]?.url} alt={track.album.name} />
-  const elColAlbum = layoutType === "playlist" ? (
+  const elColAlbum = layoutType === "playlist" && !isColAlbumHidden ? (
     <div className={styles.colAlbum}>
       <NavLink to={`/album/${track.album.id}`}>{ track.album.name }</NavLink>
     </div>
   ) : null;
-  const elColDateAdded = layoutType === "playlist" ? (<div className={styles.colDate}>{ date }</div>) : null;
-  const elColPlays = layoutType === "topTracks" ? (
+  const elColDateAdded = layoutType === "playlist" && !isColDateHidden ? (<div className={styles.colDate}>{ date }</div>) : null;
+  const elColPlays = layoutType === "topTracks" && !isColPlaysHidden ? (
     <div className={styles.colPlays}>
       { numPlays }
     </div>
   ) : null;
 
-  const elColArtist = isCompact ? (<ArtistList artists={track.artists} />) : null;
+  const elColArtist = isCompact && !isColArtistHidden ? (<ArtistList artists={track.artists} />) : null;
 
   const elArtists = (() => {
     if (layoutType === "topTracks" || isCompact) return;

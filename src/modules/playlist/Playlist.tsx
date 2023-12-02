@@ -66,6 +66,7 @@ function Playlist() {
           arrTrackContainer={playlist?.tracks.items}
           isCompact={isCompact}
           onPlay={onPlayTrack}
+          maxColCount={isCompact ? 6 : 5}
         />
       </div>
     </div>
