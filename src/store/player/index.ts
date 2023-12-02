@@ -11,6 +11,8 @@ export interface IPlayerTrackData {
   trackAlbum: Spotify.Album|null;
   trackArtists: Spotify.Entity[]|null;
   contextUri: string|null;
+  uriId: string|null;
+  uriType: string|null;
 }
 
 export interface IPlayerControls {
@@ -49,6 +51,8 @@ const initialState: PlayerState = {
   trackAlbum: null,
   trackArtists: null,
   contextUri: null,
+  uriId: null,
+  uriType: null,
 }
 
 export const playerSlice = createSlice({
@@ -67,7 +71,9 @@ export const playerSlice = createSlice({
         trackName,
         trackAlbum,
         trackArtists,
-        contextUri
+        contextUri,
+        uriId,
+        uriType,
       } = action.payload;
 
       state.trackId = trackId;
@@ -77,6 +83,8 @@ export const playerSlice = createSlice({
       state.trackAlbum = trackAlbum;
       state.trackArtists = trackArtists;
       state.contextUri = contextUri;
+      state.uriId = uriId;
+      state.uriType = uriType;
     },
 
     setPlayerControls: (state, action: PayloadAction<IPlayerControls>) => {

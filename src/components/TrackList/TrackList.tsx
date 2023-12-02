@@ -4,13 +4,14 @@ import ArtistList from "components/ArtistList/ArtistList";
 import { NavLink } from "react-router-dom";
 import IconDuration from "components/Icons/IconDuration";
 import IconEllipsis from "components/Icons/IconEllipsis";
-import { useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import IconPlay from "components/Icons/IconPlay";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import { formatNumber } from "utils/number";
 import { usePlayer } from "hooks/usePlayer";
+import IconPause from "components/Icons/IconPause";
 
 export enum ETrackListLayoutType {
   album = "album",
@@ -51,6 +52,10 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
     top <= 72 ? setIsHeaderFixed(true) : setIsHeaderFixed(false);
   }, [ scrollDistance ]);
 
+  function toggleTrackSelection(id: string): void {
+    setSelectedTrackId(selectedTrackId === id ? null : id);
+  }
+
   const elTrackItems = (() => {
     if (arrTrackContainer == null) {
       return Array.from({length: 8}, () => <TrackItemShimmering />)
@@ -69,7 +74,7 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
           index={index + 1}
           layoutType={layoutType}
           isSelected={track.id === selectedTrackId}
-          onSelect={(id) => { setSelectedTrackId(id) }}
+          onSelect={toggleTrackSelection}
           isCompact={isCompact}
           onPlay={() => onPlay(index)}
         />
@@ -113,11 +118,25 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
 
 function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCompact, onPlay }: ITrackItemProps) {
   const [ numPlays, setNumPlays ] = useState("");
-  const { playTrack } = usePlayer();
+  const { trackId, isPlaying, isPaused, togglePlay } = usePlayer();
+
+  const isCurrentTrackPlaying = isPlaying && track.id === trackId;
+  const isCurrentTrackPaused = isPaused && track.id === trackId;
 
   useEffect(() => {
     setNumPlays(formatNumber(Math.floor(Math.random() * 10000)));
   }, [ ])
+
+  function onPlayHandler(e: MouseEvent<HTMLDivElement>): void {
+    e.stopPropagation();
+
+    if (isCurrentTrackPlaying || isCurrentTrackPaused) {
+      togglePlay();
+    }
+    else {
+      onPlay();
+    }
+  }
 
   const duration = (() => {
     const minutes = Math.floor(track.duration_ms / 1000 / 60) + "";
@@ -160,12 +179,29 @@ function TrackItem({ track, date, index, layoutType, isSelected, onSelect, isCom
     )
   })()
 
+  const playbackActionIcon = (() => {
+    if (track.id === trackId && isPlaying) {
+      return (
+        <div>
+          <IconPause />
+          <img className={styles.eq} src="/svg/eq.svg" alt="EQ"/>
+        </div>
+      )
+    }
+
+    return <IconPlay />;
+  })()
+
+  const classIsSelected = isSelected ? styles.selected : null
+  const classIsPlaying = isCurrentTrackPlaying ? styles.playing : null;
+  const classIsPaused = isCurrentTrackPaused ? styles.paused : null;
+
   return (
-    <div onClick={() => onSelect(track.id)} className={`${styles.trackItem} ${styles.gridItem} ${isSelected ? styles.selected : null}`}>
+    <div onClick={() => onSelect(track.id)} className={`${styles.trackItem} ${styles.gridItem} ${classIsSelected} ${classIsPlaying} ${classIsPaused}`}>
       <div className={styles.colNumber}>
         <p className={styles.index}>{ index }</p>
-        <div onClick={onPlay} className={styles.playbackActions}>
-          <IconPlay />
+        <div onClick={onPlayHandler} className={styles.playbackActions}>
+          { playbackActionIcon }
         </div>
       </div>
       <div className={styles.colTitle}>

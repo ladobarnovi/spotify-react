@@ -39,6 +39,9 @@ function playerStateChangedListener(state: Spotify.PlaybackState): void {
   console.log(state);
 
   const currentTrack = state.track_window.current_track;
+  const contextUri = state?.context.uri;
+  const uriId = contextUri === null ? null : contextUri.split(":")[2];
+  const uriType = contextUri === null ? null : contextUri.split(":")[1];
 
   const playerTrackData: IPlayerTrackData = {
     trackId: currentTrack?.id,
@@ -47,7 +50,9 @@ function playerStateChangedListener(state: Spotify.PlaybackState): void {
     trackArtists: currentTrack?.artists,
     trackDuration: state?.duration,
     trackPosition: state?.position,
-    contextUri: state?.context.uri,
+    contextUri,
+    uriId,
+    uriType,
   }
 
   const linkedFromId = currentTrack.linked_from?.id;
@@ -110,6 +115,8 @@ export function usePlayer() {
   const trackDuration = useSelector((state: RootState) => state.playerReducer.trackDuration);
 
   const contextUri = useSelector((state: RootState) => state.playerReducer.contextUri);
+  const uriId = useSelector((state: RootState) => state.playerReducer.uriId);
+  const uriType = useSelector((state: RootState) => state.playerReducer.uriType);
 
 
   async function playTrack(uris: string[]): Promise<void> {
@@ -176,6 +183,12 @@ export function usePlayer() {
     })
   }
 
+  async function togglePlay(): Promise<void> {
+    if (player == null) return;
+
+    await player.togglePlay();
+  }
+
   function getUriType(uri: string): string {
     return uri.split(":")[1];
   }
@@ -197,6 +210,8 @@ export function usePlayer() {
     isShuffle,
     isExpanded,
     contextUri,
+    uriId,
+    uriType,
 
     playTrack,
     playContext,
@@ -206,6 +221,7 @@ export function usePlayer() {
     pausePlayer,
     toggleShuffle,
     toggleRepeat,
+    togglePlay,
 
     getUriId,
     getUriType,

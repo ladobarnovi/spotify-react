@@ -127,6 +127,51 @@
         }
       }
 
+      &.playing {
+        .colNumber {
+          .index {
+            display: none;
+          }
+
+          .playbackActions {
+            display: block;
+
+            svg {
+              display: none;
+            }
+          }
+        }
+
+        &:hover {
+          .playbackActions {
+            svg {
+              display: block !important;
+            }
+
+            img {
+              display: none;
+            }
+          }
+        }
+      }
+
+      &.playing,
+      &.paused {
+        .colNumber {
+          .index {
+            color: #1ed760;
+          }
+        }
+
+        .colTitle {
+          .trackInfo {
+            .name {
+              color: #1ed760;
+            }
+          }
+        }
+      }
+
       .colNumber {
         line-height: 1;
 
@@ -138,6 +183,22 @@
           svg {
             width: 16px;
             height: 16px;
+          }
+
+          &.pause {
+            svg {
+              display: none;
+            }
+
+            &:hover {
+              img {
+                display: none;
+              }
+
+              svg {
+                display: block;
+              }
+            }
           }
         }
       }
