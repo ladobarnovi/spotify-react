@@ -31,6 +31,9 @@
   &.col3 {
     --columns: [index] 16px [first] 4fr [last] minmax(120px,1fr);
   }
+  &.col2 {
+    --columns: [first] 4fr [last] minmax(120px,1fr);
+  }
 
   .gridItem {
     display: grid;
@@ -112,6 +115,14 @@
             display: block;
           }
         }
+
+        .colTitle {
+          .imageContainer {
+            .iconContainer {
+              display: block;
+            }
+          }
+        }
       }
 
       &.selected {
@@ -182,6 +193,16 @@
               color: #1ed760;
             }
           }
+
+          .imageContainer {
+            .iconContainer {
+              display: block;
+
+              img {
+                display: none !important;
+              }
+            }
+          }
         }
       }
 
@@ -220,10 +241,36 @@
         display: flex;
         align-items: center;
 
-        img {
-          width: 40px;
-          height: 40px;
+        .imageContainer {
+          position: relative;
           margin-right: 16px;
+          font-size: 0;
+
+          img {
+            width: 40px;
+            height: 40px;
+          }
+
+          .iconContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+
+            svg {
+              width: 24px;
+              height: 24px;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              fill: white;
+            }
+          }
         }
 
         .trackInfo {

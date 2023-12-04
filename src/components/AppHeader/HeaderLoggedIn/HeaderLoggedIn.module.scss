@@ -6,6 +6,13 @@
   align-items: center;
   justify-content: space-between;
 
+  .searchInputContainer {
+    position: absolute;
+    top: 50%;
+    left: 104px;
+    transform: translateY(-50%);
+  }
+
   .profile {
     width: 32px;
     height: 32px;

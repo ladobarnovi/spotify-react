@@ -18,6 +18,7 @@ export enum ETrackListLayoutType {
   album = "album",
   playlist = "playlist",
   topTracks = "topTracks",
+  searchResults = "searchResults",
 }
 
 interface ITrackListProps {
@@ -66,7 +67,8 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
     if (colCount === 6) { return styles.col6; }
     if (colCount === 5) { return styles.col5; }
     if (colCount === 4) { return styles.col4; }
-    return styles.col3;
+    if (colCount === 3) { return styles.col3 }
+    return styles.col2;
   })();
   const classIsCompact = isCompact ? styles.compact : "";
 
@@ -75,11 +77,12 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
     if (el == null) return;
 
     const width = el.clientWidth;
-    let count = 3;
+    let count = 2;
 
     if (width > 980) { count = 6; }
     else if (width > 725) { count = 5; }
     else if (width > 510) { count = 4; }
+    else if (width > 300) { count = 3; }
 
     setColCount(Math.min(count, maxColCount));
   }
@@ -163,6 +166,7 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
     });
   })()
 
+  const elColNumber = layoutType !== "searchResults" ? (<div className={styles.colNumber}>#</div>) : null;
   const elColAlbum = layoutType === "playlist" && !isColAlbumHidden ? (<div className={styles.colAlbum}>Album</div>) : null;
   const elColDateAdded = layoutType === "playlist" && !isColDateHidden ? (<div className={styles.colDate}>Date added</div>) : null;
   const elColArtist = isCompact && !isColArtistHidden ? (<div className={styles.colArtist}>Artist</div>) : null;
@@ -174,9 +178,9 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
     return null
   })();
 
-  const elHeader = layoutType === "topTracks" ? null : (
+  const elHeader = layoutType === "topTracks" || layoutType === "searchResults" ? null : (
     <div ref={headerRef} className={`${styles.listHeader} ${styles.gridItem} ${isHeaderFixed ? styles.fixed : ""}`}>
-      <div className={styles.colNumber}>#</div>
+      { elColNumber }
       <div className={styles.colTitle}>Title</div>
       { elColArtist }
       { elColAlbum }
@@ -241,7 +245,43 @@ function TrackItem({
     return `${minutes}:${seconds}`;
   })();
 
-  const elImage = track.album == null || isCompact ? null : <img src={track.album.images[0]?.url} alt={track.album.name} />
+  const playbackActionIcon = (() => {
+    if (track.id === trackId && isPlaying) {
+      return (
+        <div className={styles.iconContainer}>
+          <IconPause />
+          <img className={styles.eq} src="/svg/eq.svg" alt="EQ"/>
+        </div>
+      )
+    }
+
+    return (
+      <div className={styles.iconContainer}>
+        <IconPlay />
+      </div>
+    );
+  })()
+
+  const elColNumber = layoutType !== "searchResults" ? (
+    <div className={styles.colNumber}>
+      <p className={styles.index}>{ index }</p>
+      <div onClick={onPlayHandler} className={styles.playbackActions}>
+        { playbackActionIcon }
+      </div>
+    </div>
+  ): null;
+  const elImage = track.album == null || isCompact ? null : (
+    <div className={styles.imageContainer}>
+      {
+        layoutType === ETrackListLayoutType.searchResults ? (
+          <div onClick={onPlayHandler}>
+            { playbackActionIcon }
+          </div>
+        ) : null
+      }
+      <img src={track.album.images[0]?.url} alt={track.album.name} />
+    </div>
+  );
   const elColAlbum = layoutType === "playlist" && !isColAlbumHidden ? (
     <div className={styles.colAlbum}>
       <NavLink to={`/album/${track.album.id}`}>{ track.album.name }</NavLink>
@@ -273,31 +313,13 @@ function TrackItem({
     )
   })()
 
-  const playbackActionIcon = (() => {
-    if (track.id === trackId && isPlaying) {
-      return (
-        <div>
-          <IconPause />
-          <img className={styles.eq} src="/svg/eq.svg" alt="EQ"/>
-        </div>
-      )
-    }
-
-    return <IconPlay />;
-  })()
-
   const classIsSelected = isSelected ? styles.selected : null
   const classIsPlaying = isCurrentTrackPlaying ? styles.playing : null;
   const classIsPaused = isCurrentTrackPaused ? styles.paused : null;
 
   return (
     <div onClick={() => onSelect(track.id)} className={`${styles.trackItem} ${styles.gridItem} ${classIsSelected} ${classIsPlaying} ${classIsPaused}`}>
-      <div className={styles.colNumber}>
-        <p className={styles.index}>{ index }</p>
-        <div onClick={onPlayHandler} className={styles.playbackActions}>
-          { playbackActionIcon }
-        </div>
-      </div>
+      { elColNumber }
       <div className={styles.colTitle}>
         { elImage }
         <div className={styles.trackInfo}>

@@ -191,7 +191,6 @@ export function usePlayer() {
   }
 
   async function setVolume(value: number): Promise<void> {
-    console.log(volume);
     store.dispatch(setPlayerVolume(value));
     await player.setVolume(value);
   }

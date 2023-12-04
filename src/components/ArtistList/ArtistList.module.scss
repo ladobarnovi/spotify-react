@@ -5,9 +5,10 @@
   word-break: break-all;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #b3b3b3;
 
   a {
-    color: #b3b3b3;
+    color: inherit;
 
     &:hover {
       color: white;

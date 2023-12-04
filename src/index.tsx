@@ -14,6 +14,9 @@ import Artist from "modules/artist/Artist";
 import Discography from "modules/artist/discography/Discography";
 import RelatedArtists from "modules/artist/related/RelatedArtists";
 import { initPlayer } from "hooks/usePlayer";
+import SearchMain from "modules/search/SearchMain";
+import SearchKeyword from "modules/search/keyword/SearchKeyword";
+import SearchIndex from "modules/search/index/SearchIndex";
 
 initPlayer();
 setAxiosBaseUrl();
@@ -28,7 +31,10 @@ root.render(
         <Main>
           <Routes>
             <Route path={"/"} element={<Home />} />
-            <Route path={"/search"} element={<Home />} />
+            <Route path={"search"} element={<SearchMain />}>
+              <Route path={""} element={<SearchIndex />} />
+              <Route path={":keyword"} element={<SearchKeyword />} />
+            </Route>
             <Route path={"playlist/:id"} element={<Playlist />} />
             <Route path={"album/:id"} element={<Album />} />
             <Route path={"artist/:id"} element={<Artist />} />

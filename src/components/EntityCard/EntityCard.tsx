@@ -5,7 +5,6 @@ import { IAlbum } from "types/album";
 import moment from "moment";
 import { NavLink } from "react-router-dom";
 import { capitalizeFirstLetter } from "utils/string";
-import PlayButton from "components/PlayButton/PlayButton";
 import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 
 export interface ICardOptions {

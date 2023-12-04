@@ -27,8 +27,8 @@ function SidebarNav() {
         <li>
           <NavLink className={({ isActive }) => isActive ? styles.active : ""} to={ "/search" }>
             <div className={ styles.icon }>
-              <img className={ styles.filled } src={ SearchFilled } alt="Search Filled"/>
-              <img className={ styles.hollow } src={ SearchHollow } alt="Search Hollow"/>
+              <img className={ styles.filled } src={ SearchFilled } alt="SearchMain Filled"/>
+              <img className={ styles.hollow } src={ SearchHollow } alt="SearchMain Hollow"/>
             </div>
             <p>Search</p>
           </NavLink>

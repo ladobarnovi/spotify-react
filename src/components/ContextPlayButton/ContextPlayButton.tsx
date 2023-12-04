@@ -7,18 +7,26 @@ interface IProps {
 }
 
 function ContextPlayButton({ uri }: IProps) {
-  const { contextUri, isPlaying, isPaused, togglePlay, playContext } = usePlayer();
+  const { contextUri, isPlaying, isPaused, togglePlay, playContext, getUriType, playTrack, trackId, getUriId } = usePlayer();
 
-  const isCurrentUri = contextUri === uri;
-  const isContextPlaying = isCurrentUri && isPlaying;
-  const isContextPaused = isCurrentUri && isPaused;
+  const uriType = getUriType(uri);
+  const uriId = getUriId(uri);
+
+  const isCurrentUriOrTrack = contextUri === uri || uriId === trackId;
+  const isContextPlaying = isCurrentUriOrTrack && isPlaying;
+  const isContextPaused = isCurrentUriOrTrack && isPaused;
 
   async function onClickHandler(): Promise<void> {
     if (isContextPaused || isContextPlaying) {
       await togglePlay();
     }
     else {
-      await playContext(uri);
+      if (uriType === "track") {
+        await playTrack([ uri ]);
+      }
+      else {
+        await playContext(uri);
+      }
     }
   }
 

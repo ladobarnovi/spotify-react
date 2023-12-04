@@ -1,0 +1,17 @@
+.searchKeyword {
+  .topGridContainer {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-gap: 24px;
+
+    .topResultContainer {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+
+    .tracksContainer {
+      grid-column-start: 3;
+      grid-column-end: 5;
+    }
+  }
+}

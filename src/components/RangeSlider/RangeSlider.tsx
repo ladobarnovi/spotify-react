@@ -36,7 +36,6 @@ function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue
   }
 
   const mouseDownHandler = (event: MouseEvent): void => {
-    console.log(sliderRef.current)
     if (sliderRef.current == null) return;
     if (!event.composedPath().includes(sliderRef.current)) return;
 
@@ -69,6 +68,10 @@ function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue
       window.removeEventListener("mousemove", mouseMoveHandler);
     }
   }, [ position, isActive ]);
+
+  useEffect(() => {
+    setFillWidth(position);
+  }, [ ])
 
   const classIsActive = isActive ? styles.active : null;
 

@@ -11,6 +11,7 @@ function HeaderLoggedIn () {
   return (
     <div className={styles.headerLoggedIn}>
       <HeaderNavigation />
+      <div id="tpSearchInput" className={styles.searchInputContainer} />
       <div className={styles.profile}>
         <img src={profileImage} alt={userName} />
       </div>
