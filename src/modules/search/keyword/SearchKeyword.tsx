@@ -9,12 +9,15 @@ import { IPlaylist } from "types/playlist";
 import CardsRow from "components/EntityCard/CardsRow/CardsRow";
 import SearchResultCard from "modules/search/components/SearchResultCard/SearchResultCard";
 import SearchResultTracks from "modules/search/components/SearchResultTracks/SearchResultTracks";
+import ResponsiveGridWrapper from "components/ResponsiveGridWrapper/ResponsiveGridWrapper";
 
 function SearchKeyword() {
   const [ arrAlbums, setArrAlbums ] = useState<IAlbum[]>([ ]);
   const [ arrTracks, setArrTracks ] = useState<ITrack[]>([]);
   const [ arrArtists, setArrArtists ] = useState<IArtist[]>([]);
   const [ arrPlaylists, setArrPlaylists ] = useState<IPlaylist[]>([]);
+  const [ colCount, setColCount ] = useState(9);
+  const [ isWrapperd, setIsWrapper ] = useState(false);
 
   const [ timeoutId, setTimeoutId ] = useState<NodeJS.Timeout>();
   const [ isLoading, setIsLoading ] = useState(true);
@@ -47,18 +50,24 @@ function SearchKeyword() {
     return () => clearTimeout(timeoutId);
   }, [ keyword ]);
 
+  useEffect(() => {
+    setIsWrapper(colCount <= 3);
+  }, [ colCount ])
+
   if (isLoading) return null;
 
+  const classIsWrapped = isWrapperd ? styles.wrapped : null;
+
   return (
-    <div className={ styles.searchKeyword }>
-      <div className={styles.topGridContainer}>
+    <div className={`${styles.searchKeyword} ${classIsWrapped}`}>
+      <ResponsiveGridWrapper onColCountChanged={setColCount}>
         <div className={styles.topResultContainer}>
           <SearchResultCard data={arrTracks[0]} />
         </div>
         <div className={styles.tracksContainer}>
           <SearchResultTracks arrTracks={arrTracks} />
         </div>
-      </div>
+      </ResponsiveGridWrapper>
 
       <CardsRow title={"Artists"} arrData={arrArtists} />
       <CardsRow title={"Playlists"} arrData={arrPlaylists} />

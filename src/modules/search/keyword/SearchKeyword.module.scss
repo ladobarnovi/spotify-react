@@ -3,20 +3,23 @@
   flex-direction: column;
   gap: 32px;
 
-  .topGridContainer {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-gap: 24px;
-    row-gap: 32px;
+  .topResultContainer {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
 
+  .tracksContainer {
+    grid-column: 3/-1;
+  }
+
+  &.wrapped {
     .topResultContainer {
-      grid-column-start: 1;
-      grid-column-end: 3;
+      grid-column: 1/-1;
     }
 
     .tracksContainer {
-      grid-column-start: 3;
-      grid-column-end: 5;
+      grid-row-start: 2;
+      grid-column: 1/-1;
     }
   }
 }

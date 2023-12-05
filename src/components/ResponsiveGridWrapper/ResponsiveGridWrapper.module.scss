@@ -1,0 +1,7 @@
+.responsiveGridWrapper {
+  --card-count: 6;
+
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: repeat(var(--card-count), minmax(0, 1fr));
+}

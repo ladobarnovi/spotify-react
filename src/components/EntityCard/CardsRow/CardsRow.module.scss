@@ -1,6 +1,4 @@
 .cardsRow {
-  --card-count: 6;
-
   header {
     display: flex;
     align-items: center;
@@ -24,11 +22,4 @@
       }
     }
   }
-
-  .cards {
-    display: grid;
-    grid-gap: 24px;
-    grid-template-columns: repeat(var(--card-count), minmax(0, 1fr));
-  }
-
 }
