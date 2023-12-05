@@ -10,6 +10,7 @@ import CardsRow from "components/EntityCard/CardsRow/CardsRow";
 import SearchResultCard from "modules/search/components/SearchResultCard/SearchResultCard";
 import SearchResultTracks from "modules/search/components/SearchResultTracks/SearchResultTracks";
 import ResponsiveGridWrapper from "components/ResponsiveGridWrapper/ResponsiveGridWrapper";
+import { useSearchHistory } from "hooks/useSearchHistory";
 
 function SearchKeyword() {
   const [ arrAlbums, setArrAlbums ] = useState<IAlbum[]>([ ]);
@@ -22,6 +23,7 @@ function SearchKeyword() {
   const [ timeoutId, setTimeoutId ] = useState<NodeJS.Timeout>();
   const [ isLoading, setIsLoading ] = useState(true);
 
+  const { addHistoryItem } = useSearchHistory();
   const { keyword } = useParams();
 
   async function search(): Promise<void> {
@@ -62,16 +64,28 @@ function SearchKeyword() {
     <div className={`${styles.searchKeyword} ${classIsWrapped}`}>
       <ResponsiveGridWrapper onColCountChanged={setColCount}>
         <div className={styles.topResultContainer}>
-          <SearchResultCard data={arrTracks[0]} />
+          <SearchResultCard onNavigated={addHistoryItem} data={arrTracks[0]} />
         </div>
         <div className={styles.tracksContainer}>
           <SearchResultTracks arrTracks={arrTracks} />
         </div>
       </ResponsiveGridWrapper>
 
-      <CardsRow title={"Artists"} arrData={arrArtists} />
-      <CardsRow title={"Playlists"} arrData={arrPlaylists} />
-      <CardsRow title={"Albums"} arrData={arrAlbums} />
+      <CardsRow
+        onNavigated={addHistoryItem}
+        title={"Artists"}
+        arrData={arrArtists}
+      />
+      <CardsRow
+        onNavigated={addHistoryItem}
+        title={"Playlists"}
+        arrData={arrPlaylists}
+      />
+      <CardsRow
+        onNavigated={addHistoryItem}
+        title={"Albums"}
+        arrData={arrAlbums}
+      />
     </div>
   )
 }

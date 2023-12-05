@@ -1,11 +1,13 @@
 import styles from "./EntityCard.module.scss";
 import { IEntityBase } from "types/entityBase";
+import { MouseEvent } from "react";
 import ArtistList from "components/ArtistList/ArtistList";
 import { IAlbum } from "types/album";
 import moment from "moment";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { capitalizeFirstLetter } from "utils/string";
 import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
+import IconClose from "components/Icons/IconClose";
 
 export interface ICardOptions {
   album: {
@@ -17,9 +19,12 @@ export interface ICardOptions {
 interface IProps {
   data: IEntityBase;
   options?: ICardOptions;
+  onNavigated?: (entity: IEntityBase) => void;
+  onClosed?: (entity: IEntityBase) => void;
 }
 
-function EntityCard({ data, options }: IProps) {
+function EntityCard({ data, options, onNavigated, onClosed }: IProps) {
+  const navigate = useNavigate();
   const imageUrl = data.images[0]?.url;
   const isRounded = data.type === "artist";
   const entityUrl = `/${data.type}/${data.id}`;
@@ -49,8 +54,32 @@ function EntityCard({ data, options }: IProps) {
     }
   })();
 
+  function navigateToItem(): void {
+    if (data.type === "track") return;
+
+    if (onNavigated != null) {
+      onNavigated(data);
+    }
+
+    navigate(entityUrl);
+  }
+
+  function onClosedClickHandler(e: MouseEvent): void {
+    e.stopPropagation();
+
+    if (onClosed != null) {
+      onClosed(data);
+    }
+  }
+
+  const elClose = onClosed ? (
+    <button className={styles.buttonClose} onClick={onClosedClickHandler}>
+      <IconClose />
+    </button>
+  ) : null;
+
   return (
-    <NavLink to={entityUrl} className={styles.entityCard}>
+    <div onClick={navigateToItem} className={styles.entityCard}>
       <div className={`${styles.imageContainer}`}>
         <div className={`${styles.imageMask} ${isRounded ? styles.rounded : ""}`}>
           <img src={imageUrl} alt={data.name} />
@@ -68,7 +97,8 @@ function EntityCard({ data, options }: IProps) {
           { elSecondaryInfo }
         </div>
       </div>
-    </NavLink>
+      { elClose }
+    </div>
   )
 }
 

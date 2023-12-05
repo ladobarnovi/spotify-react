@@ -17,6 +17,7 @@ import { initPlayer } from "hooks/usePlayer";
 import SearchMain from "modules/search/SearchMain";
 import SearchKeyword from "modules/search/keyword/SearchKeyword";
 import SearchIndex from "modules/search/index/SearchIndex";
+import RecentSearches from "modules/recent-searches/RecentSearches";
 
 initPlayer();
 setAxiosBaseUrl();
@@ -35,6 +36,7 @@ root.render(
               <Route path={""} element={<SearchIndex />} />
               <Route path={":keyword"} element={<SearchKeyword />} />
             </Route>
+            <Route path={"/recent-searches"} element={<RecentSearches />} />
             <Route path={"playlist/:id"} element={<Playlist />} />
             <Route path={"album/:id"} element={<Album />} />
             <Route path={"artist/:id"} element={<Artist />} />

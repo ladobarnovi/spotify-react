@@ -13,7 +13,13 @@ function ArtistList(props: IProps) {
       {
         props.artists.map((artist, index) => [
           index > 0 && ", ",
-          <NavLink key={index} to={`/artist/${artist.id}`}>{artist.name}</NavLink>
+          <NavLink
+            key={index}
+            to={`/artist/${artist.id}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {artist.name}
+          </NavLink>
         ])
       }
     </div>

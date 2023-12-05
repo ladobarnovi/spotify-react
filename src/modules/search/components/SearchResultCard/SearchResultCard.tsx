@@ -10,9 +10,10 @@ import { useNavigate } from "react-router-dom";
 
 interface IProps {
   data: IEntityBase;
+  onNavigated?: (entity: IEntityBase) => void;
 }
 
-function SearchResultCard({ data }: IProps) {
+function SearchResultCard({ data, onNavigated }: IProps) {
   const navigate = useNavigate();
 
   if (data == null) return null;
@@ -57,6 +58,10 @@ function SearchResultCard({ data }: IProps) {
 
   function navigateToItem() {
     if (data.type === "track") return;
+
+    if (onNavigated != null) {
+      onNavigated(data);
+    }
 
     navigate(`/${data.type}/${data.id}`);
   }

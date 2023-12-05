@@ -1,0 +1,22 @@
+.recentSearches {
+  padding: 64px 24px 24px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      font-size: 0.875rem;
+      color: #b3b3b3;
+      font-weight: 700;
+    }
+  }
+}

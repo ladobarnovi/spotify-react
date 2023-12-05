@@ -1,4 +1,5 @@
 .entityCard {
+  position: relative;
   background-color: #181818;
   padding: 16px;
   border-radius: 8px;
@@ -66,6 +67,31 @@
       font-weight: 400;
       color: #a7a7a7;
       line-height: 1;
+    }
+  }
+
+  .buttonClose {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    background-color: rgba(0, 0, 0, 0.3);
+    top: 8px;
+    right: 8px;
+    font-size: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: initial;
+
+    svg {
+      fill: white;
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover {
+      transform: scale(1.1);
     }
   }
 

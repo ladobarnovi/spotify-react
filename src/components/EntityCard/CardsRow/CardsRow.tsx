@@ -11,15 +11,23 @@ interface IProps {
   url?: string;
   options?: ICardOptions;
   children?: ReactNode;
+  onNavigated?: (entity: IEntityBase) => void;
+  onCardClosed?: (entity: IEntityBase) => void;
 }
 
-function CardsRow({ title, url, arrData, options, children }: IProps) {
+function CardsRow({ title, url, arrData, options, children, onNavigated, onCardClosed }: IProps) {
   const [ numCards, setNumCards ] = useState(0);
 
   const elEntityCards = arrData
     .slice(0, numCards)
     .map((entity) => (
-      <EntityCard key={entity.id} data={entity} options={options} />
+      <EntityCard
+        key={entity.id}
+        data={entity}
+        options={options}
+        onNavigated={onNavigated}
+        onClosed={onCardClosed}
+      />
     ));
 
   const elShowMore = url != null && numCards < arrData.length ? (
