@@ -1,14 +1,15 @@
 import styles from "./Main.module.scss";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import AppSidebar from "../../components/AppSidebar/AppSidebar";
-import AppFooter from "../../components/AppFooter/AppFooter";
 import AppHeader from "../../components/AppHeader/AppHeader";
 import { api } from "api";
 import { setUser } from "store/auth/authSlice";
 import { setScrollDistance } from "store/global/globalSlice";
-import { useDispatch } from "react-redux";
-import { OverlayScrollbars } from "overlayscrollbars";
+import { useDispatch, useSelector } from "react-redux";
 import AppPlayer from "components/AppPlayer/AppPlayer";
+import AppSidebarCompact from "components/AppSidebar/AppSidebarCompact/AppSidebarCompact";
+import AppSidebar from "components/AppSidebar/AppSidebar";
+import { useScroll } from "hooks/useScroll";
+import { RootState } from "store";
 
 type Props = {
   children: ReactNode
@@ -16,9 +17,10 @@ type Props = {
 
 function Main({ children }: Props) {
   const dispatch = useDispatch();
+  const { overlayScrollbar, refScrollbar } = useScroll();
   const [ isLoading, setIsLoading ] = useState(true);
 
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const isSidebarCompact = useSelector((state: RootState) => state.globalReducer.isSidebarCompact);
 
   useEffect(() => {
     api.me.user()
@@ -35,27 +37,23 @@ function Main({ children }: Props) {
 
 
   useEffect(() => {
-    if (scrollRef.current != null && !isLoading) {
-      const overlayScrollbar = OverlayScrollbars(scrollRef.current, {
-        scrollbars: {
-          autoHide: 'scroll',
-        },
-      });
-
+    if (refScrollbar.current != null && overlayScrollbar != null && !isLoading) {
       overlayScrollbar.on("scroll", (e) => {
         dispatch(setScrollDistance(e.elements().content.scrollTop));
       })
     }
-  }, [ isLoading ])
+  }, [ isLoading, overlayScrollbar ])
+
+  const elSidebar = isSidebarCompact ? <AppSidebarCompact /> : <AppSidebar />
 
   const elMain = !isLoading ?
     <div className={styles.mainLayout}>
-      <AppSidebar />
+      { elSidebar }
       <div className={styles.scrollContainer}>
         <AppHeader />
 
         <div className={styles.content}>
-          <div className={styles.scroll} ref={scrollRef}>
+          <div className={styles.scroll} ref={refScrollbar}>
             <div>
               { children }
             </div>
@@ -63,7 +61,6 @@ function Main({ children }: Props) {
         </div>
       </div>
       <AppPlayer />
-      {/*<AppFooter />*/}
     </div> : null;
 
 

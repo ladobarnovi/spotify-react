@@ -1,12 +1,8 @@
 import styles from "./SidebarList.module.scss";
-import { useEffect, useRef, useState } from "react";
-import { OverlayScrollbars } from "overlayscrollbars";
+import { useEffect, useState } from "react";
 import { IPlaylist } from "types/playlist";
-import { useEntityFetch } from "hooks/useEntityFetch";
 import { IAlbum } from "types/album";
 import { IArtist } from "types/artist";
-import { useDispatch } from "react-redux";
-import { setFollowedEntityIds } from "store/user/userSlice";
 import SidebarViewTypeContextMenu, {
   ESortingOptions,
   EViewOptions
@@ -14,33 +10,19 @@ import SidebarViewTypeContextMenu, {
 import SidebarCompactView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarCompactView/SidebarCompactView";
 import SidebarListView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarListView/SidebarListView";
 import SidebarGridView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarGridView/SidebarGridView";
+import { useLibrary } from "hooks/useLibrary";
+import { useScroll } from "hooks/useScroll";
 
 interface IProps {
   filterBy: string | null;
 }
 
 function SidebarList({ filterBy }: IProps) {
-  const dispatch = useDispatch();
-  const scrollbarRef = useRef(null);
-  const { fetchAllPlaylists, fetchAllAlbums, fetchAllArtist } = useEntityFetch();
-  const [ arrAllEntities, setArrAllEntities ] = useState<(IPlaylist | IAlbum | IArtist)[]>([])
+  const { refScrollbar } = useScroll();
+  const { arrAllEntities } = useLibrary();
   const [ arrFilteredEntities, setArrFilteredEntities ] = useState<(IPlaylist | IAlbum | IArtist)[]>([]);
   const [ viewType, setViewType ] = useState(EViewOptions.list);
   const [ sortBy, setSortBy ] = useState(ESortingOptions.recent);
-
-  useEffect(() => {
-    if (scrollbarRef.current) {
-      OverlayScrollbars(scrollbarRef.current, {
-        scrollbars: {
-          autoHide: 'scroll',
-        },
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchList()
-  }, [ ])
 
   useEffect(() => {
     if (filterBy == null) {
@@ -50,18 +32,7 @@ function SidebarList({ filterBy }: IProps) {
       const arrFiltered = arrAllEntities.filter((item) => item.type === filterBy);
       setArrFilteredEntities(arrFiltered);
     }
-  }, [ filterBy ]);
-
-  async function fetchList(): Promise<void> {
-    const [ arrAlbums, arrPlaylists, arrArtists ] = await Promise.all([ fetchAllAlbums(), fetchAllPlaylists(), fetchAllArtist() ]);
-
-    const arrAll = [ ...arrAlbums, ...arrPlaylists, ...arrArtists];
-
-    dispatch(setFollowedEntityIds(arrAll.map((item) => item.id)));
-
-    setArrAllEntities(arrAll);
-    setArrFilteredEntities([ ...arrAlbums, ...arrPlaylists, ...arrArtists]);
-  }
+  }, [ filterBy, arrAllEntities ]);
 
   const elView = (() => {
     if (viewType === EViewOptions.list) {
@@ -78,8 +49,8 @@ function SidebarList({ filterBy }: IProps) {
   })()
 
   return (
-    <div className={ styles.sidebarList }>
-      <div ref={ scrollbarRef }>
+    <div className={styles.sidebarList}>
+      <div ref={refScrollbar}>
         <div className={styles.scrollContent}>
           <div className={styles.header}>
             <SidebarViewTypeContextMenu

@@ -8,12 +8,14 @@ interface IColor {
 
 export interface GlobalState {
   isPopupActive: boolean;
+  isSidebarCompact: boolean;
   scrollDistance: number;
   headerColor: IColor|null;
 }
 
 const initialState: GlobalState = {
   isPopupActive: false,
+  isSidebarCompact: false,
   scrollDistance: 0,
   headerColor: null,
 }
@@ -24,6 +26,10 @@ export const globalSlice = createSlice({
   reducers: {
     setIsPopupActive: (state, action: PayloadAction<boolean>) => {
       state.isPopupActive = action.payload;
+    },
+
+    setIsSidebarCompact: (state, action: PayloadAction<boolean>) => {
+      state.isSidebarCompact = action.payload;
     },
 
     setScrollDistance: (state, action: PayloadAction<number>) => {
@@ -37,4 +43,9 @@ export const globalSlice = createSlice({
 })
 
 export default globalSlice.reducer;
-export const { setIsPopupActive, setScrollDistance, setHeaderColor } = globalSlice.actions;
+export const {
+  setIsPopupActive,
+  setIsSidebarCompact,
+  setScrollDistance,
+  setHeaderColor
+} = globalSlice.actions;
