@@ -12,6 +12,11 @@ function SearchMain() {
   const [ searchKeyword, setSearchKeyword ] = useState(keyword ?? "");
   const [ portal, setPortal ] = useState<React.ReactPortal>();
 
+  function onClearInput(): void {
+    setSearchKeyword("");
+    navigate("/");
+  }
+
   useEffect(() => {
     const elContainer = document.querySelector("#tpSearchInput") as Element;
     if (elContainer == null) return;
@@ -20,6 +25,7 @@ function SearchMain() {
       createPortal((
         <SearchInput
           onInput={setSearchKeyword}
+          onClearInput={onClearInput}
           value={keyword ?? ""}
         />
       ), elContainer)
