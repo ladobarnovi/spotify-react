@@ -1,8 +1,13 @@
 .searchKeyword {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
   .topGridContainer {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     grid-gap: 24px;
+    row-gap: 32px;
 
     .topResultContainer {
       grid-column-start: 1;

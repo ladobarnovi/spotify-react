@@ -16,31 +16,38 @@ function SearchKeyword() {
   const [ arrArtists, setArrArtists ] = useState<IArtist[]>([]);
   const [ arrPlaylists, setArrPlaylists ] = useState<IPlaylist[]>([]);
 
-  const [ isLoading, setIsLoading ] = useState(false);
+  const [ timeoutId, setTimeoutId ] = useState<NodeJS.Timeout>();
+  const [ isLoading, setIsLoading ] = useState(true);
 
   const { keyword } = useParams();
 
+  async function search(): Promise<void> {
+    try {
+      setIsLoading(true);
+      const { albums, artists, tracks, playlists } = await api.search.search({
+        q: keyword as string
+      });
+
+      setArrAlbums(albums.items);
+      setArrArtists(artists.items);
+      setArrPlaylists(playlists.items);
+      setArrTracks(tracks.items.slice(0, 4));
+    }
+    finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
-    (async () => {
-      if (keyword?.length === 0) return;
+    clearTimeout(timeoutId);
+    setTimeoutId(setTimeout(async () => {
+      await search()
+    }, 100));
 
-      try {
-        setIsLoading(true);
-        const { albums, artists, tracks, playlists } = await api.search.search({
-          q: keyword as string
-        });
-
-        setArrAlbums(albums.items);
-        setArrArtists(artists.items);
-        setArrPlaylists(playlists.items);
-        setArrTracks(tracks.items.slice(0, 4));
-        console.log(tracks)
-      }
-      finally {
-        setIsLoading(false);
-      }
-    })()
+    return () => clearTimeout(timeoutId);
   }, [ keyword ]);
+
+  if (isLoading) return null;
 
   return (
     <div className={ styles.searchKeyword }>

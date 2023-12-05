@@ -2,7 +2,8 @@ import styles from "./SearchMain.module.scss"
 import { Outlet, useParams } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom"
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import SearchInput from "modules/search/components/SearchInput/SearchInput";
 
 function SearchMain() {
   const navigate = useNavigate();
@@ -11,27 +12,21 @@ function SearchMain() {
   const [ searchKeyword, setSearchKeyword ] = useState(keyword ?? "");
   const [ portal, setPortal ] = useState<React.ReactPortal>();
 
-  function onInputHandle(e: ChangeEvent<HTMLInputElement>): void {
-    console.log("Setting - ", e.target.value);
-    setSearchKeyword(e.target.value);
-  }
-
   useEffect(() => {
     const elContainer = document.querySelector("#tpSearchInput") as Element;
     if (elContainer == null) return;
 
     setPortal(
       createPortal((
-        <input
-          type="text"
-          onInput={onInputHandle}
+        <SearchInput
+          onInput={setSearchKeyword}
+          value={keyword ?? ""}
         />
       ), elContainer)
     );
   }, [ ]);
 
   useEffect(() => {
-    console.log(searchKeyword.length)
     if (searchKeyword.length > 0) {
       navigate(`/search/${searchKeyword}`);
     }

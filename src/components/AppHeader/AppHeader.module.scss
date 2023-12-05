@@ -6,6 +6,21 @@
   left: 0;
   box-sizing: border-box;
 
+  .headerWrapper {
+    height: 64px;
+    position: relative;
+    z-index: 1;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    .searchInputContainer {
+      flex-grow: 1;
+    }
+  }
+
   .background {
     position: absolute;
     top: 0;

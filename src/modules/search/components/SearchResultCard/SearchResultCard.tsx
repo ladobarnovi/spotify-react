@@ -1,19 +1,20 @@
 import styles from "./SearchResultCard.module.scss"
 import { IEntityBase } from "types/entityBase";
 import EntityImage from "components/Common/EntityImage/EntityImage";
-import { NavLink } from "react-router-dom";
 import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 import { IAlbum } from "types/album";
 import { IImage } from "types/common";
 import { ITrack } from "types/track";
 import ArtistList from "components/ArtistList/ArtistList";
-import { IArtist } from "types/artist";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
   data: IEntityBase;
 }
 
 function SearchResultCard({ data }: IProps) {
+  const navigate = useNavigate();
+
   if (data == null) return null;
 
   const image: IImage = (() => {
@@ -54,13 +55,19 @@ function SearchResultCard({ data }: IProps) {
     return null;
   })();
 
+  function navigateToItem() {
+    if (data.type === "track") return;
+
+    navigate(`/${data.type}/${data.id}`);
+  }
+
   return (
     <div className={styles.searchResultCard}>
       <p className={styles.title}>
         Top Result
       </p>
 
-      <NavLink to={"/"} className={styles.cardContainer}>
+      <div onClick={navigateToItem} className={styles.cardContainer}>
         <div className={styles.imageContainer}>
           <EntityImage
             image={image}
@@ -80,7 +87,7 @@ function SearchResultCard({ data }: IProps) {
         <div className={styles.buttonContainer}>
           <ContextPlayButton uri={data.uri} />
         </div>
-      </NavLink>
+      </div>
     </div>
   )
 }
