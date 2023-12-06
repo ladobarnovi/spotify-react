@@ -3,19 +3,25 @@ import { ReactNode, useEffect, useRef } from "react";
 import { imageColor } from "utils/image";
 import { useDispatch } from "react-redux";
 import { setHeaderColor } from "store/global/globalSlice";
+import { IImage } from "types/common";
+import EntityHeaderTitle from "components/EntityHeaderTitle/EntityHeaderTitle";
 
 type TPaddingOptions = "small" | "medium" | "large";
 
 interface IProps {
   children?: ReactNode;
-  imageUrl: string;
   padding?: TPaddingOptions;
+  image: IImage;
+  title: string;
+  type?: string;
 }
 
-function EntityHeaderWrapper({ children, imageUrl, padding }: IProps) {
+function EntityHeaderWrapper({ children, padding, image, type, title, }: IProps) {
   const dispatch = useDispatch();
   const mainRef = useRef<HTMLDivElement>(null);
   const shadowRef = useRef<HTMLDivElement>(null);
+
+  const imageUrl = image?.url;
 
   useEffect(() => {
     (async () => {
@@ -51,9 +57,20 @@ function EntityHeaderWrapper({ children, imageUrl, padding }: IProps) {
     return styles.paddingMedium;
   })();
 
+  const elType = type == null ? null : <p className={styles.type}>{type}</p>
+  const elTitle = title == null ? null : <EntityHeaderTitle title={title} />
+
   return (
     <div ref={ mainRef } className={`${styles.entityHeaderWrapper} ${paddingClass}`}>
-      { children }
+      <div className={styles.imageContainer}>
+        <img src={imageUrl} alt="" />
+      </div>
+
+      <div className={styles.infoContainer}>
+        { elType }
+        { elTitle }
+        { children }
+      </div>
 
       <div ref={ shadowRef } className={styles.shadow}></div>
     </div>

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { capitalizeFirstLetter } from "utils/string";
 import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 import IconClose from "components/Icons/IconClose";
+import { IEpisode, IPodcast } from "types/podcast";
 
 export interface ICardOptions {
   album: {
@@ -51,6 +52,18 @@ function EntityCard({ data, options, onNavigated, onClosed }: IProps) {
 
     if (data.type === "artist") {
       return "Artist";
+    }
+
+    if (data.type === "show") {
+      return (data as IPodcast).publisher
+    }
+
+    if (data.type === "episode") {
+      const episode = data as IEpisode
+      const date = moment(episode.release_date).format("MMM DD")
+      const minutes = Math.floor(episode.duration_ms / 1000 / 60);
+
+      return `${date} • ${minutes} min`;
     }
   })();
 

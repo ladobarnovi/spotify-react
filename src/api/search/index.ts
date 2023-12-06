@@ -3,6 +3,7 @@ import { IAlbum } from "types/album";
 import { ITrack } from "types/track";
 import { IArtist } from "types/artist";
 import { IPlaylist } from "types/playlist";
+import { IEpisode, IPodcast } from "types/podcast";
 
 interface ISearchRequest {
   q: string;
@@ -21,10 +22,13 @@ interface ISearchResponse {
   };
   playlists: {
     items: IPlaylist[];
-  }
-  shows: {
-    // items: Podcast[];
   };
+  shows: {
+    items: IPodcast[];
+  };
+  episodes: {
+    items: IEpisode[];
+  }
 }
 
 export const search = {

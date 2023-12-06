@@ -1,6 +1,6 @@
 import { IImage } from "types/common";
 
-export type TEntityType = "album" | "track" | "artist" | "playlist" | "user";
+export type TEntityType = "album" | "track" | "artist" | "playlist" | "user" | "show" | "episode";
 
 export interface IEntityBase {
   id: string;

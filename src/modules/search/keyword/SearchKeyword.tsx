@@ -11,12 +11,15 @@ import SearchResultCard from "modules/search/components/SearchResultCard/SearchR
 import SearchResultTracks from "modules/search/components/SearchResultTracks/SearchResultTracks";
 import ResponsiveGridWrapper from "components/ResponsiveGridWrapper/ResponsiveGridWrapper";
 import { useSearchHistory } from "hooks/useSearchHistory";
+import { IEpisode, IPodcast } from "types/podcast";
 
 function SearchKeyword() {
   const [ arrAlbums, setArrAlbums ] = useState<IAlbum[]>([ ]);
   const [ arrTracks, setArrTracks ] = useState<ITrack[]>([]);
   const [ arrArtists, setArrArtists ] = useState<IArtist[]>([]);
   const [ arrPlaylists, setArrPlaylists ] = useState<IPlaylist[]>([]);
+  const [ arrShows, setArrShows ] = useState<IPodcast[]>([]);
+  const [ arrEpisodes, setArrEpisodes ] = useState<IEpisode[]>([]);
   const [ colCount, setColCount ] = useState(9);
   const [ isWrapperd, setIsWrapper ] = useState(false);
 
@@ -29,7 +32,7 @@ function SearchKeyword() {
   async function search(): Promise<void> {
     try {
       setIsLoading(true);
-      const { albums, artists, tracks, playlists } = await api.search.search({
+      const { albums, artists, tracks, playlists, episodes, shows } = await api.search.search({
         q: keyword as string
       });
 
@@ -37,6 +40,8 @@ function SearchKeyword() {
       setArrArtists(artists.items);
       setArrPlaylists(playlists.items);
       setArrTracks(tracks.items.slice(0, 4));
+      setArrShows(shows.items);
+      setArrEpisodes(episodes.items);
     }
     finally {
       setIsLoading(false);
@@ -85,6 +90,14 @@ function SearchKeyword() {
         onNavigated={addHistoryItem}
         title={"Albums"}
         arrData={arrAlbums}
+      />
+      <CardsRow
+        title={"Podcasts"}
+        arrData={arrShows}
+      />
+      <CardsRow
+        title={"Episodes"}
+        arrData={arrEpisodes}
       />
     </div>
   )

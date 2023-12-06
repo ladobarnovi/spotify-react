@@ -1,0 +1,96 @@
+.showEpisodeItem {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  border-top: 1px solid hsla(0,0%,100%,.1);
+  overflow: hidden;
+
+  & > .imageContainer {
+    width: 112px;
+    height: 112px;
+    flex-shrink: 0;
+  }
+
+  .infoContainer {
+    .topWrapper {
+      .title {
+        color: white;
+        display: block;
+        font-weight: 700;
+        line-height: 24px;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .type {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        color: #a7a7a7;
+        font-size: 0.875rem;
+        font-weight: 400;
+
+        .iconContainer {
+          font-size: 0;
+
+          svg {
+            width: 16px;
+            height: 16px;
+            fill: #a7a7a7;
+          }
+        }
+      }
+    }
+
+    .midWrapper {
+      margin: 8px 0 12px;
+
+      p {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        color: #a7a7a7;
+        font-size: 0.875rem;
+        font-weight: 400;
+        word-break: break-word;
+      }
+    }
+
+    .bottomWrapper {
+      --play-button-size: 32px;
+      --play-button-icon-size: 20px;
+      --play-button-color: white;
+      --play-button-highlight-color: white;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .explicit {
+        margin-left: 8px;
+      }
+
+      .date {
+        color: #a7a7a7;
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+
+  &:hover {
+    background-color: hsla(0,0%,100%,.1);
+    border-top-color: transparent;
+
+    & + .showEpisodeItem {
+      border-top-color: transparent;
+    }
+  }
+}

@@ -1,63 +1,38 @@
-.imageContainer {
-  width: 232px;
-  height: 232px;
-  margin-right: 24px;
-  box-shadow: 0 4px 60px rgba(0,0,0,.5);
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
+.type {
+  font-size: 0.875rem;
+  font-weight: 400;
+  text-transform: capitalize;
 }
 
-.infoContainer {
-  position: relative;
-  z-index: 1;
+.description {
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  max-height: 74px;
+  overflow: hidden;
+  word-break: break-word;
+  font-size: 0.875rem;
+  color: hsla(0,0%,100%,.7);
+}
+
+.additionalInfo {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  color: white;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
 
-  .type {
-    font-size: 0.875rem;
-    font-weight: 400;
-    text-transform: capitalize;
-  }
-
-  .description {
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    display: -webkit-box;
-    max-height: 74px;
-    overflow: hidden;
-    word-break: break-word;
-    font-size: 0.875rem;
-    color: hsla(0,0%,100%,.7);
-  }
-
-  .additionalInfo {
+  .artists {
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: 0.875rem;
+  }
 
-    .artists {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
+  a {
+    font-weight: 700;
+    color: white;
 
-    a {
-      font-weight: 700;
-      color: white;
-
-      &:hover {
-        text-decoration: underline;
-      }
+    &:hover {
+      text-decoration: underline;
     }
   }
 }

@@ -2,17 +2,15 @@ import styles from "./Playlist.module.scss";
 import { useEffect, useState } from "react";
 import { IPlaylist } from "types/playlist";
 import { api } from "api";
+import { usePlayer } from "hooks/usePlayer";
 import { useParams } from 'react-router-dom';
-import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
-import PlayButton from "components/PlayButton/PlayButton";
-import TrackListHeader, { ITrackListHeaderOptions } from "components/TrackList/TrackListHeader/TracklistHeader";
 import { getFullDuration } from "utils/duration";
+import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
+import TrackListHeader, { ITrackListHeaderOptions } from "components/TrackList/TrackListHeader/TracklistHeader";
 import PlaylistContextMenu from "modules/playlist/components/PlaylistContextMenu/PlaylistContextMenu";
 import LikeButton from "components/LikeButton/LikeButton";
 import TracklistViewContextMenu from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
-import { usePlayer } from "hooks/usePlayer";
-import { Simulate } from "react-dom/test-utils";
-import play = Simulate.play;
+
 import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 
 function Playlist() {
@@ -39,6 +37,7 @@ function Playlist() {
   const headerOptions: ITrackListHeaderOptions = {
     id: playlist.id,
     imageUrl: playlist.images[0].url,
+    image: playlist.images[0],
     title: playlist.name,
     owner: playlist.owner,
     totalTracks: playlist.tracks.total,

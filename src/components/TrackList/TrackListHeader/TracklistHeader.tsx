@@ -6,12 +6,14 @@ import { IArtist } from "types/artist";
 import ArtistList from "components/ArtistList/ArtistList";
 import EntityHeaderWrapper from "components/EntityHeaderWrapper/EntityHeaderWrapper";
 import EntityHeaderTitle from "components/EntityHeaderTitle/EntityHeaderTitle";
+import { IImage } from "types/common";
 
 export interface ITrackListHeaderOptions {
   id: string;
   title: string;
   type: string;
   imageUrl: string;
+  image: IImage;
   description?: string;
   owner?: {
     id: string;
@@ -29,7 +31,7 @@ interface IProps {
 function TracklistHeader({ options }: IProps) {
   const [ isIditingOn, setIsEditingOn ] = useState(false);
 
-  const { id, title, description, imageUrl, type, owner, totalTracks, duration, artists } = options;
+  const { id, title, description, imageUrl, image, type, owner, totalTracks, duration, artists } = options;
 
   const elDescription = description == null ? null : (
     <p className={ styles.description }>{ description }</p>
@@ -72,22 +74,14 @@ function TracklistHeader({ options }: IProps) {
   }
 
   return (
-    <EntityHeaderWrapper imageUrl={imageUrl}>
-      <div className={ styles.imageContainer }>
-        <img src={ imageUrl } alt={ title }/>
+    <EntityHeaderWrapper image={image} type={type} title={title}>
+      { elDescription }
+      <div className={ styles.additionalInfo }>
+        { elOwner }
+        <span className={ styles.separator }> • </span>
+        <p>{ totalTracks } songs,</p>
+        <p>{ duration }</p>
       </div>
-      <div className={ styles.infoContainer }>
-        <p className={ styles.type }>{ type }</p>
-        <EntityHeaderTitle onClick={openEdit} title={title} />
-        { elDescription }
-        <div className={ styles.additionalInfo }>
-          { elOwner }
-          <span className={ styles.separator }> • </span>
-          <p>{ totalTracks } songs,</p>
-          <p>{ duration }</p>
-        </div>
-      </div>
-
       { elEditPlaylistPopup }
     </EntityHeaderWrapper>
   );

@@ -1,16 +1,17 @@
 import styles from "./MainLayout.module.scss";
 import { ReactNode, useEffect } from "react";
 import { api } from "api";
-import { setIsAuthorized, setUser } from "store/auth/authSlice";
+import { setUser } from "store/auth/authSlice";
 import { setScrollDistance } from "store/global/globalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useScroll } from "hooks/useScroll";
 import { RootState } from "store";
+import { useAuth } from "hooks/useAuth";
+import { useLocation } from "react-router-dom";
 import AppPlayer from "components/AppPlayer/AppPlayer";
 import AppSidebarCompact from "components/AppSidebar/AppSidebarCompact/AppSidebarCompact";
 import AppSidebar from "components/AppSidebar/AppSidebar";
 import AppHeader from "components/AppHeader/AppHeader";
-import { useAuth } from "hooks/useAuth";
 
 type Props = {
   children: ReactNode
@@ -18,6 +19,7 @@ type Props = {
 
 function MainLayout({ children }: Props) {
   const dispatch = useDispatch();
+  const { pathname } = useLocation()
   const { isAuthorized } = useAuth();
   const { overlayScrollbar, refScrollbar } = useScroll();
 
@@ -43,6 +45,16 @@ function MainLayout({ children }: Props) {
       })
     }
   }, [ overlayScrollbar ])
+
+  useEffect(() => {
+    if (overlayScrollbar == null) return;
+
+    const { scrollOffsetElement } = overlayScrollbar.elements();
+    scrollOffsetElement.scrollTo({
+      behavior: "auto",
+      top: 0,
+    });
+  }, [ pathname ])
 
   const elSidebar = isSidebarCompact ? <AppSidebarCompact /> : <AppSidebar />;
 

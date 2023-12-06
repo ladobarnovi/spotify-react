@@ -1,15 +1,21 @@
 import { ITrack } from "types/track";
 
 export function getFullDuration(tracks: ITrack[]): string {
-  let d = 0;
+  let duration = 0;
 
   for (let i = 0; i < tracks.length; i++) {
-    d += tracks[i].duration_ms / 1000;
+    duration += tracks[i].duration_ms;
   }
 
-  const hours = Math.floor(d / 3600);
-  const minutes = Math.floor((d % 3600) / 60);
-  const seconds = Math.floor(d % 60);
+  return getFormattedDuration(duration);
+}
+
+export function getFormattedDuration(duration_ms: number): string {
+  const duration_sec = duration_ms / 1000;
+
+  const hours = Math.floor(duration_sec / 3600);
+  const minutes = Math.floor((duration_sec % 3600) / 60);
+  const seconds = Math.floor(duration_sec % 60);
 
   const parts = [];
 

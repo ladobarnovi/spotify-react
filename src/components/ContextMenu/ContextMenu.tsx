@@ -64,7 +64,7 @@ function ContextMenu({ options, children, onMenuToggled }: IProps) {
     menuRef.current.style.left = `${posX}px`;
   }
 
-  function clickListener(event: MouseEvent) {
+  function clickListener(event: MouseEvent): void {
     if (contentRef.current == null || menuRef.current == null) return;
 
     if (contentRef.current.contains(event.target as HTMLElement)) {
@@ -89,7 +89,7 @@ function ContextMenu({ options, children, onMenuToggled }: IProps) {
     setMenuPositions();
     toggleListener();
 
-    return window.removeEventListener("click", clickListener);
+    return () => window.removeEventListener("click", clickListener);
   }, [ isMenuActive ])
 
   const elSections = options.arrSections.map((section, index) => (

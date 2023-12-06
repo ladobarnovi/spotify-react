@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { IAlbum } from "types/album";
 import { api } from "api";
 import TracklistHeader, { ITrackListHeaderOptions } from "components/TrackList/TrackListHeader/TracklistHeader";
-import PlayButton from "components/PlayButton/PlayButton";
 import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
 import { ITrackContainer } from "types/track";
 import { getFullDuration } from "utils/duration";
@@ -38,6 +37,7 @@ function Album() {
   const headerOptions: ITrackListHeaderOptions = {
     id: album.id,
     imageUrl: album.images[0].url,
+    image: album.images[0],
     type: album.album_type,
     title: album.name,
     totalTracks: album.tracks.items.length,
