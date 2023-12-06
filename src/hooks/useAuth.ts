@@ -9,8 +9,8 @@ export function useAuth() {
   const isAuthorized = useSelector((state: RootState) => state.authReducer.isAuthorized);
   const user = useSelector((state: RootState) => state.authReducer.user);
 
-  function authorize() {
-    dispatch(setIsAuthorized(true));
+  function setAuthorized(isAuthorized: boolean): void {
+    dispatch(setIsAuthorized(isAuthorized));
   }
 
   function getAuthUrl() {
@@ -29,7 +29,7 @@ export function useAuth() {
 
   return {
     isAuthorized,
-    authorize,
+    setAuthorized,
     getAuthUrl,
     redirectToAuth,
     user,

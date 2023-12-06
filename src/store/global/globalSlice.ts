@@ -6,11 +6,17 @@ interface IColor {
   b: number;
 }
 
+export enum ELayout {
+  Main,
+  Login
+}
+
 export interface GlobalState {
   isPopupActive: boolean;
   isSidebarCompact: boolean;
   scrollDistance: number;
   headerColor: IColor|null;
+  globalLayout: ELayout;
 }
 
 const initialState: GlobalState = {
@@ -18,6 +24,7 @@ const initialState: GlobalState = {
   isSidebarCompact: false,
   scrollDistance: 0,
   headerColor: null,
+  globalLayout: ELayout.Main,
 }
 
 export const globalSlice = createSlice({
@@ -38,6 +45,10 @@ export const globalSlice = createSlice({
 
     setHeaderColor: (state, action: PayloadAction<IColor|null>) => {
       state.headerColor = action.payload;
+    },
+
+    setGlobalLayout: (state, action: PayloadAction<ELayout>) => {
+      state.globalLayout = action.payload;
     }
   }
 })
@@ -47,5 +58,6 @@ export const {
   setIsPopupActive,
   setIsSidebarCompact,
   setScrollDistance,
-  setHeaderColor
+  setHeaderColor,
+  setGlobalLayout,
 } = globalSlice.actions;

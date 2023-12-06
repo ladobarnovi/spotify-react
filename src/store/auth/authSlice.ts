@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getTokenFromUrl } from "utils/auth";
+import { AUTH_TOKEN_KEY } from "utils/auth";
 import { IUser } from "types/user";
 
-const token = getTokenFromUrl();
+const token = localStorage.getItem(AUTH_TOKEN_KEY) || "";
 
 export interface AuthState {
   isAuthorized: boolean;

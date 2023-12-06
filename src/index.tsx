@@ -1,35 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import store from "./store";
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "./layouts/Main/Main";
 import { Provider } from "react-redux";
-import store from "./store";
-import Home from "modules/home/Home";
+import { initPlayer } from "hooks/usePlayer";
 import { setAxiosBaseUrl } from "utils/axios";
+import { tryGetAuthToken } from "utils/auth";
+import Home from "modules/home/Home";
 import Playlist from "modules/playlist/Playlist";
 import Album from "modules/album/Album";
 import Artist from "modules/artist/Artist";
 import Discography from "modules/artist/discography/Discography";
 import RelatedArtists from "modules/artist/related/RelatedArtists";
-import { initPlayer } from "hooks/usePlayer";
 import SearchMain from "modules/search/SearchMain";
 import SearchKeyword from "modules/search/keyword/SearchKeyword";
 import SearchIndex from "modules/search/index/SearchIndex";
 import RecentSearches from "modules/recent-searches/RecentSearches";
+import Layout from "layouts/Layout";
+import Login from "modules/login/Login";
 
 initPlayer();
 setAxiosBaseUrl();
+tryGetAuthToken();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <Provider store={store}>
     <React.StrictMode>
       <BrowserRouter>
-        <Main>
+        <Layout>
           <Routes>
             <Route path={"/"} element={<Home />} />
             <Route path={"search"} element={<SearchMain />}>
@@ -42,8 +46,9 @@ root.render(
             <Route path={"artist/:id"} element={<Artist />} />
             <Route path={"artist/:id/discography"} element={<Discography />} />
             <Route path={"artist/:id/related"} element={<RelatedArtists />} />
+            <Route path={"/login"} element={<Login />} />
           </Routes>
-        </Main>
+        </Layout>
       </BrowserRouter>
     </React.StrictMode>
   </Provider>

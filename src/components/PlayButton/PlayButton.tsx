@@ -11,6 +11,7 @@ interface IProps {
 function PlayButton({ onClick, isPlaying }: IProps) {
   async function onClickHandler(event: MouseEvent): Promise<void> {
     event.preventDefault();
+    event.stopPropagation();
 
     if (onClick) {
       onClick();

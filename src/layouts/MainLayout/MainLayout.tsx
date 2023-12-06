@@ -1,7 +1,7 @@
-import styles from "./Main.module.scss";
+import styles from "./MainLayout.module.scss";
 import { ReactNode, useEffect } from "react";
 import { api } from "api";
-import { setUser } from "store/auth/authSlice";
+import { setIsAuthorized, setUser } from "store/auth/authSlice";
 import { setScrollDistance } from "store/global/globalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useScroll } from "hooks/useScroll";
@@ -10,19 +10,22 @@ import AppPlayer from "components/AppPlayer/AppPlayer";
 import AppSidebarCompact from "components/AppSidebar/AppSidebarCompact/AppSidebarCompact";
 import AppSidebar from "components/AppSidebar/AppSidebar";
 import AppHeader from "components/AppHeader/AppHeader";
-
+import { useAuth } from "hooks/useAuth";
 
 type Props = {
   children: ReactNode
 }
 
-function Main({ children }: Props) {
+function MainLayout({ children }: Props) {
   const dispatch = useDispatch();
+  const { isAuthorized } = useAuth();
   const { overlayScrollbar, refScrollbar } = useScroll();
 
   const isSidebarCompact = useSelector((state: RootState) => state.globalReducer.isSidebarCompact);
 
   useEffect(() => {
+    if (!isAuthorized) return;
+
     api.me.user()
       .then((data) => {
         dispatch(setUser(data));
@@ -30,7 +33,7 @@ function Main({ children }: Props) {
       .catch(() => {
         localStorage.removeItem("token")
       });
-  }, []);
+  }, [ isAuthorized ]);
 
 
   useEffect(() => {
@@ -41,7 +44,7 @@ function Main({ children }: Props) {
     }
   }, [ overlayScrollbar ])
 
-  const elSidebar = isSidebarCompact ? <AppSidebarCompact /> : <AppSidebar />
+  const elSidebar = isSidebarCompact ? <AppSidebarCompact /> : <AppSidebar />;
 
   return (
     <div className={styles.mainContainer}>
@@ -64,4 +67,4 @@ function Main({ children }: Props) {
   );
 }
 
-export default Main;
+export default MainLayout;
