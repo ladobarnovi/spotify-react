@@ -8,6 +8,9 @@ interface IShowBaseRequest {
 interface IGetShowRequest extends IShowBaseRequest { }
 interface IGetShowResponse extends IPodcast {}
 
+interface IFollowShowRequest extends IShowBaseRequest { }
+interface IUnfollowShowRequest extends IShowBaseRequest { }
+
 interface IGetShowEpisodesRequest extends IShowBaseRequest { }
 interface IGetShowEpisodesResponse {
   items: IEpisode[];
@@ -27,5 +30,23 @@ export const shows = {
     const { data } = await axios.get(`/shows/${showId}/episodes`);
 
     return data;
-  }
+  },
+
+  followShow: async ({ showId }: IFollowShowRequest): Promise<IGetShowResponse> => {
+    const { data } = await axios.put(`/me/shows/`, {
+      ids: [ showId ],
+    });
+
+    return data;
+  },
+
+  unfollowShow: async ({ showId }: IUnfollowShowRequest): Promise<IGetShowResponse> => {
+    const { data } = await axios.delete(`/me/shows/`, {
+      data: {
+        ids: [ showId ],
+      }
+    });
+
+    return data;
+  },
 }

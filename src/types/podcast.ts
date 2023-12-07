@@ -9,5 +9,7 @@ export interface IEpisode extends IEntityBase {
   release_date: string;
   duration_ms: number;
   description: string;
+  html_description: string;
   explicit: boolean;
+  show: IPodcast;
 }

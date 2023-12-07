@@ -6,6 +6,7 @@ import { api } from "api";
 import { IPodcast } from "types/podcast";
 import ShowEpisodeList from "modules/show/components/ShowEpisodeList/ShowEpisodeList";
 import { useResize } from "hooks/useResize";
+import FollowButton from "modules/artist/components/FollowButton/FollowButton";
 
 function Show() {
   const [ show, setShow ] = useState<IPodcast>();
@@ -15,7 +16,7 @@ function Show() {
   const { id } = useParams();
   const refGrid = useRef<HTMLDivElement>(null)
 
-  function resize(): void {
+  function onResize(): void {
     const el = refGrid.current;
     if (el == null) return;
 
@@ -31,7 +32,8 @@ function Show() {
   }, [ id ]);
 
   useEffect(() => {
-    addOnResize(resize);
+    addOnResize(onResize);
+    onResize();
   }, [ ]);
 
   if (show == null) return null;
@@ -39,14 +41,20 @@ function Show() {
   const classVertical = isVertical ? styles.vertical : null;
 
   return (
-    <div className={ styles.show }>
+    <div className={styles.show}>
       <ShowHeader show={show} />
 
       <div ref={refGrid} className={`${styles.showBody} ${classVertical}`}>
-        <ShowEpisodeList showId={show.id} />
-        <div className={styles.about}>
-          <p className={styles.title}>About</p>
-          <p className={styles.description}>{ show.description }</p>
+        <div className={styles.showActions}>
+          <FollowButton entity={show} />
+        </div>
+
+        <div className={`${styles.gridContainer} ${classVertical}`}>
+          <ShowEpisodeList showId={show.id} />
+          <div className={styles.about}>
+            <p className={styles.title}>About</p>
+            <p className={styles.description}>{ show.description }</p>
+          </div>
         </div>
       </div>
     </div>

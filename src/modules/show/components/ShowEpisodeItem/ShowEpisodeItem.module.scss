@@ -17,6 +17,14 @@
 
   .infoContainer {
     .topWrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      & > .imageContainer {
+        display: none;
+      }
+
       .title {
         color: white;
         display: block;
@@ -91,6 +99,22 @@
 
     & + .showEpisodeItem {
       border-top-color: transparent;
+    }
+  }
+
+  &.compact {
+    & > .imageContainer {
+      display: none;
+    }
+
+    .infoContainer {
+      .topWrapper {
+        & > .imageContainer {
+          display: block;
+          width: 64px;
+          height: 64px;
+        }
+      }
     }
   }
 }

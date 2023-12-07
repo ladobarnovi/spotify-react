@@ -96,7 +96,7 @@ function Artist() {
       <div className={styles.artistBody}>
         <div className={styles.artistControls}>
           <PlayButton isPlaying={isContextPlaying} onClick={onPlayButtonClicked} />
-          <FollowButton artist={artist} />
+          <FollowButton entity={artist} />
           <ArtistContextMenu artist={artist} />
         </div>
 

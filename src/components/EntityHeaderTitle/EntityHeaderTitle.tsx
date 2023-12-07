@@ -7,10 +7,10 @@ interface IProps {
 
 function EntityHeaderTitle({ title, onClick }: IProps) {
   const titleClass = (() => {
-    if (title.length > 16) {
+    if (title.length >= 14) {
       return styles.small;
     }
-    else if (title.length > 12) {
+    else if (title.length >= 10) {
       return styles.medium;
     }
 

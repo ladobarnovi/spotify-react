@@ -6,6 +6,8 @@ import IconVideo from "components/Icons/IconVideo";
 import PlayButton from "components/PlayButton/PlayButton";
 import moment from "moment";
 import { getFormattedDuration } from "utils/duration";
+import { useResize } from "hooks/useResize";
+import { useEffect, useRef, useState } from "react";
 
 interface IProps {
   episode: IEpisode;
@@ -13,6 +15,9 @@ interface IProps {
 
 function ShowEpisodeItem({ episode }: IProps) {
   const navigate = useNavigate();
+  const refMain = useRef<HTMLDivElement>(null);
+  const { addOnResize } = useResize();
+  const [ isCompact, setIsCompact ] = useState(false);
 
   const url = `/episode/${episode.id}`
   const date = moment(episode.release_date).format("MMM DD");
@@ -27,20 +32,40 @@ function ShowEpisodeItem({ episode }: IProps) {
     navigate(url);
   }
 
+  function onResize(): void {
+    const el = refMain.current;
+    if (el == null) return;
+
+    setIsCompact(el.clientWidth < 600);
+  }
+
+  useEffect(() => {
+    const destructor = addOnResize(onResize);
+    onResize();
+    return () => destructor();
+  }, [ ]);
+
+  const classCompact = isCompact ? styles.compact : null;
+
   return (
-    <div className={styles.showEpisodeItem} onClick={onClickHandler}>
+    <div ref={refMain} className={`${styles.showEpisodeItem} ${classCompact}`} onClick={onClickHandler}>
       <div className={styles.imageContainer}>
         <EntityImage image={episode.images[0]} isRounded={false} />
       </div>
 
       <div className={styles.infoContainer}>
         <div className={styles.topWrapper}>
-          <NavLink className={styles.title} to={url}>{ episode.name }</NavLink>
-          <div className={styles.type}>
-            <div className={styles.iconContainer}>
-              <IconVideo />
+          <div className={styles.imageContainer}>
+            <EntityImage image={episode.images[0]} isRounded={false} />
+          </div>
+          <div>
+            <NavLink className={styles.title} to={url}>{ episode.name }</NavLink>
+            <div className={styles.type}>
+              <div className={styles.iconContainer}>
+                <IconVideo />
+              </div>
+              <p>Video</p>
             </div>
-            <p>Video</p>
           </div>
         </div>
         <div className={styles.midWrapper}>

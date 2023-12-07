@@ -3,29 +3,41 @@
     padding: 24px;
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-columns: 66% 33%;
-    column-gap: 3%;
 
-    .about {
-      .title {
-        color: white;
-        font-size: 1.5rem;
-        font-weight: 700;
-        padding: 16px 0;
-      }
 
-      .description {
-        color: #a7a7a7;
-      }
+    .showActions {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 8px 0;
     }
 
-    &.vertical {
-      grid-template-columns: 1fr;
-      row-gap: 32px;
+    .gridContainer {
+      display: grid;
+      grid-template-columns: 66% 33%;
+      column-gap: 3%;
 
       .about {
-        grid-row-start: 1;
+        .title {
+          color: white;
+          font-size: 1.5rem;
+          font-weight: 700;
+          padding: 16px 0;
+        }
+
+        .description {
+          color: #a7a7a7;
+        }
+      }
+
+      &.vertical {
+        grid-template-columns: 1fr;
+        row-gap: 32px;
+
+        .about {
+          grid-row-start: 1;
+        }
       }
     }
   }

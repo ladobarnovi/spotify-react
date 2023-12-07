@@ -21,6 +21,7 @@ import RecentSearches from "modules/recent-searches/RecentSearches";
 import Layout from "layouts/Layout";
 import Login from "modules/login/Login";
 import Show from "modules/show/Show";
+import Episode from "modules/episode/Episode";
 
 initPlayer();
 setAxiosBaseUrl();
@@ -48,6 +49,7 @@ root.render(
             <Route path={"artist/:id/discography"} element={<Discography />} />
             <Route path={"artist/:id/related"} element={<RelatedArtists />} />
             <Route path={"show/:id"} element={<Show />} />
+            <Route path={"episode/:id"} element={<Episode />} />
             <Route path={"/login"} element={<Login />} />
           </Routes>
         </Layout>

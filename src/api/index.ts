@@ -6,6 +6,7 @@ import { artists } from "api/artists";
 import { player } from "api/player";
 import { search } from "api/search";
 import { shows } from "api/shows";
+import { episodes } from "api/episodes";
 
 export const api = {
   me,
@@ -16,4 +17,5 @@ export const api = {
   player,
   search,
   shows,
+  episodes,
 };
