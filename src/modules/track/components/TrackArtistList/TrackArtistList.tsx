@@ -10,9 +10,6 @@ interface IProps {
 
 function TrackArtistList({ arrArtists }: IProps) {
   const navigate = useNavigate();
-
-
-
   const elArtists = arrArtists.map((artist) => {
     const { name, id, images } = artist;
     const url = `/artist/${ id }`;
@@ -20,7 +17,11 @@ function TrackArtistList({ arrArtists }: IProps) {
     const elImage = imageUrl == null ? <IconArtist /> : <img src={ imageUrl } alt={ name }/>;
 
     return (
-      <button onClick={ () => navigate(url) } className={ styles.artistButton }>
+      <button
+        className={ styles.artistButton }
+        key={artist.id}
+        onClick={() => navigate(url)}
+      >
         <div className={ styles.imageContainer }>
           { elImage }
         </div>

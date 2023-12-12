@@ -9,6 +9,7 @@ import TrackArtistList from "modules/track/components/TrackArtistList/TrackArtis
 import { IArtist } from "types/artist";
 import TrackRecommendations from "modules/track/components/TrackRecommendations/TrackRecommendations";
 import TrackArtistTopTracks from "modules/track/components/TrackArtistTopTracks/TrackArtistTopTracks";
+import TrackArtistTopAlbums from "modules/track/components/TrackArtistTopAlbums/TrackArtistTopAlbums";
 
 function Track() {
   const [ track, setTrack ] = useState<ITrack>();
@@ -37,6 +38,7 @@ function Track() {
         <TrackArtistList arrArtists={arrArtists} />
         <TrackRecommendations trackId={track.id} />
         <TrackArtistTopTracks artist={arrArtists[0]} />
+        <TrackArtistTopAlbums arrArtists={arrArtists} />
       </main>
     </div>
   )

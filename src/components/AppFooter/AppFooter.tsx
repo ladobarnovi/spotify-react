@@ -59,13 +59,13 @@ const FOOTER_SECTIONS = [
 ]
 
 function AppFooter() {
-  const elColumns = FOOTER_SECTIONS.map((section) => {
-    const elLinks = section.arrItems.map((item) => (
-      <a target="_blank" href={item.url} rel="noreferrer">{ item.title }</a>
+  const elColumns = FOOTER_SECTIONS.map((section, sectionIndex) => {
+    const elLinks = section.arrItems.map((item, itemIndex) => (
+      <a target="_blank" href={item.url} rel="noreferrer" key={`${sectionIndex}_${itemIndex}`}>{ item.title }</a>
     ))
 
     return (
-      <div className={styles.col}>
+      <div key={sectionIndex} className={styles.col}>
         <p className={styles.title}>{ section.title }</p>
         { elLinks }
       </div>
