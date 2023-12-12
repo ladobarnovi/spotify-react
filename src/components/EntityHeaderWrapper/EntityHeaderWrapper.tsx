@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { setHeaderColor } from "store/global/globalSlice";
 import { IImage } from "types/common";
 import EntityHeaderTitle from "components/EntityHeaderTitle/EntityHeaderTitle";
+import IconArtist from "components/Icons/IconArtist";
 
 type TPaddingOptions = "small" | "medium" | "large";
 
@@ -12,16 +13,15 @@ interface IProps {
   children?: ReactNode;
   padding?: TPaddingOptions;
   image: IImage;
+  isImageRounded?: boolean;
   title: string;
   type?: string;
 }
 
-function EntityHeaderWrapper({ children, padding, image, type, title, }: IProps) {
+function EntityHeaderWrapper({ children, padding, image, type, title, isImageRounded = false, }: IProps) {
   const dispatch = useDispatch();
   const mainRef = useRef<HTMLDivElement>(null);
   const shadowRef = useRef<HTMLDivElement>(null);
-
-  const imageUrl = image?.url;
 
   useEffect(() => {
     (async () => {
@@ -29,7 +29,7 @@ function EntityHeaderWrapper({ children, padding, image, type, title, }: IProps)
         return;
       }
 
-      const rgb = await imageColor(imageUrl);
+      const rgb = await imageColor(image?.url);
       if (rgb == null) {
         return;
       }
@@ -41,7 +41,7 @@ function EntityHeaderWrapper({ children, padding, image, type, title, }: IProps)
 
       return () => dispatch(setHeaderColor(null));
     })()
-  }, [ imageUrl ])
+  }, [ image ])
 
   const paddingClass = (() => {
     if (padding === "small") {
@@ -57,13 +57,23 @@ function EntityHeaderWrapper({ children, padding, image, type, title, }: IProps)
     return styles.paddingMedium;
   })();
 
+  const elImage = (() => {
+    if (image == null) {
+      return <IconArtist />
+    }
+
+    return (<img src={image.url} alt={title}/>);
+  })()
+
   const elType = type == null ? null : <p className={styles.type}>{type}</p>
   const elTitle = title == null ? null : <EntityHeaderTitle title={title} />
 
+  const classIsRounded = isImageRounded ? styles.rounded : "";
+
   return (
-    <div ref={ mainRef } className={`${styles.entityHeaderWrapper} ${paddingClass}`}>
-      <div className={styles.imageContainer}>
-        <img src={imageUrl} alt="" />
+    <div ref={mainRef} className={`${styles.entityHeaderWrapper} ${paddingClass}`}>
+      <div className={`${styles.imageContainer} ${classIsRounded}`}>
+        { elImage }
       </div>
 
       <div className={styles.infoContainer}>

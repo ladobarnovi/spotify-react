@@ -1,3 +1,9 @@
+export interface IColor {
+  r: number;
+  g: number;
+  b: number;
+}
+
 function imageToCanvas(imgUrl: string): Promise<HTMLImageElement> {
   return new Promise(resolve => {
     const img = new Image();
@@ -10,9 +16,13 @@ function imageToCanvas(imgUrl: string): Promise<HTMLImageElement> {
   });
 }
 
-export async function imageColor(imgUrl: string) {
+export async function imageColor(imgUrl: string): Promise<IColor> {
   if (!imgUrl) {
-    return null;
+    return {
+      r: 83,
+      b: 83,
+      g: 83,
+    };
   }
 
   const canvas: HTMLCanvasElement = document.createElement("canvas");

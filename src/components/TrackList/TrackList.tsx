@@ -13,6 +13,7 @@ import { formatNumber } from "utils/number";
 import { usePlayer } from "hooks/usePlayer";
 import IconPause from "components/Icons/IconPause";
 import { useResize } from "hooks/useResize";
+import LinkUnderline from "components/LinkUnderline/LinkUnderline";
 
 export enum ETrackListLayoutType {
   album = "album",
@@ -22,7 +23,8 @@ export enum ETrackListLayoutType {
 }
 
 interface ITrackListProps {
-  arrTrackContainer: ITrackContainer[]|null;
+  arrTrackContainer?: ITrackContainer[]|null; // Should be provided with this or `arrTracks` property
+  arrTracks?: ITrack[]|null; // see comment above
   layoutType: ETrackListLayoutType;
   totalTracks?: number;
   canHeaderStick?: boolean; // default: true
@@ -46,7 +48,7 @@ interface ITrackItemProps {
   isColPlaysHidden: boolean,
 }
 
-function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCompact, onPlay, maxColCount = 6 }: ITrackListProps) {
+function TrackList({ arrTrackContainer, arrTracks, layoutType, canHeaderStick = true, isCompact, onPlay, maxColCount = 6 }: ITrackListProps) {
   const headerRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
 
@@ -59,6 +61,15 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
   const [ isColAlbumHidden, setIsColAlbumHidden ] = useState(false);
   const [ isColArtistHidden, setIsColArtistHidden ] = useState(false);
   const [ isColPlaysHidden, setIsColPlaysHidden ] = useState(false);
+
+  if (arrTrackContainer == null) {
+    if (arrTracks != null) {
+      arrTrackContainer = arrTracks.map((track) => ({
+        added_at: "",
+        track
+      }));
+    }
+  }
 
 
   const { addOnResize } = useResize();
@@ -137,8 +148,8 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
   }
 
   const elTrackItems = (() => {
-    if (arrTrackContainer == null) {
-      return Array.from({length: 8}, () => <TrackItemShimmering />)
+    if (arrTrackContainer == null || arrTrackContainer.length === 0) {
+      return Array.from({ length: 8 }, () => <TrackItemShimmering />)
     }
 
     return arrTrackContainer.map((trackContainer, index) => {
@@ -175,6 +186,7 @@ function TrackList({ arrTrackContainer, layoutType, canHeaderStick = true, isCom
     if (layoutType === ETrackListLayoutType.playlist) { return styles.playlist; }
     if (layoutType === ETrackListLayoutType.album) { return styles.album; }
     if (layoutType === ETrackListLayoutType.topTracks) { return styles.topTracks; }
+    if (layoutType === ETrackListLayoutType.searchResults) { return styles.searchResults; }
     return null
   })();
 
@@ -323,7 +335,7 @@ function TrackItem({
       <div className={styles.colTitle}>
         { elImage }
         <div className={styles.trackInfo}>
-          <p className={styles.name}>{ track.name }</p>
+          <LinkUnderline url={`/track/${track.id}`} className={styles.name}>{ track.name }</LinkUnderline>
           { elArtists }
         </div>
       </div>

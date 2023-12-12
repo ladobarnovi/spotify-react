@@ -1,5 +1,5 @@
 import styles from "./SearchResultTracks.module.scss"
-import { ITrack, ITrackContainer } from "types/track";
+import { ITrack } from "types/track";
 import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
 import { usePlayer } from "hooks/usePlayer";
 
@@ -9,11 +9,6 @@ interface IProps {
 
 function SearchResultTracks({ arrTracks }: IProps) {
   const { playTrack } = usePlayer();
-
-  const arrTrackContainer: ITrackContainer[] = arrTracks.map((track) => ({
-    added_at: "",
-    track,
-  }));
 
   async function onPlayTrack(index: number): Promise<void> {
     await playTrack([ arrTracks[index].uri ]);
@@ -26,7 +21,7 @@ function SearchResultTracks({ arrTracks }: IProps) {
       </p>
 
       <TrackList
-        arrTrackContainer={arrTrackContainer}
+        arrTracks={arrTracks}
         layoutType={ETrackListLayoutType.searchResults}
         onPlay={onPlayTrack}
         maxColCount={2}

@@ -12,8 +12,14 @@ function ArtistHeader({ artist }: IProps) {
   const listeners = formatNumber(followers.total);
 
   return (
-    <EntityHeaderWrapper image={artist.images[0]} title={name}>
-      <p className={styles.listeners}>{ listeners } monthly listeners</p>
+    <EntityHeaderWrapper
+      image={artist.images[0]}
+      title={name}
+      isImageRounded={true}
+    >
+      <p className={styles.listeners}>
+        { listeners } monthly listeners
+      </p>
     </EntityHeaderWrapper>
   );
 }

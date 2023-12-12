@@ -118,11 +118,14 @@ export function usePlayer() {
   const uriType = useSelector((state: RootState) => state.playerReducer.uriType);
 
 
-  async function playTrack(uris: string[]): Promise<void> {
+  async function playTrack(uris: string[], position = 0): Promise<void> {
     await api.player.play({
       deviceId,
       data: {
-        uris
+        uris,
+        offset: {
+          position
+        }
       }
     })
   }

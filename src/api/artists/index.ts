@@ -16,6 +16,13 @@ interface IArtistAlbumsResponse {
 interface IGetArtistRequest extends IArtistBaseRequest { }
 interface IGetArtistResponse extends IArtist { }
 
+interface IGetArtistsRequest {
+  arrIds: string[];
+}
+interface IGetArtistsResponse {
+  artists: IArtist[];
+}
+
 interface IGetArtistTopTracksRequest extends IArtistBaseRequest { }
 interface IGetArtistTopTracksResponse {
   tracks: ITrack[];
@@ -29,6 +36,12 @@ interface IGetRelatedArtistsResponse {
 export const artists = {
   getArtist: async ({ artistId }: IGetArtistRequest): Promise<IGetArtistResponse> => {
     const { data } = await axios.get(`/artists/${artistId}`);
+
+    return data;
+  },
+
+  getArtists: async ({ arrIds }: IGetArtistsRequest): Promise<IGetArtistsResponse> => {
+    const { data } = await axios.get(`/artists?ids=${arrIds.join(",")}`);
 
     return data;
   },

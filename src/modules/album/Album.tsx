@@ -5,7 +5,6 @@ import { IAlbum } from "types/album";
 import { api } from "api";
 import TracklistHeader, { ITrackListHeaderOptions } from "components/TrackList/TrackListHeader/TracklistHeader";
 import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
-import { ITrackContainer } from "types/track";
 import { getFullDuration } from "utils/duration";
 import moment from "moment";
 import CardsRow from "components/EntityCard/CardsRow/CardsRow";
@@ -45,11 +44,6 @@ function Album() {
     artists: album.artists,
   }
 
-  const arrTrackContainer: ITrackContainer[] = album.tracks.items.map((track) => ({
-    added_at: "",
-    track,
-  }));
-
   const formattedDate = moment(album.release_date).format("MMMM D, yyyy");
   const elCopyright = (<ul className={styles.copyrights}>{
     album.copyrights.map((copyright, index) => (
@@ -88,7 +82,7 @@ function Album() {
 
         <TrackList
           layoutType={ETrackListLayoutType.album}
-          arrTrackContainer={arrTrackContainer}
+          arrTracks={album.tracks.items}
           isCompact={isCompact}
           onPlay={onPlayTrack}
           maxColCount={isCompact ? 4 : 3}

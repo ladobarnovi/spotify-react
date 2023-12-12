@@ -396,4 +396,12 @@
       }
     }
   }
+
+  &.searchResults {
+    .listBody {
+      .trackItem {
+        padding-left: 8px;
+      }
+    }
+  }
 }

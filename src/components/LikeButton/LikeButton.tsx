@@ -11,10 +11,11 @@ import { addFollowedEntityId, removeFollowedEntityId } from "store/user/userSlic
 import { ITrack } from "types/track";
 
 interface IProps {
-  data: IPlaylist|IAlbum|ITrack
+  data: IPlaylist|IAlbum|ITrack;
+  className?: string;
 }
 
-function LikeButton({ data }: IProps) {
+function LikeButton({ data, className }: IProps) {
   const dispatch = useDispatch();
   const arrFollowedEntityIds = useSelector((state: RootState) => state.userReducer.arrFollowedEntityIds);
   const [ isFollowed, setIsFollowed ] = useState(false);
@@ -44,7 +45,7 @@ function LikeButton({ data }: IProps) {
   const elIcon = isFollowed ? (<IconHeartFilled />) : (<IconHeart />)
 
   return (
-    <button onClick={toggleFollow} className={`${styles.likeButton} ${isFollowed ? styles.active : ""}`}>
+    <button onClick={toggleFollow} className={`${styles.likeButton} ${className} ${isFollowed ? styles.active : ""}`}>
       { elIcon }
     </button>
   )

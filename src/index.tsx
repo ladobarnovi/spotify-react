@@ -22,6 +22,7 @@ import Layout from "layouts/Layout";
 import Login from "modules/login/Login";
 import Show from "modules/show/Show";
 import Episode from "modules/episode/Episode";
+import Track from "modules/track/Track";
 
 initPlayer();
 setAxiosBaseUrl();
@@ -50,6 +51,7 @@ root.render(
             <Route path={"artist/:id/related"} element={<RelatedArtists />} />
             <Route path={"show/:id"} element={<Show />} />
             <Route path={"episode/:id"} element={<Episode />} />
+            <Route path={"track/:id"} element={<Track />} />
             <Route path={"/login"} element={<Login />} />
           </Routes>
         </Layout>

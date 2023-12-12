@@ -1,11 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface IColor {
-  r: number;
-  g: number;
-  b: number;
-}
-
+import { IColor } from "utils/image";
 export enum ELayout {
   Main,
   Login
