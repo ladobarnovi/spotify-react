@@ -8,9 +8,10 @@ import { RootState } from "store";
 import { useEffect, useState } from "react";
 import IconHeartFilled from "components/Icons/IconHeartFilled";
 import { addFollowedEntityId, removeFollowedEntityId } from "store/user/userSlice";
+import { ITrack } from "types/track";
 
 interface IProps {
-  data: IPlaylist|IAlbum
+  data: IPlaylist|IAlbum|ITrack
 }
 
 function LikeButton({ data }: IProps) {

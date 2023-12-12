@@ -13,6 +13,7 @@ import AppSidebarCompact from "components/AppSidebar/AppSidebarCompact/AppSideba
 import AppSidebar from "components/AppSidebar/AppSidebar";
 import AppHeader from "components/AppHeader/AppHeader";
 import AppFooter from "components/AppFooter/AppFooter";
+import AppNowPlayingSidebar from "components/AppNowPlayingSidebar/AppNowPlayingSidebar";
 
 type Props = {
   children: ReactNode
@@ -24,6 +25,7 @@ function MainLayout({ children }: Props) {
   const { isAuthorized } = useAuth();
   const { overlayScrollbar, refScrollbar } = useScroll();
 
+  const isNowPlayingActive = useSelector((state: RootState) => state.globalReducer.isNowPlayingActive);
   const isSidebarCompact = useSelector((state: RootState) => state.globalReducer.isSidebarCompact);
 
   useEffect(() => {
@@ -58,17 +60,20 @@ function MainLayout({ children }: Props) {
   }, [ pathname ])
 
   const elSidebar = isSidebarCompact ? <AppSidebarCompact /> : <AppSidebar />;
+  const elNowPlaying = isNowPlayingActive ? <AppNowPlayingSidebar /> : null;
+
+  const classExtendedGrid = isNowPlayingActive ? styles.extendedGrid : "";
 
   return (
     <div className={styles.mainContainer}>
-      <div className={styles.mainLayout}>
+      <div className={`${styles.mainLayout} ${classExtendedGrid}`}>
         { elSidebar }
         <div className={styles.scrollContainer}>
           <AppHeader />
 
           <div className={styles.content}>
             <div className={styles.scroll} ref={refScrollbar}>
-              <div>
+              <div className={styles.wrapper}>
                 { children }
 
                 <AppFooter />
@@ -76,6 +81,7 @@ function MainLayout({ children }: Props) {
             </div>
           </div>
         </div>
+        { elNowPlaying }
         <AppPlayer />
       </div>
     </div>

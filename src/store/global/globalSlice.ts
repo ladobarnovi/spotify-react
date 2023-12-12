@@ -14,6 +14,7 @@ export enum ELayout {
 export interface GlobalState {
   isPopupActive: boolean;
   isSidebarCompact: boolean;
+  isNowPlayingActive: boolean;
   scrollDistance: number;
   headerColor: IColor|null;
   globalLayout: ELayout;
@@ -22,6 +23,7 @@ export interface GlobalState {
 const initialState: GlobalState = {
   isPopupActive: false,
   isSidebarCompact: false,
+  isNowPlayingActive: false,
   scrollDistance: 0,
   headerColor: null,
   globalLayout: ELayout.Main,
@@ -49,6 +51,10 @@ export const globalSlice = createSlice({
 
     setGlobalLayout: (state, action: PayloadAction<ELayout>) => {
       state.globalLayout = action.payload;
+    },
+
+    setIsNowPlayingActive: (state, action: PayloadAction<boolean>) => {
+      state.isNowPlayingActive = action.payload;
     }
   }
 })
@@ -60,4 +66,5 @@ export const {
   setScrollDistance,
   setHeaderColor,
   setGlobalLayout,
+  setIsNowPlayingActive,
 } = globalSlice.actions;

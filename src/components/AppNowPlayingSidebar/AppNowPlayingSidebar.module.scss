@@ -1,0 +1,12 @@
+.appNowPlayingSidebar {
+  width: 300px;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: #121212;
+  padding: 16px;
+  border-radius: 8px;
+}

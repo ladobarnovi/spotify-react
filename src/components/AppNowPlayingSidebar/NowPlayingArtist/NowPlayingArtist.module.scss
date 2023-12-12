@@ -1,0 +1,67 @@
+.nowPlayingArtist {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #242424;
+
+  .label {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    color: white;
+    font-weight: 700;
+    padding: 16px;
+    background: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 80%);
+  }
+
+  .imageContainer {
+    width: 100%;
+    padding-top: 60%;
+    position: relative;
+    overflow: hidden;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  .infoContainer {
+    padding: 16px;
+
+    a {
+      display: block;
+      color: white;
+      font-weight: 700;
+    }
+
+    .midWrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0 12px;
+
+      .listeners {
+        color: #b3b3b3;
+        flex-grow: 1;
+        line-height: 1.2;
+      }
+    }
+
+    .description {
+      font-size: 0.875rem;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      display: -webkit-box;
+      color: #b3b3b3;
+      overflow: hidden;
+    }
+  }
+}
