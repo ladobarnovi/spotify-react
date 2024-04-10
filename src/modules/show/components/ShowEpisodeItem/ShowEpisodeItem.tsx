@@ -41,7 +41,6 @@ function ShowEpisodeItem({ episode }: IProps) {
 
   useEffect(() => {
     const destructor = addOnResize(onResize);
-    onResize();
     return () => destructor();
   }, [ ]);
 

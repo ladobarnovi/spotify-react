@@ -1,25 +1,19 @@
 import styles from "./Episode.module.scss"
-import { useEffect, useState } from "react";
-import { IEpisode } from "types/podcast";
 import { NavLink, useParams } from "react-router-dom";
 import { api } from "api";
 import EpisodeHeader from "modules/episode/components/EpisodeHeader/EpisodeHeader";
 import { getFormattedDuration } from "utils/duration";
 import moment from "moment";
 import PlayButton from "components/PlayButton/PlayButton";
+import { useQuery } from "react-query";
 
 function Episode() {
-  const [ episode, setEpisode ] = useState<IEpisode>();
   const { id } = useParams();
 
-
-  useEffect(() => {
-    (async () => {
-      const response = await api.episodes.getEpisode({ episodeId: id as string });
-
-      setEpisode(response);
-    })()
-  }, [ id ])
+  const { data: episode } = useQuery({
+    queryKey: [ "fetchEpisode", id ],
+    queryFn: async () => await api.episodes.getEpisode({ episodeId: id as string })
+  })
 
   if (episode == null) return null;
 

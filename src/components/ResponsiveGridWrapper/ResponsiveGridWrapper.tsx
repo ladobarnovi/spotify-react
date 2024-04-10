@@ -49,7 +49,6 @@ function ResponsiveGridWrapper({ onColCountChanged, children }: IProps) {
 
   useEffect(() => {
     const destructor = addOnResize(onResize);
-    onResize();
     return () => destructor();
   }, [ ]);
 

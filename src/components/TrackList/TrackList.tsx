@@ -107,7 +107,6 @@ function TrackList({ arrTrackContainer, arrTracks, layoutType, canHeaderStick = 
 
   useEffect(() => {
     const destructor = addOnResize(onResize);
-    onResize();
     return () => destructor();
   }, [ isCompact ]);
 

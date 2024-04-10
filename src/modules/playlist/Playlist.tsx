@@ -1,6 +1,5 @@
 import styles from "./Playlist.module.scss";
-import { useEffect, useState } from "react";
-import { IPlaylist } from "types/playlist";
+import { useState } from "react";
 import { api } from "api";
 import { usePlayer } from "hooks/usePlayer";
 import { useParams } from 'react-router-dom';
@@ -12,19 +11,17 @@ import LikeButton from "components/LikeButton/LikeButton";
 import TracklistViewContextMenu from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
 
 import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
+import { useQuery } from "react-query";
 
 function Playlist() {
-  const [ playlist, setPlaylist ] = useState<IPlaylist>();
   const [ isCompact, setIsCompact ] = useState(false);
   const { id } = useParams();
   const { playContext } = usePlayer();
 
-  useEffect(() => {
-    (async () => {
-      const response = await api.playlist.fetchPlaylist({ playlistId: id as string });
-      setPlaylist(response);
-    })();
-  }, [ id ]);
+  const { data: playlist } = useQuery({
+    queryKey: [ "fetchPlaylist", id ],
+    queryFn: async () => await api.playlist.fetchPlaylist({ playlistId: id as string })
+  })
 
   if (playlist == null) return null;
 

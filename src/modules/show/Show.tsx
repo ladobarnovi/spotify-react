@@ -3,13 +3,12 @@ import ShowHeader from "modules/show/components/ShowHeader/ShowHeader";
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { api } from "api";
-import { IPodcast } from "types/podcast";
 import ShowEpisodeList from "modules/show/components/ShowEpisodeList/ShowEpisodeList";
 import { useResize } from "hooks/useResize";
 import FollowButton from "modules/artist/components/FollowButton/FollowButton";
+import { useQuery } from "react-query";
 
 function Show() {
-  const [ show, setShow ] = useState<IPodcast>();
   const [ isVertical, setIsVertical ] = useState(false);
 
   const { addOnResize } = useResize();
@@ -23,17 +22,14 @@ function Show() {
     setIsVertical(el.clientWidth < 1020);
   }
 
-  useEffect(() => {
-    (async () => {
-      const response = await api.shows.getShow({ showId: id as string });
-
-      setShow(response);
-    })();
-  }, [ id ]);
+  const { data: show } = useQuery({
+    queryKey: [ "fetchShow", id ],
+    queryFn: async () => await api.shows.getShow({ showId: id as string })
+  })
 
   useEffect(() => {
-    addOnResize(onResize);
-    onResize();
+    const destructor = addOnResize(onResize);
+    return destructor();
   }, [ ]);
 
   if (show == null) return null;

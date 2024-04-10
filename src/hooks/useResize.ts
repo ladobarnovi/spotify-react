@@ -5,7 +5,11 @@ window.addEventListener("resize", () => {
 });
 
 export function useResize() {
-  function addOnResize(listener: () => void) {
+  function addOnResize(listener: () => void, immediate = true) {
+    if (immediate) {
+      listener();
+    }
+
     arrResizeListeners.push(listener);
     const index = arrResizeListeners.length - 1;
 
