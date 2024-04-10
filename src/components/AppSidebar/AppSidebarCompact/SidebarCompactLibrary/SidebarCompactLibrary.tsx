@@ -12,10 +12,13 @@ function SidebarCompactLibrary() {
   const dispatch = useDispatch();
 
   const elEntities = arrAllEntities.map((entity) => {
+    const imageUrl = entity.images ? entity.images[0].url : undefined;
+
+
     return (
       <NavLink key={entity.id} to={`/${entity.type}/${entity.id}`}>
         <div className={styles.entityItem}>
-          <img src={entity.images[0]?.url} alt={entity.name} />
+          <img src={imageUrl} alt={entity.name} />
         </div>
       </NavLink>
     )

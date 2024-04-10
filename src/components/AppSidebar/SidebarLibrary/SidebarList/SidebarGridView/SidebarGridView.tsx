@@ -12,7 +12,7 @@ interface IProps {
 
 function SidebarGridView({ arrData }: IProps) {
   const elItems = arrData.map((item) => {
-    const image = item.images[0];
+    const image = item.images ? item.images[0] : undefined;
     const elOwner = (() => {
       let owner = null;
       if (item.type === "album") {
