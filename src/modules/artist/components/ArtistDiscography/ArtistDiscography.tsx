@@ -1,34 +1,46 @@
 import styles from "./ArtistDiscography.module.scss";
 import CardsRow from "components/EntityCard/CardsRow/CardsRow";
 import { EAlbumType, IAlbum } from "types/album";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { api } from "api";
 
 interface IProps {
-  arrAlbums: IAlbum[];
   artistId: string;
 }
 
-function ArtistDiscography({ arrAlbums, artistId }: IProps) {
+function ArtistDiscography({ artistId }: IProps) {
   const [ filterKey, setFilterKey ] = useState("popular");
-  const [ arrFilteredAlbums, setArrFilteredAlbums ] = useState<IAlbum[]>(arrAlbums);
+  const [ arrFilteredAlbums, setArrFilteredAlbums ] = useState<IAlbum[]>([ ]);
 
-  function filterAlbums(key: string) {
-    setFilterKey(key);
+  const { data: arrArtistAlbums } = useQuery<IAlbum[]>({
+    queryKey: [ "artistDiscography", artistId ],
+    cacheTime: 0,
+    queryFn: async () => {
+      const response = await api.artists.albums({ artistId });
+      return response.items;
+    },
+  })
 
-    if (key === "popular") {
+  useEffect(() => {
+    const arrAlbums = arrArtistAlbums || [];
+
+    if (filterKey === "popular") {
       setArrFilteredAlbums(arrAlbums);
     }
-    else if (key === "album") {
+    else if (filterKey === "album") {
       setArrFilteredAlbums(arrAlbums.filter((album) => (
         album.album_type === EAlbumType.album
       )))
     }
-    else if (key === "ep") {
+    else if (filterKey === "ep") {
       setArrFilteredAlbums(arrAlbums.filter((album) => (
         album.album_type === EAlbumType.single || album.album_type === EAlbumType.ep
       )))
     }
-  }
+  }, [ filterKey, arrArtistAlbums ]);
+
+  if (arrArtistAlbums == null) return null;
 
   const arrFilters = [
     { title: "Popular releases", key: "popular" },
@@ -39,7 +51,7 @@ function ArtistDiscography({ arrAlbums, artistId }: IProps) {
   const elFilters = arrFilters.map((filter) => (
     <button
       key={filter.key}
-      onClick={() => {filterAlbums(filter.key)}}
+      onClick={() => { setFilterKey(filter.key) }}
       className={filter.key === filterKey ? styles.active : ''}
     >{ filter.title }</button>
   ));

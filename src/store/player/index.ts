@@ -4,7 +4,8 @@ import { IArtist } from "types/artist";
 import { ESpotifyRepeatMode } from "hooks/usePlayer";
 
 export interface IPlayerTrackData {
-  trackId: string|null
+  trackId: string|null;
+  trackUri: string|null;
   trackDuration: number|null;
   trackPosition: number|null;
   trackName: string|null;
@@ -45,6 +46,7 @@ const initialState: PlayerState = {
   repeatMode: 0,
 
   trackId: null,
+  trackUri: null,
   trackDuration: null,
   trackPosition: null,
   trackName: null,
@@ -66,6 +68,7 @@ export const playerSlice = createSlice({
     setPlayerTrackData: (state, action: PayloadAction<IPlayerTrackData>) => {
       const {
         trackId,
+        trackUri,
         trackPosition,
         trackDuration,
         trackName,
@@ -77,6 +80,7 @@ export const playerSlice = createSlice({
       } = action.payload;
 
       state.trackId = trackId;
+      state.trackUri = trackUri;
       state.trackDuration = trackDuration;
       state.trackPosition = trackPosition;
       state.trackName = trackName;

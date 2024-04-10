@@ -1,17 +1,36 @@
 import styles from "./TopTracks.module.scss";
 import { ITrack, ITrackContainer } from "types/track";
 import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePlayer } from "hooks/usePlayer";
+import { useQuery } from "react-query";
+import { api } from "../../../../api";
 
 interface IProps {
-  arrTracks: ITrack[];
+  artistId: string;
+  onTracksFetched: (arrUris: string[]) => void
 }
 
-function TopTracks({ arrTracks }: IProps) {
+function TopTracks({ artistId, onTracksFetched }: IProps) {
   const [ isExpanded, setIsExpanded ] = useState(false);
-
   const { playTrack } = usePlayer();
+
+  const { data: arrTracks } = useQuery({
+    queryKey: [ "artistTopTracks", artistId ],
+    cacheTime: 0,
+    queryFn: async () => {
+      const response = await api.artists.topTracks({ artistId });
+      return response.tracks;
+    }
+  });
+
+  useEffect(() => {
+    if (arrTracks != null) {
+      onTracksFetched(arrTracks.map((track => track.uri)));
+    }
+  }, [ arrTracks ]);
+
+  if (arrTracks == null) return null;
 
   const arrTrackContainers: ITrackContainer[] = arrTracks
     .slice(0, isExpanded ? 10 : 5)
@@ -25,7 +44,7 @@ function TopTracks({ arrTracks }: IProps) {
   ))();
 
   async function onPlay(index: number): Promise<void> {
-    const arrUris = arrTracks.map((track) => track.uri);
+    const arrUris = arrTracks!.map((track) => track.uri);
     await playTrack(arrUris, index);
   }
 

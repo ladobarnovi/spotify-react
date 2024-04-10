@@ -1,35 +1,31 @@
 import styles from "./Album.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { IAlbum } from "types/album";
 import { api } from "api";
 import TracklistHeader, { ITrackListHeaderOptions } from "components/TrackList/TrackListHeader/TracklistHeader";
 import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
 import { getFullDuration } from "utils/duration";
 import moment from "moment";
-import CardsRow from "components/EntityCard/CardsRow/CardsRow";
-import { ICardOptions } from "components/EntityCard/EntityCard";
 import LikeButton from "components/LikeButton/LikeButton";
 import AlbumContextMenu from "modules/album/components/AlbumContextMenu/AlbumContextMenu";
 import TracklistViewContextMenu from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
 import { usePlayer } from "hooks/usePlayer";
 import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 
+import { useQuery } from "react-query";
+import AlbumRelatedItems from "./components/AlbumRelatedItems/AlbumRelatedItems";
+
 function Album() {
-  const [ album, setAlbum ] = useState<IAlbum>();
-  const [ arrRelatedAlbums, setArrRelatedAlbums ] = useState<IAlbum[]>([ ])
   const [ isCompact, setIsCompact ] = useState(false);
   const { id } = useParams();
   const { playContext } = usePlayer();
 
-  useEffect(() => {
-    (async () => {
-      const albumResponse = await api.albums.getAlbum({ albumId: id as string });
-      const artistResponse = await api.artists.albums({ artistId: albumResponse.artists[0].id });
-      setAlbum(albumResponse);
-      setArrRelatedAlbums(artistResponse.items)
-    })()
-  }, [ id ])
+  const { data: album } = useQuery({
+    queryKey: [ "fetchAlbum", id ],
+    queryFn: async () => {
+      return await api.albums.getAlbum({ albumId: id as string });
+    }
+  });
 
   if (album == null) return null;
 
@@ -52,12 +48,6 @@ function Album() {
       </li>
     ))
   }</ul>);
-
-  const cardsRowOptions: ICardOptions = {
-    album: {
-      showReleaseYear: true,
-    }
-  };
 
   async function onPlayTrack(index: number): Promise<void> {
     if (album == null) return;
@@ -93,11 +83,7 @@ function Album() {
           { elCopyright }
         </div>
 
-        <CardsRow
-          title={`More by ${album.artists[0].name}`}
-          arrData={arrRelatedAlbums}
-          options={cardsRowOptions}
-        />
+        <AlbumRelatedItems album={album} />
       </div>
     </div>
   );

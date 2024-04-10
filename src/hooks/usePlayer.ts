@@ -48,6 +48,7 @@ function playerStateChangedListener(state: Spotify.PlaybackState): void {
   const playerTrackData: IPlayerTrackData = {
     trackId: currentTrack?.id,
     trackName: currentTrack?.name,
+    trackUri: currentTrack?.uri,
     trackAlbum: currentTrack?.album,
     trackArtists: currentTrack?.artists,
     trackDuration: state?.duration,
@@ -108,6 +109,7 @@ export function usePlayer() {
 
   const trackPosition = useSelector((state: RootState) => state.playerReducer.trackPosition);
   const trackId = useSelector((state: RootState) => state.playerReducer.trackId);
+  const trackUri = useSelector((state: RootState) => state.playerReducer.trackUri);
   const trackArtists = useSelector((state: RootState) => state.playerReducer.trackArtists);
   const trackAlbum = useSelector((state: RootState) => state.playerReducer.trackAlbum);
   const trackName = useSelector((state: RootState) => state.playerReducer.trackName);
@@ -210,6 +212,7 @@ export function usePlayer() {
     deviceId,
     trackPosition,
     trackId,
+    trackUri,
     trackArtists,
     trackAlbum,
     trackName,
