@@ -1,7 +1,7 @@
 import styles from "./Discography.module.scss"
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { IArtist } from "types/artist";
+import { useQuery } from "react-query";
 import { api } from "api";
 import { EAlbumType, IAlbum } from "types/album";
 import DiscographyHeader, { EDiscographyLayoutTypes } from "modules/artist/discography/DiscographyHeader/DiscographyHeader";
@@ -10,29 +10,24 @@ import DiscographyGridView from "modules/artist/discography/DiscographyGridView/
 
 function Discography() {
   const { id } = useParams();
-  const [ artist, setArtist ] = useState<IArtist>();
-  const [ arrAlbums, setArrAlbums ] = useState<IAlbum[]>([])
   const [ arrFilteredAlbums, setArrFilteredAlbums ] = useState<IAlbum[]>([])
   const [ layoutType, setLayoutType ] = useState<EDiscographyLayoutTypes>(EDiscographyLayoutTypes.grid);
   const [ albumType, setAlbumType ] = useState(EAlbumType.all);
 
+  const { data: artist } = useQuery({
+    queryKey: [ "fetchArtist", id ],
+    queryFn: async () => await api.artists.getArtist({ artistId: id as string })
+  })
 
-  async function fetchArtistInfo() {
-    const response = await api.artists.getArtist({ artistId: id as string })
-    setArtist(response);
-  }
+  const { data: arrAlbums } = useQuery({
+    queryKey: [ "artistDiscography", id ],
+    queryFn: async () => (await api.artists.albums({ artistId: id as string })).items
+  })
 
-  async function fetchArtistAlbums() {
-    const response = await api.artists.albums({ artistId: id as string });
-    setArrAlbums(response.items);
-  }
-
-  useEffect(() => {
-    fetchArtistInfo();
-    fetchArtistAlbums();
-  }, [ ])
 
   useEffect(() => {
+    if (arrAlbums == null) return;
+
     if (albumType === EAlbumType.all) {
       setArrFilteredAlbums(arrAlbums);
     }

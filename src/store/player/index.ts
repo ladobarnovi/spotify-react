@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IAlbum } from "types/album";
-import { IArtist } from "types/artist";
 import { ESpotifyRepeatMode } from "hooks/usePlayer";
 
 export interface IPlayerTrackData {

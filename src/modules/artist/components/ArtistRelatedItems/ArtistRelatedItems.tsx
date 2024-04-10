@@ -10,7 +10,6 @@ interface IProps {
 function ArtistRelatedItems({ artistId }: IProps) {
   const { data: arrArtists } = useQuery({
     queryKey: [ "fetchRelatedArtists", artistId ],
-    cacheTime: 0,
     queryFn: async () => {
       const response = await api.artists.relatedArtists({ artistId });
       return response.artists;

@@ -12,7 +12,6 @@ interface IProps {
 function AlbumRelatedItems({ album }: IProps) {
   const { data: arrRelatedAlbums } = useQuery({
     queryKey: [ "fetchRelatedAlbums", album.id ],
-    cacheTime: 0,
     queryFn: async () => {
       const artistId = album.artists[0].id;
       const response = await api.artists.albums({ artistId });

@@ -15,7 +15,6 @@ function ArtistDiscography({ artistId }: IProps) {
 
   const { data: arrArtistAlbums } = useQuery<IAlbum[]>({
     queryKey: [ "artistDiscography", artistId ],
-    cacheTime: 0,
     queryFn: async () => {
       const response = await api.artists.albums({ artistId });
       return response.items;

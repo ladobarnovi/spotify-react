@@ -1,5 +1,5 @@
 import styles from "./TopTracks.module.scss";
-import { ITrack, ITrackContainer } from "types/track";
+import { ITrackContainer } from "types/track";
 import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
 import { useEffect, useState } from "react";
 import { usePlayer } from "hooks/usePlayer";
@@ -17,7 +17,6 @@ function TopTracks({ artistId, onTracksFetched }: IProps) {
 
   const { data: arrTracks } = useQuery({
     queryKey: [ "artistTopTracks", artistId ],
-    cacheTime: 0,
     queryFn: async () => {
       const response = await api.artists.topTracks({ artistId });
       return response.tracks;

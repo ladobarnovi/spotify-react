@@ -1,5 +1,4 @@
 import styles from "./FollowButton.module.scss"
-import { IArtist } from "types/artist";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { RootState } from "store";

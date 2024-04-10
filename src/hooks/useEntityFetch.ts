@@ -20,9 +20,11 @@ export function useEntityFetch() {
       arrPlaylists.push(...items);
 
       if (offset > 0) {
-        return arrPlaylists;
+        break;
       }
     }
+
+    return arrPlaylists;
   }
 
   async function fetchAllAlbums(): Promise<IAlbum[]> {
@@ -39,9 +41,11 @@ export function useEntityFetch() {
       arrAlbums.push(...items.map((item) => item.album))
 
       if (offset > 0) {
-        return arrAlbums;
+        break;
       }
     }
+
+    return arrAlbums;
   }
 
   async function fetchAllArtist(): Promise<IArtist[]> {
@@ -55,15 +59,15 @@ export function useEntityFetch() {
         after
       })
 
-
-
       arrArtists.push(...items);
       after = arrArtists[arrArtists.length - 1].id;
 
       if (items.length < ENTITY_LIMIT) {
-        return arrArtists;
+        break;
       }
     }
+
+    return arrArtists;
   }
 
   return {
