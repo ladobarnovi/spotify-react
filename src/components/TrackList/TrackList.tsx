@@ -14,6 +14,7 @@ import { usePlayer } from "hooks/usePlayer";
 import IconPause from "components/Icons/IconPause";
 import { useResize } from "hooks/useResize";
 import LinkUnderline from "components/LinkUnderline/LinkUnderline";
+import TrackLikeButton from "./TrackLikeButton/TrackLikeButton";
 
 export enum ETrackListLayoutType {
   album = "album",
@@ -343,6 +344,7 @@ function TrackItem({
       { elColDateAdded }
       { elColPlays }
       <div className={styles.colDuration}>
+        <TrackLikeButton  trackId={track.id} />
         <p>{ duration }</p>
         <div className={styles.moreActions}>
           <IconEllipsis />

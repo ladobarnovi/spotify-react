@@ -1,4 +1,5 @@
 import styles from "./SidebarListView.module.scss"
+import { IEntityBase } from "types/entityBase";
 import { IPlaylist } from "types/playlist";
 import { IAlbum } from "types/album";
 import { IArtist } from "types/artist";
@@ -11,6 +12,10 @@ interface IProps {
 }
 
 function SidebarListView({ arrData }: IProps) {
+  function makeUrl(entity: IEntityBase): string {
+    return `/${entity.type}/${entity.id}`;
+  }
+
   const elItems = arrData.map((item) => {
     const image = item.images ? item.images[0] : undefined;
     const elOwner = (() => {
@@ -29,7 +34,7 @@ function SidebarListView({ arrData }: IProps) {
     })();
 
     return (
-      <NavLink to={`/${item.type}/${item.id}`} key={item.id} className={styles.item}>
+      <NavLink to={makeUrl(item)} key={item.id} className={styles.item}>
         <div className={styles.imageContainer}>
           <EntityImage image={image} isRounded={false} />
         </div>

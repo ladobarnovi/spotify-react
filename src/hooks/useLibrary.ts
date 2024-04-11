@@ -11,14 +11,14 @@ import { useQuery } from "react-query";
 let arrSavedEntities: (IPlaylist | IAlbum | IArtist)[] = [];
 
 export function useLibrary() {
-  const { isAuthorized } = useAuth();
-  // const [ arrAllEntities, setArrAllEntities ] = useState<(IPlaylist | IAlbum | IArtist)[]>(arrSavedEntities)
+  const { isAuthorized, user } = useAuth();
+  const [ arrAllEntities, setArrAllEntities ] = useState<(IPlaylist | IAlbum | IArtist)[]>(arrSavedEntities)
 
   const { fetchAllAlbums, fetchAllArtist, fetchAllPlaylists } = useEntityFetch();
   const dispatch = useDispatch();
 
-  async function fetch(): Promise<(IPlaylist | IAlbum | IArtist)[]> {
-    if (!isAuthorized) return [];
+  async function fetch(): Promise<void> {
+    if (!isAuthorized) return;
 
     const [ arrAlbums, arrPlaylists, arrArtists ] = await Promise.all([
       fetchAllAlbums(),
@@ -34,18 +34,51 @@ export function useLibrary() {
 
     dispatch(setFollowedEntityIds(arrAll.map((item) => item.id)));
 
-    // setArrAllEntities(arrAll);
-    arrSavedEntities = arrAll;
+    setArrAllEntities(arrAll);
+    // arrSavedEntities = arrAll;
 
-    return arrAll;
+    // const liked: IPlaylist = {
+    //   id: "",
+    //   uri: "",
+    //   description: "",
+    //   href: "",
+    //   external_urls: {
+    //     spotify: "",
+    //   },
+    //   images: [
+    //     {
+    //       url: "https://misc.scdn.co/liked-songs/liked-songs-640.png",
+    //       height: 640,
+    //       width: 640
+    //     }
+    //   ],
+    //   name: "Liked Songs",
+    //   owner: {
+    //     id: user!.id,
+    //     display_name: user!.display_name
+    //   },
+    //   type: "playlist",
+    //   tracks: {
+    //     href: "",
+    //     items: [],
+    //     total: 0,
+    //   },
+    // }
+    // arrAll.unshift(liked);
+
+    // return arrAll;
   }
 
-  const { data } = useQuery<(IPlaylist | IAlbum | IArtist)[]>({
-    queryKey: [ "fetchUserSavedEntities" ],
-    queryFn: fetch,
-  });
+  // const { data } = useQuery<(IPlaylist | IAlbum | IArtist)[]>({
+  //   queryKey: [ "fetchUserSavedEntities" ],
+  //   queryFn: fetch,
+  // });
 
-  const arrAllEntities = data || [  ];
+  useEffect(() => {
+    fetch();
+  }, [ isAuthorized ]);
+
+  // const arrAllEntities = data || [  ];
 
   // useEffect(() => {
   //   if (arrSavedEntities.length === 0) {

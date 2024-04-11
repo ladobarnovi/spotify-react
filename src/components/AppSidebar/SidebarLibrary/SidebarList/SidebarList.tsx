@@ -25,13 +25,16 @@ function SidebarList({ filterBy }: IProps) {
   const [ sortBy, setSortBy ] = useState(ESortingOptions.recent);
 
   useEffect(() => {
+    console.log(refScrollbar)
+  }, [ refScrollbar ]);
+
+  useEffect(() => {
     if (filterBy == null) {
-      setArrFilteredEntities(arrAllEntities);
+      return setArrFilteredEntities(arrAllEntities);
     }
-    else {
-      const arrFiltered = arrAllEntities.filter((item) => item.type === filterBy);
-      setArrFilteredEntities(arrFiltered);
-    }
+
+    const arrFiltered = arrAllEntities.filter((item) => item.type === filterBy);
+    setArrFilteredEntities(arrFiltered);
   }, [ filterBy, arrAllEntities ]);
 
   const elView = (() => {

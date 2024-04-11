@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { OverlayScrollbars } from "overlayscrollbars";
 
 export function useScroll() {
@@ -6,7 +6,7 @@ export function useScroll() {
 
   const refScrollbar = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (refScrollbar.current) {
       const os = OverlayScrollbars(refScrollbar.current, {
         scrollbars: {
@@ -16,7 +16,7 @@ export function useScroll() {
 
       setOverlayScrollbar(os);
     }
-  }, [ ]);
+  }, [ refScrollbar ]);
 
   return {
     refScrollbar,

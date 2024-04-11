@@ -1,0 +1,23 @@
+.trackLikeButton {
+  position: relative;
+  button {
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+
+    svg {
+      fill: #a7a7a7;
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+.popupContainer {
+  position: absolute;
+  right: 100%;
+  top: 100%;
+  z-index: 1;
+  width: 292px;
+  transform: translate(-100%, -100%);
+}
