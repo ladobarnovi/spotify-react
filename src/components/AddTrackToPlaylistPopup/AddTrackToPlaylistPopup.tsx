@@ -6,6 +6,7 @@ import { api } from "../../api";
 import IconPlus from "../Icons/IconPlus";
 import IconCheck from "../Icons/IconCheck";
 import EntityImage from "../Common/EntityImage/EntityImage";
+import { useAuth } from "../../hooks/useAuth";
 
 interface IProps {
   onClose: () => void,
@@ -13,34 +14,40 @@ interface IProps {
 }
 
 function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
+  const [ arrSettledIds, setArrSettledIds ] = useState<string[]>([]);
   const [ isLoaded, setIsLoaded ] = useState(false);
+  const [ isEdited, setIsEdited ] = useState(false)
+  const [ arrInitialPlaylistIdsSnapshot, setArrInitialPlaylistIdsSnapshot ] = useState<string[]>([]);
   const [ arrContainingPlaylistIds, setArrContainingPlaylistIds ] = useState<string[]>([]);
   const refContent = useRef<HTMLDivElement>(null);
   const { refScrollbar } = useScroll();
+  const { user } = useAuth()
   const { data: arrPlaylists } = useQuery({
     queryKey: [ "fetchMyPlaylists" ],
     queryFn: async () => (await api.me.playlists({
-      limit: 5,
+      limit: 50,
       offset: 0,
-    })).items
+    })).items,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 
-  const arrQueryResults = useQueries(arrPlaylists?.map((playlist) => ({
+  const arrFilteredPlaylists = arrPlaylists?.filter((playlist) => playlist.owner.id === user!.id) || [];
+
+  const arrQueryResults = useQueries(arrFilteredPlaylists.map((playlist) => ({
     queryKey: [ "fetchPlaylist", playlist.id ],
     queryFn: async () => await api.playlist.fetchPlaylist({ playlistId: playlist.id }),
     refetchOnWindowFocus: false,
-  })) || []);
+    onSettled: () => {
+      setArrSettledIds((prevState) => [ ...prevState, playlist.id ])
+    },
+  })));
 
   useEffect(() => {
-    console.log("Change Listener", isLoaded)
-    console.log(arrQueryResults);
-    if (isLoaded) return;
-
-    setIsLoaded(arrQueryResults.length > 0 && !arrQueryResults.some((result) => result.isLoading));
-
     const arrIdsSnapshot: string[] = [];
     arrQueryResults.forEach((result) => {
       if (result.isLoading || result.data == null) return;
+      if (result.data.owner.id !== user?.id) return;
 
       const arrTrackIds = result.data.tracks.items.map((trackContainer) => trackContainer.track.id);
       if (arrTrackIds.includes(trackId)) {
@@ -48,10 +55,22 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
       }
     })
 
-    setArrContainingPlaylistIds(arrIdsSnapshot);
-    console.log(arrIdsSnapshot)
-  }, [ arrQueryResults ]);
+    setArrInitialPlaylistIdsSnapshot([...arrIdsSnapshot]);
+    setArrContainingPlaylistIds([...arrIdsSnapshot]);
+  }, [ arrSettledIds ]);
 
+  useEffect(() => {
+    const isSameLength = arrContainingPlaylistIds.length == arrInitialPlaylistIdsSnapshot.length;
+    const isIncluded = arrContainingPlaylistIds.every((id) => arrInitialPlaylistIdsSnapshot.includes(id));
+
+    setIsEdited(!(isSameLength && isIncluded))
+  }, [ arrContainingPlaylistIds ]);
+
+  useEffect(() => {
+    window.addEventListener("click", clickListener);
+
+    return () => window.removeEventListener("click", clickListener);
+  }, [  ]);
 
   function tryGetActiveClass(playlistId: string): string {
     return arrContainingPlaylistIds.includes(playlistId) ? styles.active : "";
@@ -60,24 +79,47 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
   function toggleIncludeInPlaylists(playlistId: string): void {
     if (arrContainingPlaylistIds.includes(playlistId)) {
       // remove from list
-      setArrContainingPlaylistIds((prev) => {
-        const index = prev.indexOf(playlistId);
-        console.log(index);
-        console.log(prev);
-        prev.splice(index, 1)
-        console.log(prev)
-        return [ ...prev ];
+      setArrContainingPlaylistIds((prevState) => {
+        const index = prevState.indexOf(playlistId);
+        prevState.splice(index, 1)
+        return [ ...prevState ];
       })
     }
     else {
-      setArrContainingPlaylistIds((prev) => [ ...prev, playlistId ])
+      setArrContainingPlaylistIds((prevState) => [ ...prevState, playlistId ])
     }
+  }
+
+  function clickListener(event: MouseEvent): void {
+    if (refContent.current == null) return;
+
+    if (!refContent.current.contains(event.target as HTMLElement)) {
+      onClose();
+    }
+  }
+
+  async function updatePlaylists(): Promise<void> {
+    if (!isEdited) return;
+
+    const arrAddToPlaylistIds = arrContainingPlaylistIds.filter((id) => !arrInitialPlaylistIdsSnapshot.includes(id));
+    const arrRemoveFromPlaylistIds = arrInitialPlaylistIdsSnapshot.filter((id) => !arrContainingPlaylistIds.includes(id));
+
+    arrAddToPlaylistIds.forEach((playlistId) => api.playlist.addTrackToPlaylist({
+      playlistId,
+      trackUri: `spotify:track:${trackId}`
+    }));
+    arrRemoveFromPlaylistIds.forEach((playlistId) => api.playlist.removeTrackFromPlaylist({
+      playlistId,
+      trackUri: `spotify:track:${trackId}`
+    }));
+
+    onClose();
   }
 
   const elPlaylists = (
     <ul>
       {
-        arrPlaylists?.map((playlist) => {
+        arrFilteredPlaylists.map((playlist) => {
           const image = playlist.images ? playlist.images[0] : undefined;
           return (
             <li onClick={() => toggleIncludeInPlaylists(playlist.id)} key={playlist.id} className={tryGetActiveClass(playlist.id)}>
@@ -96,19 +138,9 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
     </ul>
   );
 
-  function clickListener(event: MouseEvent): void {
-    if (refContent.current == null) return;
-
-    if (!refContent.current.contains(event.target as HTMLElement)) {
-      onClose();
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener("click", clickListener);
-
-    return () => window.removeEventListener("click", clickListener);
-  }, [  ]);
+  const elSaveButton = isEdited ? (
+    <button onClick={updatePlaylists} className={styles.saveButton}>Save</button>
+  ) : null
 
 
   return (
@@ -132,6 +164,9 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
         <button onClick={onClose} className={styles.cancelButton}>
           Cancel
         </button>
+        {
+          elSaveButton
+        }
       </footer>
     </div>
   )

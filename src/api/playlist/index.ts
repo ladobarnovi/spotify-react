@@ -12,6 +12,14 @@ interface IEditPlaylistRequest extends IPlaylistBaseRequest {
   description: string | undefined;
 }
 
+interface IAddTrackToPlaylistRequest extends IPlaylistBaseRequest {
+  trackUri: string;
+}
+
+interface IRemoveTrackFromPlaylistRequest extends IPlaylistBaseRequest {
+  trackUri: string;
+}
+
 interface IFetchPlaylistResponse extends IPlaylist { }
 
 
@@ -39,4 +47,21 @@ export const playlist = {
   unfollowPlaylist: async ({ playlistId }: IPlaylistBaseRequest): Promise<void> => {
     await axios.delete(`/playlists/${playlistId}/followers`)
   },
+
+  addTrackToPlaylist: async ({ playlistId, trackUri }: IAddTrackToPlaylistRequest): Promise<void> => {
+    await axios.post(`/playlists/${playlistId}/tracks`, {
+      uris: [ trackUri ],
+      position: 0,
+    })
+  },
+
+  removeTrackFromPlaylist: async ({ playlistId, trackUri }: IRemoveTrackFromPlaylistRequest): Promise<void> => {
+    await axios.delete(`/playlists/${playlistId}/tracks`, {
+      data: {
+        tracks: [{
+          uri: trackUri
+        }],
+      }
+    })
+  }
 };

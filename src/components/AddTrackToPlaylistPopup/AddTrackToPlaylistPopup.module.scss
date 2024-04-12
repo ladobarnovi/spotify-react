@@ -122,11 +122,22 @@
     justify-content: flex-end;
     box-shadow: 1px -15px 34px 0px rgba(0,0,0,0.3);
     padding: 0 24px;
+    gap: 16px;
+
+    button {
+      font-size: 14px;
+      font-weight: bold;
+    }
 
     .cancelButton {
-      font-size: 14px;
       color: #a7a7a7;
-      font-weight: bold;
+    }
+
+    .saveButton {
+      color: black;
+      background-color: white;
+      padding: 4px 16px;
+      border-radius: 999px;
     }
   }
 }
