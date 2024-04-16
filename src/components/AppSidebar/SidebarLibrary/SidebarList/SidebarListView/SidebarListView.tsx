@@ -6,17 +6,22 @@ import { IArtist } from "types/artist";
 import { NavLink } from "react-router-dom";
 import EntityImage from "components/Common/EntityImage/EntityImage";
 import { capitalizeFirstLetter } from "utils/string";
+import { useSearchContext } from "../../../../../context/SearchContext";
+import HighlightedText from "../../../../HighlightedText/HighlightedText";
 
 interface IProps {
   arrData: (IPlaylist | IAlbum | IArtist)[]
 }
 
 function SidebarListView({ arrData }: IProps) {
+  const { keyword } = useSearchContext();
   function makeUrl(entity: IEntityBase): string {
     return `/${entity.type}/${entity.id}`;
   }
 
-  const elItems = arrData.map((item) => {
+  const arrFilteredData = !!keyword ? arrData.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase())) : arrData;
+
+  const elItems = arrFilteredData.map((item) => {
     const image = item.images ? item.images[0] : undefined;
     const elOwner = (() => {
       let owner = null;
@@ -39,7 +44,7 @@ function SidebarListView({ arrData }: IProps) {
           <EntityImage image={image} isRounded={false} />
         </div>
         <div className={styles.infoContainer}>
-          <p className={styles.title}>{item.name}</p>
+          <HighlightedText className={styles.title} text={item.name} />
           <p className={styles.subtitle}>
             <span className={styles.entityType}>{ capitalizeFirstLetter(item.type) }</span>
             { elOwner }

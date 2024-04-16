@@ -12,12 +12,14 @@ import SidebarListView from "components/AppSidebar/SidebarLibrary/SidebarList/Si
 import SidebarGridView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarGridView/SidebarGridView";
 import { useLibrary } from "hooks/useLibrary";
 import { useScroll } from "hooks/useScroll";
+import { useSearchContext } from "../../../../context/SearchContext";
 
 interface IProps {
   filterBy: string | null;
 }
 
 function SidebarList({ filterBy }: IProps) {
+  const { keyword, setKeyword } = useSearchContext();
   const { refScrollbar } = useScroll();
   const { arrAllEntities } = useLibrary();
   const [ arrFilteredEntities, setArrFilteredEntities ] = useState<(IPlaylist | IAlbum | IArtist)[]>([]);
@@ -56,6 +58,7 @@ function SidebarList({ filterBy }: IProps) {
       <div ref={refScrollbar}>
         <div className={styles.scrollContent}>
           <div className={styles.header}>
+            <input type="text" onInput={(e) => setKeyword(e.currentTarget.value)} />
             <SidebarViewTypeContextMenu
               onViewTypeChanged={setViewType}
               onSortingChanged={setSortBy}
