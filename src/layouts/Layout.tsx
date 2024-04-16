@@ -11,6 +11,7 @@ interface IProps {
 
 function Layout({ children }: IProps) {
   const { layout } = useLayout();
+  const { isLoading } = useAuth();
 
   const [ element, setElement ] = useState<ReactNode>();
 
@@ -29,7 +30,7 @@ function Layout({ children }: IProps) {
     setElement(el);
   }, [ layout ])
 
-  return (
+  return isLoading ? null : (
     <div id="layout">
       { element }
     </div>

@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import Home from "../modules/home/Home";
 import SearchMain from "../modules/search/SearchMain";
 import SearchIndex from "../modules/search/index/SearchIndex";
@@ -13,14 +14,10 @@ import Show from "../modules/show/Show";
 import Episode from "../modules/episode/Episode";
 import Track from "../modules/track/Track";
 import Login from "../modules/login/Login";
-import React from "react";
-import { useAuth } from "../context/AuthContext";
 import Layout from "../layouts/Layout";
 
 export default function App() {
-  const { isLoading } = useAuth();
-
-  return isLoading ? null : (
+  return (
     <BrowserRouter>
       <Layout>
         <Routes>
