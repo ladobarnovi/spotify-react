@@ -60,11 +60,9 @@ interface IUnfollowArtistRequest {
   artistId: string;
 }
 
-interface IUserResponse extends IUser { }
-
 export const me = {
-  user: async (): Promise<IUserResponse> => {
-    const { data } = await axios.get("/me");
+  user: async (): Promise<IUser> => {
+    const { data } = await axios.get<IUser>("/me");
 
     return data;
   },

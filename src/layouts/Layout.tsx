@@ -3,6 +3,7 @@ import { ELayout } from "store/global/globalSlice";
 import MainLayout from "layouts/MainLayout/MainLayout";
 import { useLayout } from "hooks/useLayout";
 import LoginLayout from "layouts/LoginLayout/LoginLayout";
+import { useAuth } from "../context/AuthContext";
 
 interface IProps {
   children: ReactNode

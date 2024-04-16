@@ -1,6 +1,6 @@
 import styles from "./Login.module.scss"
 import AuthButton from "components/AuthButton/AuthButton";
-import { useAuth } from "hooks/useAuth";
+import { useAuth } from "context/AuthContext";
 import { useEffect } from "react";
 import { useLayout } from "hooks/useLayout";
 import { ELayout } from "store/global/globalSlice";

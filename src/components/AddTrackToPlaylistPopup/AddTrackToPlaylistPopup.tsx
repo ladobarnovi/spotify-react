@@ -6,7 +6,7 @@ import { api } from "../../api";
 import IconPlus from "../Icons/IconPlus";
 import IconCheck from "../Icons/IconCheck";
 import EntityImage from "../Common/EntityImage/EntityImage";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "context/AuthContext";
 
 interface IProps {
   onClose: () => void,

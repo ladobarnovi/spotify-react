@@ -2,11 +2,9 @@ import styles from "./SidebarLibrary.module.scss";
 import SidebarLibraryHeader from "components/AppSidebar/SidebarLibrary/SidebarLibraryHeader/SidebarLibraryHeader";
 import SidebarEntityTypes from "components/AppSidebar/SidebarLibrary/SidebarEntityTypes/SidebarEntityTypes";
 import SidebarList from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarList";
-import {useState} from "react";
-import { useAuth } from "hooks/useAuth";
+import { useState } from "react";
 
 function SidebarLibrary() {
-  const { isAuthorized } = useAuth();
   const [ entityTypeFilter, setEntityTypeFilter ] = useState<string | null>(null);
 
   return (

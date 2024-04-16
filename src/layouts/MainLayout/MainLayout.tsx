@@ -1,12 +1,9 @@
 import styles from "./MainLayout.module.scss";
 import { ReactNode, useEffect } from "react";
-import { api } from "api";
-import { setUser } from "store/auth/authSlice";
 import { setScrollDistance } from "store/global/globalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useScroll } from "hooks/useScroll";
 import { RootState } from "store";
-import { useAuth } from "hooks/useAuth";
 import { useLocation } from "react-router-dom";
 import AppPlayer from "components/AppPlayer/AppPlayer";
 import AppSidebarCompact from "components/AppSidebar/AppSidebarCompact/AppSidebarCompact";
@@ -20,26 +17,13 @@ type Props = {
 }
 
 function MainLayout({ children }: Props) {
+  console.log("Main layout")
   const dispatch = useDispatch();
   const { pathname } = useLocation()
-  const { isAuthorized } = useAuth();
   const { overlayScrollbar, refScrollbar } = useScroll();
 
   const isNowPlayingActive = useSelector((state: RootState) => state.globalReducer.isNowPlayingActive);
   const isSidebarCompact = useSelector((state: RootState) => state.globalReducer.isSidebarCompact);
-
-  useEffect(() => {
-    if (!isAuthorized) return;
-
-    api.me.user()
-      .then((data) => {
-        dispatch(setUser(data));
-      })
-      .catch(() => {
-        localStorage.removeItem("token")
-      });
-  }, [ isAuthorized ]);
-
 
   useEffect(() => {
     if (refScrollbar.current != null && overlayScrollbar != null) {

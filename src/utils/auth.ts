@@ -1,6 +1,4 @@
 import { setAxiosToken } from "utils/axios";
-import store from "store";
-import { setIsAuthorized } from "store/auth/authSlice";
 
 export const AUTH_TOKEN_KEY = "token";
 
@@ -14,7 +12,6 @@ export function tryGetAuthToken() {
 
     localStorage.setItem(AUTH_TOKEN_KEY, token);
     window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
-    store.dispatch(setIsAuthorized(true));
   } else {
     token = localStorage.getItem(AUTH_TOKEN_KEY);
 

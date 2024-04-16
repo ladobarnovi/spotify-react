@@ -5,20 +5,19 @@ import { IAlbum } from "types/album";
 import { IArtist } from "types/artist";
 import { setFollowedEntityIds } from "store/user/userSlice";
 import { useDispatch } from "react-redux";
-import { useAuth } from "hooks/useAuth";
-import { useQuery } from "react-query";
+import { useAuth } from "context/AuthContext";
 
 let arrSavedEntities: (IPlaylist | IAlbum | IArtist)[] = [];
 
 export function useLibrary() {
-  const { isAuthorized, user } = useAuth();
+  const { user } = useAuth();
   const [ arrAllEntities, setArrAllEntities ] = useState<(IPlaylist | IAlbum | IArtist)[]>(arrSavedEntities)
 
   const { fetchAllAlbums, fetchAllArtist, fetchAllPlaylists } = useEntityFetch();
   const dispatch = useDispatch();
 
   async function fetch(): Promise<void> {
-    if (!isAuthorized) return;
+    if (!user) return;
 
     const [ arrAlbums, arrPlaylists, arrArtists ] = await Promise.all([
       fetchAllAlbums(),
@@ -76,7 +75,7 @@ export function useLibrary() {
 
   useEffect(() => {
     fetch();
-  }, [ isAuthorized ]);
+  }, [ user ]);
 
   // const arrAllEntities = data || [  ];
 
