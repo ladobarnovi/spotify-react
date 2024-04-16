@@ -29,7 +29,6 @@ export const browse = {
         limit: 50
       }
     });
-    console.log(data)
 
     return data;
   }

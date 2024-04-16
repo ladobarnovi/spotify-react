@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext } from "react";
 import { useQuery } from "react-query";
 import { api } from "../api";
 import { IUser } from "../types/user";
@@ -23,8 +23,7 @@ interface IProps {
   children: ReactNode;
 }
 export function AuthProvider({ children }: IProps) {
-  const [ token, setToken ] = useState(localStorage.getItem("token") || null);
-
+  const token = localStorage.getItem("token") || null;
   const { data: user, isLoading, isError } = useQuery({
     queryKey: [ "fetchUser", token ],
     queryFn: async () => await api.me.user(),

@@ -8,14 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 function RecentSearches() {
   const { getHistory, clearHistory } = useSearchHistory();
-
   const navigate = useNavigate();
-
-  const [ arrEntities, setArrEntities ] = useState<IEntityBase[]>([ ]);
-
-  useEffect(() => {
-    setArrEntities(getHistory());
-  }, [ ])
+  const arrEntities = getHistory();
 
   function onClearHistory(): void {
     clearHistory();

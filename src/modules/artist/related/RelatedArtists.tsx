@@ -12,9 +12,7 @@ function RelatedArtists() {
     queryFn: async () => (await api.artists.relatedArtists({ artistId: id as string })).artists
   })
 
-  if (arrRelatedArtists == null) return null;
-
-  return (
+  return arrRelatedArtists ? (
     <div className={ styles.relatedArtists }>
       <p className={styles.title}>Fans also like</p>
 
@@ -26,7 +24,7 @@ function RelatedArtists() {
         }
       </div>
     </div>
-  )
+  ) : null;
 }
 
 export default RelatedArtists;

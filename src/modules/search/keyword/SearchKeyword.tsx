@@ -12,6 +12,7 @@ import SearchResultTracks from "modules/search/components/SearchResultTracks/Sea
 import ResponsiveGridWrapper from "components/ResponsiveGridWrapper/ResponsiveGridWrapper";
 import { useSearchHistory } from "hooks/useSearchHistory";
 import { IEpisode, IPodcast } from "types/podcast";
+import { useQuery } from "react-query";
 
 function SearchKeyword() {
   const [ arrAlbums, setArrAlbums ] = useState<IAlbum[]>([ ]);
@@ -47,6 +48,11 @@ function SearchKeyword() {
       setIsLoading(false);
     }
   }
+
+  const { data } = useQuery({
+    queryKey: [ "searchItems", keyword ],
+    queryFn: async () => await api.search.search({ q: keyword as  string })
+  });
 
   useEffect(() => {
     clearTimeout(timeoutId);

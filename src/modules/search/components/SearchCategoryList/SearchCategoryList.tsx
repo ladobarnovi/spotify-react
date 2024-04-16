@@ -4,17 +4,13 @@ import { api } from "api";
 import { ICategory } from "types/category";
 import { NavLink } from "react-router-dom";
 import ResponsiveGridWrapper from "components/ResponsiveGridWrapper/ResponsiveGridWrapper";
+import { useQuery } from "react-query";
 
 function SearchCategoryList() {
-  const [ arrCategories, setArrCategories ] = useState<ICategory[]>([])
-
-  useEffect(() => {
-    (async () => {
-      const response = await api.browse.getCategories();
-      console.log(response.categories.items)
-      setArrCategories(response.categories.items);
-    })()
-  }, [ ])
+  const { data: arrCategories } = useQuery({
+    queryKey: [ "categories" ],
+    queryFn: async () => (await api.browse.getCategories()).categories.items
+  });
 
   function generateRandomBackground(): React.CSSProperties {
     const r = Math.floor(Math.random() * 256);
@@ -27,8 +23,9 @@ function SearchCategoryList() {
     }
   }
 
-  const elCategories = arrCategories.map((category) => (
+  const elCategories = arrCategories?.map((category) => (
     <NavLink
+      key={category.id}
       to={`/genre/${category.id}`}
       className={styles.categoryItem}
       style={generateRandomBackground()}

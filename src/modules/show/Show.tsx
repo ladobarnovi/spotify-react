@@ -32,11 +32,9 @@ function Show() {
     return destructor();
   }, [ ]);
 
-  if (show == null) return null;
-
   const classVertical = isVertical ? styles.vertical : null;
 
-  return (
+  return show ? (
     <div className={styles.show}>
       <ShowHeader show={show} />
 
@@ -54,7 +52,7 @@ function Show() {
         </div>
       </div>
     </div>
-  )
+  ) : null;
 }
 
 export default Show;
