@@ -344,7 +344,7 @@ function TrackItem({
       { elColDateAdded }
       { elColPlays }
       <div className={styles.colDuration}>
-        <TrackLikeButton  trackId={track.id} />
+        <TrackLikeButton trackId={track.id} />
         <p>{ duration }</p>
         <div className={styles.moreActions}>
           <IconEllipsis />
