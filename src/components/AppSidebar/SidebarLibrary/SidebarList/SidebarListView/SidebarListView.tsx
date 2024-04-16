@@ -4,10 +4,11 @@ import { IPlaylist } from "types/playlist";
 import { IAlbum } from "types/album";
 import { IArtist } from "types/artist";
 import { NavLink } from "react-router-dom";
-import EntityImage from "components/Common/EntityImage/EntityImage";
 import { capitalizeFirstLetter } from "utils/string";
-import { useSearchContext } from "../../../../../context/SearchContext";
-import HighlightedText from "../../../../HighlightedText/HighlightedText";
+import { useSearchContext } from "context/SearchContext";
+import EntityImage from "components/Common/EntityImage/EntityImage";
+import HighlightedText from "components/HighlightedText/HighlightedText";
+import EntityOwner from "components/Common/EntityOwner/EntityOwner";
 
 interface IProps {
   arrData: (IPlaylist | IAlbum | IArtist)[]
@@ -22,21 +23,6 @@ function SidebarListView({ arrData }: IProps) {
   const arrFilteredData = !!keyword ? arrData.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase())) : arrData;
 
   const elItems = arrFilteredData.map((item) => {
-    const elOwner = (() => {
-      let owner = null;
-      if (item.type === "album") {
-        owner = (item as IAlbum).artists[0].name;
-      }
-      else if (item.type === "playlist") {
-        owner = item.owner.display_name;
-      }
-      else {
-        return null;
-      }
-
-      return (<span className={ styles.owner }> •  { owner }</span>);
-    })();
-
     return (
       <NavLink to={makeUrl(item)} key={item.id} className={styles.item}>
         <div className={styles.imageContainer}>
@@ -46,7 +32,7 @@ function SidebarListView({ arrData }: IProps) {
           <HighlightedText className={styles.title} text={item.name} />
           <p className={styles.subtitle}>
             <span className={styles.entityType}>{ capitalizeFirstLetter(item.type) }</span>
-            { elOwner }
+            <EntityOwner entity={item} />
           </p>
         </div>
       </NavLink>

@@ -5,6 +5,7 @@ import { IArtist } from "types/artist";
 import { NavLink } from "react-router-dom";
 import EntityImage from "components/Common/EntityImage/EntityImage";
 import { capitalizeFirstLetter } from "utils/string";
+import EntityOwner from "../../../../Common/EntityOwner/EntityOwner";
 
 interface IProps {
   arrData: (IPlaylist | IAlbum | IArtist)[]
@@ -12,21 +13,6 @@ interface IProps {
 
 function SidebarGridView({ arrData }: IProps) {
   const elItems = arrData.map((item) => {
-    const elOwner = (() => {
-      let owner = null;
-      if (item.type === "album") {
-        owner = (item as IAlbum).artists[0].name;
-      }
-      else if (item.type === "playlist") {
-        owner = item.owner.display_name;
-      }
-      else {
-        return null;
-      }
-
-      return (<span className={ styles.owner }> •  { owner }</span>);
-    })();
-
     return (
       <NavLink to={`/`} key={item.id} className={styles.item}>
         <div className={styles.imageContainer}>
@@ -38,7 +24,7 @@ function SidebarGridView({ arrData }: IProps) {
         <p className={styles.title}>{ item.name }</p>
         <p className={styles.subtitle}>
           <span className={styles.entityType}>{ capitalizeFirstLetter(item.type) }</span>
-          { elOwner }
+          <EntityOwner entity={item} />
         </p>
 
       </NavLink>
