@@ -49,13 +49,13 @@ function ShowEpisodeItem({ episode }: IProps) {
   return (
     <div ref={refMain} className={`${styles.showEpisodeItem} ${classCompact}`} onClick={onClickHandler}>
       <div className={styles.imageContainer}>
-        <EntityImage image={episode.images[0]} isRounded={false} />
+        <EntityImage entity={episode} isRounded={false} />
       </div>
 
       <div className={styles.infoContainer}>
         <div className={styles.topWrapper}>
           <div className={styles.imageContainer}>
-            <EntityImage image={episode.images[0]} isRounded={false} />
+            <EntityImage entity={episode} isRounded={false} />
           </div>
           <div>
             <NavLink className={styles.title} to={url}>{ episode.name }</NavLink>

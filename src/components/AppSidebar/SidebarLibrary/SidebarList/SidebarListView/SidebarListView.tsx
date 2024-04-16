@@ -22,7 +22,6 @@ function SidebarListView({ arrData }: IProps) {
   const arrFilteredData = !!keyword ? arrData.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase())) : arrData;
 
   const elItems = arrFilteredData.map((item) => {
-    const image = item.images ? item.images[0] : undefined;
     const elOwner = (() => {
       let owner = null;
       if (item.type === "album") {
@@ -41,7 +40,7 @@ function SidebarListView({ arrData }: IProps) {
     return (
       <NavLink to={makeUrl(item)} key={item.id} className={styles.item}>
         <div className={styles.imageContainer}>
-          <EntityImage image={image} isRounded={false} />
+          <EntityImage entity={item} isRounded={false} />
         </div>
         <div className={styles.infoContainer}>
           <HighlightedText className={styles.title} text={item.name} />

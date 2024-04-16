@@ -1,13 +1,15 @@
 import styles from "./EntityImage.module.scss";
-import { IImage } from "types/common";
+import { IEntityBase } from "types/entityBase";
 import IconNote from "components/Icons/IconNote";
 
 interface IProps {
-  image: IImage | undefined;
+  entity: IEntityBase;
   isRounded: boolean;
 }
 
-function EntityImage({ image, isRounded = false }: IProps) {
+function EntityImage({ entity, isRounded = false }: IProps) {
+  const image = entity.images ? entity.images[0] : undefined;
+
   const imgNode = image == null ? <IconNote /> : <img src={ image?.url } />
 
   return (

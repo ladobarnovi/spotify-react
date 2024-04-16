@@ -12,7 +12,6 @@ interface IProps {
 
 function SidebarGridView({ arrData }: IProps) {
   const elItems = arrData.map((item) => {
-    const image = item.images ? item.images[0] : undefined;
     const elOwner = (() => {
       let owner = null;
       if (item.type === "album") {
@@ -32,7 +31,7 @@ function SidebarGridView({ arrData }: IProps) {
       <NavLink to={`/`} key={item.id} className={styles.item}>
         <div className={styles.imageContainer}>
           <EntityImage
-            image={image}
+            entity={item}
             isRounded={item.type === "artist"}
           />
         </div>

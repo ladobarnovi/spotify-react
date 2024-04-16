@@ -75,7 +75,7 @@ function SearchResultCard({ data, onNavigated }: IProps) {
       <div onClick={navigateToItem} className={styles.cardContainer}>
         <div className={styles.imageContainer}>
           <EntityImage
-            image={image}
+            entity={data}
             isRounded={isImageRounded}
           />
         </div>

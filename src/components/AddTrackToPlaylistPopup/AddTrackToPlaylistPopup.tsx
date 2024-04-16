@@ -120,11 +120,10 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
     <ul>
       {
         arrFilteredPlaylists.map((playlist) => {
-          const image = playlist.images ? playlist.images[0] : undefined;
           return (
             <li onClick={() => toggleIncludeInPlaylists(playlist.id)} key={playlist.id} className={tryGetActiveClass(playlist.id)}>
               <div className={styles.imageContainer}>
-                <EntityImage image={image} isRounded={false}/>
+                <EntityImage entity={playlist} isRounded={false}/>
               </div>
               <p>{playlist.name}</p>
 
