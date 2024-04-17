@@ -1,0 +1,68 @@
+.sidebarSearchInput {
+  flex-shrink: 0;
+  position: relative;
+  height: 32px;
+
+  button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: #a7a7a7;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+
+      svg {
+        fill: white;
+      }
+    }
+  }
+
+  input {
+    position: relative;
+    width: 0;
+    height: 32px;
+    transition: 0.3s ease;
+    left: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+    border: none;
+    opacity: 0;
+    pointer-events: none;
+    padding-left: 32px;
+    color: #a7a7a7;
+    font-size: 0.8rem;
+    font-weight: 500;
+
+    &::placeholder {
+      color: #a7a7a7;
+    }
+  }
+
+  &.active {
+    button {
+      pointer-events: none;
+    }
+
+    input {
+      left: 0;
+      width: 180px;
+      visibility: visible;
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+}
