@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IPlaylist } from "types/playlist";
+import { ITrackContainer } from "../../types/track";
 
 interface IPlaylistBaseRequest {
   playlistId: string;
@@ -22,6 +23,15 @@ interface IRemoveTrackFromPlaylistRequest extends IPlaylistBaseRequest {
 
 interface IFetchPlaylistResponse extends IPlaylist { }
 
+interface IFetchPlaylistTracksRequest extends IPlaylistBaseRequest {
+  offset?: number;
+}
+interface IFetchPlaylistTracksResponse {
+  offset: number;
+  limit: number;
+  total: number;
+  items: ITrackContainer[];
+}
 
 
 export const playlist = {
@@ -63,5 +73,15 @@ export const playlist = {
         }],
       }
     })
+  },
+
+  fetchPlaylistTracks: async ({ playlistId, offset = 0 }: IFetchPlaylistTracksRequest): Promise<IFetchPlaylistTracksResponse> => {
+    const { data } = await axios.get(`/playlists/${playlistId}/tracks`, {
+      params: {
+        offset,
+        limit: 50,
+      }
+    });
+    return data;
   }
 };

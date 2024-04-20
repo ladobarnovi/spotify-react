@@ -204,7 +204,7 @@ function TrackList({ arrTrackContainer, arrTracks, layoutType, canHeaderStick = 
   );
 
   return (
-    <div ref={mainRef} className={`${styles.trackList} ${trackListLayoutClass} ${classColCount} ${classIsCompact}`}>
+    <div key={"key"} ref={mainRef} className={`${styles.trackList} ${trackListLayoutClass} ${classColCount} ${classIsCompact}`}>
       { elHeader }
       <div className={styles.listBody}>
         { elTrackItems }
