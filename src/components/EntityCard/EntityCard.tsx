@@ -9,6 +9,7 @@ import { capitalizeFirstLetter } from "utils/string";
 import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 import IconClose from "components/Icons/IconClose";
 import { IEpisode, IPodcast } from "types/podcast";
+import EntityImage from "../Common/EntityImage/EntityImage";
 
 export interface ICardOptions {
   album: {
@@ -26,7 +27,6 @@ interface IProps {
 
 function EntityCard({ data, options, onNavigated, onClosed }: IProps) {
   const navigate = useNavigate();
-  const imageUrl = data.images[0]?.url;
   const isRounded = data.type === "artist";
   const entityUrl = `/${data.type}/${data.id}`;
 
@@ -95,7 +95,10 @@ function EntityCard({ data, options, onNavigated, onClosed }: IProps) {
     <div onClick={navigateToItem} className={styles.entityCard}>
       <div className={`${styles.imageContainer}`}>
         <div className={`${styles.imageMask} ${isRounded ? styles.rounded : ""}`}>
-          <img src={imageUrl} alt={data.name} />
+          <EntityImage
+            entity={data}
+            isRounded={false}
+          />
         </div>
 
         <div className={styles.buttonContainer}>

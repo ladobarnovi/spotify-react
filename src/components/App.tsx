@@ -15,6 +15,7 @@ import Episode from "../modules/episode/Episode";
 import Track from "../modules/track/Track";
 import Login from "../modules/login/Login";
 import Layout from "../layouts/Layout";
+import User from "../modules/user/User";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
           <Route path={"show/:id"} element={<Show />} />
           <Route path={"episode/:id"} element={<Episode />} />
           <Route path={"track/:id"} element={<Track />} />
+          <Route path={"user/:id"} element={<User />} />
           <Route path={"/login"} element={<Login />} />
         </Routes>
       </Layout>
