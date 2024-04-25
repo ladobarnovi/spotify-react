@@ -9,7 +9,7 @@ interface IProps {
   value: string;
 }
 
-function SearchInput({ onInput, value, onClearInput }: IProps) {
+export default function SearchInput({ onInput, value, onClearInput }: IProps) {
   const [ keyword, setKeyword ] = useState("");
   const refInput = useRef<HTMLInputElement>(null);
 
@@ -35,7 +35,7 @@ function SearchInput({ onInput, value, onClearInput }: IProps) {
   );
 
   return (
-    <div className={ styles.searchInput }>
+    <div className={styles.searchInput}>
       <input
         ref={refInput}
         onInput={onInputHandler}
@@ -50,5 +50,3 @@ function SearchInput({ onInput, value, onClearInput }: IProps) {
     </div>
   )
 }
-
-export default SearchInput;

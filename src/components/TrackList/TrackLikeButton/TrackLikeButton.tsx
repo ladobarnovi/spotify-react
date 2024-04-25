@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { useState } from "react";
 import IconCirclePlus from "../../Icons/IconCirclePlus";
 import AddTrackToPlaylistPopup from "../../AddTrackToPlaylistPopup/AddTrackToPlaylistPopup";
+import { SearchProvider } from "../../../context/SearchContext";
 
 interface IProps {
   trackId: string;
@@ -27,10 +28,12 @@ function TrackLikeButton({ trackId }: IProps) {
       style={{ top: `${position.top}px`, left: `${position.left}px` }}
       className={styles.popupContainer}
     >
-      <AddTrackToPlaylistPopup
-        onClose={() => setIsPopupActive(false)}
-        trackId={trackId}
-      />
+      <SearchProvider>
+        <AddTrackToPlaylistPopup
+          onClose={() => setIsPopupActive(false)}
+          trackId={trackId}
+        />
+      </SearchProvider>
     </div>
   ), document.body) : null;
 

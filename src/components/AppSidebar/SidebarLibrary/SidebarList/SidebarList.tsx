@@ -12,8 +12,7 @@ import SidebarListView from "components/AppSidebar/SidebarLibrary/SidebarList/Si
 import SidebarGridView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarGridView/SidebarGridView";
 import { useLibrary } from "hooks/useLibrary";
 import { useScroll } from "hooks/useScroll";
-import { useSearchContext } from "../../../../context/SearchContext";
-import SidebarSearchInput from "../SidebarSearchInput/SidebarSearchInput";
+import EntitySearchInput from "../EntitySearchInput/EntitySearchInput";
 
 interface IProps {
   filterBy: string | null;
@@ -54,7 +53,9 @@ function SidebarList({ filterBy }: IProps) {
       <div ref={refScrollbar}>
         <div className={styles.scrollContent}>
           <div className={styles.header}>
-            <SidebarSearchInput />
+            <div className={styles.searchContainer}>
+              <EntitySearchInput />
+            </div>
             <SidebarViewTypeContextMenu
               onViewTypeChanged={setViewType}
               onSortingChanged={setSortBy}

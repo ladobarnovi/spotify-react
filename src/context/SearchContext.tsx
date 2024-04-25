@@ -5,7 +5,7 @@ interface ISearchContext {
   setKeyword: Dispatch<SetStateAction<string>>;
 }
 
-export const SearchContext = createContext<ISearchContext | null>(null);
+const SearchContext = createContext<ISearchContext | null>(null);
 
 export const useSearchContext = () => {
   const context = useContext(SearchContext);

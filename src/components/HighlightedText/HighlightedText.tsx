@@ -9,12 +9,14 @@ interface IProps {
 const HighlightedText = ({ text, className }: IProps) => {
   const { keyword } = useSearchContext();
 
-  const highlightText = (text: string, keyword: string) => {
+  function highlightText(text: string, keyword: string) {
     if (!keyword) return text;
 
     const regex = new RegExp(`(${keyword})`, 'gi');
     return text.split(regex).map((part, index) =>
-      regex.test(part) ? <span key={index}>{part}</span> : part
+      regex.test(part) ? (
+        <span key={index}>{part}</span>
+      ) : part
     );
   };
 

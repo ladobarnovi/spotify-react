@@ -16,6 +16,10 @@
       justify-content: space-between;
       margin-bottom: 8px;
       padding-inline: 8px;
+
+      .searchContainer {
+        max-width: 180px;
+      }
     }
   }
 }

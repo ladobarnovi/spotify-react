@@ -24,7 +24,7 @@ function SidebarListView({ arrData }: IProps) {
 
   const elItems = arrFilteredData.map((item) => {
     return (
-      <NavLink to={makeUrl(item)} key={item.id} className={styles.item}>
+      <NavLink to={makeUrl(item)} key={item.id} className={({ isActive }) => isActive ? styles.active : ""}>
         <div className={styles.imageContainer}>
           <EntityImage entity={item} isRounded={false} />
         </div>

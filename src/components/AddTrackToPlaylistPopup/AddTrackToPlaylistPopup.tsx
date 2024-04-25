@@ -7,13 +7,16 @@ import IconPlus from "../Icons/IconPlus";
 import IconCheck from "../Icons/IconCheck";
 import EntityImage from "../Common/EntityImage/EntityImage";
 import { useAuth } from "context/AuthContext";
+import EntitySearchInput from "../AppSidebar/SidebarLibrary/EntitySearchInput/EntitySearchInput";
+import { useSearchContext } from "../../context/SearchContext";
+import HighlightedText from "../HighlightedText/HighlightedText";
 
 interface IProps {
   onClose: () => void,
   trackId: string;
 }
 
-function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
+export default function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
   const [ arrSettledIds, setArrSettledIds ] = useState<string[]>([]);
   const [ isLoaded, setIsLoaded ] = useState(false);
   const [ isEdited, setIsEdited ] = useState(false)
@@ -22,6 +25,7 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
   const refContent = useRef<HTMLDivElement>(null);
   const { refScrollbar } = useScroll();
   const { user } = useAuth()
+  const { keyword } = useSearchContext();
   const { data: arrPlaylists } = useQuery({
     queryKey: [ "fetchMyPlaylists" ],
     queryFn: async () => (await api.me.playlists({
@@ -32,7 +36,12 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
     refetchOnMount: false,
   });
 
-  const arrFilteredPlaylists = arrPlaylists?.filter((playlist) => playlist.owner.id === user!.id) || [];
+  const arrFilteredPlaylists = (() => {
+    let arrTemp = arrPlaylists || [];
+    arrTemp = arrTemp.filter((playlist) => playlist.owner.id === user!.id)
+    arrTemp = !!keyword ? arrTemp.filter((playlist) => playlist.name.toLowerCase().includes(keyword.toLowerCase())) : arrTemp;
+    return arrTemp
+  })()
 
   const arrQueryResults = useQueries(arrFilteredPlaylists.map((playlist) => ({
     queryKey: [ "fetchPlaylist", playlist.id ],
@@ -41,6 +50,7 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
     onSettled: () => {
       setArrSettledIds((prevState) => [ ...prevState, playlist.id ])
     },
+    enabled: !arrSettledIds.includes(playlist.id)
   })));
 
   useEffect(() => {
@@ -125,7 +135,7 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
               <div className={styles.imageContainer}>
                 <EntityImage entity={playlist} isRounded={false}/>
               </div>
-              <p>{playlist.name}</p>
+              <HighlightedText className={styles.name} text={playlist.name} />
 
               <div className={styles.checkBox}>
                 <IconCheck/>
@@ -149,13 +159,14 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
       </header>
 
       <main>
+        <EntitySearchInput isAlwaysActive={true}/>
         <button className={styles.newPlaylistButton}>
           <IconPlus/>
           <span>New Playlist</span>
         </button>
 
         <div className={styles.playlistContainer} ref={refScrollbar}>
-          { elPlaylists }
+          {elPlaylists}
         </div>
       </main>
 
@@ -170,5 +181,3 @@ function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
     </div>
   )
 }
-
-export default AddTrackToPlaylistPopup;

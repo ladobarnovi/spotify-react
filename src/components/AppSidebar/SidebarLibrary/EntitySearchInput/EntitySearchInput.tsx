@@ -1,14 +1,20 @@
-import styles from "./SidebarSearchInput.module.scss";
+import styles from "./EntitySearchInput.module.scss";
 import IconSearch from "components/Icons/IconSearch";
 import { useEffect, useRef, useState } from "react";
 import { useSearchContext } from "context/SearchContext";
 
-export default function SidebarSearchInput() {
-  const [ isActive, setIsActive ] = useState(false);
+
+interface IProps {
+  isAlwaysActive?: boolean;
+}
+export default function EntitySearchInput({ isAlwaysActive = false }: IProps) {
+  const [ isActive, setIsActive ] = useState(isAlwaysActive);
   const { keyword, setKeyword } = useSearchContext();
   const inputRef = useRef<HTMLInputElement>(null)
 
   function onInputBlur(): void {
+    if (isAlwaysActive) return;
+
     if (!keyword) {
       setIsActive(false);
     }
@@ -22,7 +28,7 @@ export default function SidebarSearchInput() {
 
 
   return (
-    <div className={`${styles.sidebarSearchInput} ${isActive ? styles.active : null}`} >
+    <div className={`${styles.searchInput} ${isActive ? styles.active : null}`} >
       <button onClick={() => setIsActive(true)}>
         <IconSearch />
       </button>
