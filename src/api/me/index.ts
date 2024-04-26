@@ -60,6 +60,12 @@ interface IUnfollowArtistRequest {
   artistId: string;
 }
 
+interface IGetFollowedArtistsResponse {
+  artists: {
+    items: IArtist[]
+  }
+}
+
 export const me = {
   user: async (): Promise<IUser> => {
     const { data } = await axios.get<IUser>("/me");
@@ -123,5 +129,10 @@ export const me = {
         ids: [ artistId ]
       }
     })
+  },
+
+  getFollowedArtists: async (): Promise<IGetFollowedArtistsResponse> => {
+    const { data } = await axios.get<IGetFollowedArtistsResponse>("/me/following?type=artist");
+    return data;
   }
 }

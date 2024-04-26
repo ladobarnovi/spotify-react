@@ -2,7 +2,7 @@ import styles from "./RelatedArtists.module.scss"
 import { api } from "api";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import EntityCard from "components/EntityCard/EntityCard";
+import EntityGrid from "components/EntityGrid/EntityGrid";
 
 function RelatedArtists() {
   const { id } = useParams();
@@ -13,16 +13,9 @@ function RelatedArtists() {
   })
 
   return arrRelatedArtists ? (
-    <div className={ styles.relatedArtists }>
+    <div className={styles.relatedArtists}>
       <p className={styles.title}>Fans also like</p>
-
-      <div className={styles.gridView}>
-        {
-          arrRelatedArtists.map((artist) => (
-            <EntityCard data={artist} />
-          ))
-        }
-      </div>
+      <EntityGrid arrEntities={arrRelatedArtists} />
     </div>
   ) : null;
 }

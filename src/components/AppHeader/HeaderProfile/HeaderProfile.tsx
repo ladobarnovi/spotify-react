@@ -2,9 +2,11 @@ import styles from "./HeaderProfile.module.scss"
 import { useAuth } from "context/AuthContext";
 import ContextMenu, { IContextMenuOptions } from "components/ContextMenu/ContextMenu";
 import { AUTH_TOKEN_KEY } from "utils/auth";
+import { useNavigate } from "react-router-dom";
 
 function HeaderProfile() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const profileImage = user?.images[0].url;
   const userName = user?.display_name;
@@ -25,7 +27,7 @@ function HeaderProfile() {
           },
           {
             title: "Profile",
-            onClick: () => {}
+            onClick: () => navigate(`/user/${user?.id}`)
           },
           {
             title: "Settings",
