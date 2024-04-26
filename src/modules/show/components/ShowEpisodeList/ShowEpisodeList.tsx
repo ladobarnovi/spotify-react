@@ -15,7 +15,7 @@ function ShowEpisodeList({ showId }: IProps) {
     if (showId == null) return;
 
     (async () => {
-      const response = await api.shows.getShowEpisodes({ showId });
+      const response = await api.shows.GetShowEpisodes({ showId });
 
       setArrEpisodes(response.items);
     })()

@@ -33,7 +33,7 @@ function SearchKeyword() {
   async function search(): Promise<void> {
     try {
       setIsLoading(true);
-      const { albums, artists, tracks, playlists, episodes, shows } = await api.search.search({
+      const { albums, artists, tracks, playlists, episodes, shows } = await api.search.SearchItems({
         q: keyword as string
       });
 
@@ -51,7 +51,7 @@ function SearchKeyword() {
 
   const { data } = useQuery({
     queryKey: [ "searchItems", keyword ],
-    queryFn: async () => await api.search.search({ q: keyword as  string })
+    queryFn: async () => await api.search.SearchItems({ q: keyword as  string })
   });
 
   useEffect(() => {

@@ -8,7 +8,7 @@ interface IProps {
 export default function UserFollowedArtistsRow({ userId }: IProps) {
   const { data: arrArtists } = useQuery({
     queryKey: [ "fetchFollowedArtists", userId ],
-    queryFn: async () => (await api.me.getFollowedArtists()).artists.items,
+    queryFn: async () => (await api.me.GetFollowedArtists({ type: "artist" })).artists.items,
     enabled: !!userId
   });
 

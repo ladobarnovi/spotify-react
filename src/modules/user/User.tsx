@@ -11,7 +11,7 @@ export default function User() {
 
   const { data: user } = useQuery({
     queryKey: [ "fetchUser", userId ],
-    queryFn: async () => await api.users.getUser({ userId: userId as string }),
+    queryFn: async () => await api.users.GetUserProfile({ userId: userId as string }),
     enabled: !!userId,
   });
 

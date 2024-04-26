@@ -1,7 +1,5 @@
 import styles from "./SearchCategoryList.module.scss"
-import { useEffect, useState } from "react";
 import { api } from "api";
-import { ICategory } from "types/category";
 import { NavLink } from "react-router-dom";
 import ResponsiveGridWrapper from "components/ResponsiveGridWrapper/ResponsiveGridWrapper";
 import { useQuery } from "react-query";
@@ -9,7 +7,7 @@ import { useQuery } from "react-query";
 function SearchCategoryList() {
   const { data: arrCategories } = useQuery({
     queryKey: [ "categories" ],
-    queryFn: async () => (await api.browse.getCategories()).categories.items
+    queryFn: async () => (await api.browse.GetSeveralBrowseCategories()).categories.items
   });
 
   function generateRandomBackground(): React.CSSProperties {

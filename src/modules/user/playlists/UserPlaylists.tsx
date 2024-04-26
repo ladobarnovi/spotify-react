@@ -9,7 +9,7 @@ export default function UserPlaylists() {
 
   const { data: arrUserPlaylists } = useQuery({
     queryKey: [ "fetchUserPlaylists", userId ],
-    queryFn: async () => (await api.users.getUserPlaylists({ userId: userId as string })).items,
+    queryFn: async () => (await api.users.GetUserPlaylists({ userId: userId as string })).items,
     enabled: !!userId
   });
 

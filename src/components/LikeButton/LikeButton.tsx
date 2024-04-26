@@ -31,8 +31,8 @@ function LikeButton({ data, className }: IProps) {
     }
     else if (type === "album") {
       isFollowed ?
-        await api.me.unfollowAlbum({ albumId: id }) :
-        await api.me.followAlbum({ albumId: id });
+        await api.me.UnfollowAlbums({ arrAlbumIds: [ id ] }) :
+        await api.me.FollowAlbums({ arrAlbumIds: [ id ] });
     }
 
     dispatch(isFollowed ? removeFollowedEntityId(id) : addFollowedEntityId(id));

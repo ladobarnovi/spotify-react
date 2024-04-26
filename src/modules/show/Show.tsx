@@ -24,7 +24,7 @@ function Show() {
 
   const { data: show } = useQuery({
     queryKey: [ "fetchShow", id ],
-    queryFn: async () => await api.shows.getShow({ showId: id as string })
+    queryFn: async () => await api.shows.GetShow({ showId: id as string })
   })
 
   useEffect(() => {

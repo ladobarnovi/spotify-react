@@ -12,7 +12,7 @@ function Episode() {
 
   const { data: episode } = useQuery({
     queryKey: [ "fetchEpisode", id ],
-    queryFn: async () => await api.episodes.getEpisode({ episodeId: id as string })
+    queryFn: async () => await api.episodes.GetEpisode({ episodeId: id as string })
   })
 
   if (episode == null) return null;

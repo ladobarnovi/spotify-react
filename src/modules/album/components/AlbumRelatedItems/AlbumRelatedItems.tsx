@@ -14,7 +14,7 @@ function AlbumRelatedItems({ album }: IProps) {
     queryKey: [ "fetchRelatedAlbums", album.id ],
     queryFn: async () => {
       const artistId = album.artists[0].id;
-      const response = await api.artists.albums({ artistId });
+      const response = await api.artists.GetArtistsAlbums({ artistId });
       return response.items;
     }
   })

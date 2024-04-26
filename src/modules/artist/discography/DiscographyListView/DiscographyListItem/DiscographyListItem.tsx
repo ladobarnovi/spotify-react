@@ -24,7 +24,7 @@ function DiscographyListItem({ album }: IProps) {
     (async () => {
       if (!canLoad) return;
 
-      const albumResponse = await api.albums.getAlbum({ albumId: album.id });
+      const albumResponse = await api.albums.GetAlbum({ albumId: album.id });
       setArrTrackContainers(albumResponse.tracks.items.map((track) => ({
         added_at: "",
         track,

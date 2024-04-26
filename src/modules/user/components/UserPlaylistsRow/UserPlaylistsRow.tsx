@@ -9,7 +9,7 @@ interface IProps {
 export default function UserPlaylistsRow({ userId }: IProps) {
   const { data: arrUserPlaylists } = useQuery({
     queryKey: [ "fetchUserPlaylists", userId ],
-    queryFn: async () => (await api.users.getUserPlaylists({ userId })).items,
+    queryFn: async () => (await api.users.GetUserPlaylists({ userId })).items,
     enabled: !!userId
   });
 

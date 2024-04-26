@@ -11,7 +11,7 @@ export function useEntityFetch() {
     let offset = 0;
 
     while (true) {
-      const { items, total } = await api.me.playlists({
+      const { items, total } = await api.me.GetPlaylists({
         limit: ENTITY_LIMIT,
         offset
       });
@@ -32,7 +32,7 @@ export function useEntityFetch() {
     let offset = 0;
 
     while (true) {
-      const { items, total } = await api.me.albums({
+      const { items, total } = await api.me.GetAlbums({
         limit: ENTITY_LIMIT,
         offset
       });
@@ -53,7 +53,7 @@ export function useEntityFetch() {
     let after: string | null = null;
 
     while (true) {
-      const { artists: { items } } = await api.me.following({
+      const { artists: { items } } = await api.me.GetFollowedArtists({
         type: "artist",
         limit: ENTITY_LIMIT,
         after

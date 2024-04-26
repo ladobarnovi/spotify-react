@@ -19,9 +19,8 @@ function TrackArtistTopAlbums({ arrArtists }: IProps) {
 
   useEffect(() => {
     (async () => {
-      const arrPromises = arrArtists.map(async (artist) => await api.artists.albums({ artistId: artist.id }))
+      const arrPromises = arrArtists.map(async (artist) => await api.artists.GetArtistsAlbums({ artistId: artist.id }))
       const arrResponses = await Promise.all(arrPromises);
-      console.log(arrResponses);
 
       const arrTuples: ITuple[] = arrResponses.map((response, index) => ({
         artist: arrArtists[index],

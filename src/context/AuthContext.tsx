@@ -26,7 +26,7 @@ export function AuthProvider({ children }: IProps) {
   const token = localStorage.getItem("token") || null;
   const { data: user, isLoading, isError } = useQuery({
     queryKey: [ "fetchUser", token ],
-    queryFn: async () => await api.me.user(),
+    queryFn: async () => await api.me.GetProfile(),
     enabled: !!token,
   });
 

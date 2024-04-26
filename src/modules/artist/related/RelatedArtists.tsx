@@ -9,7 +9,7 @@ function RelatedArtists() {
 
   const { data: arrRelatedArtists } = useQuery({
     queryKey: [ "fetchRelatedArtists", id ],
-    queryFn: async () => (await api.artists.relatedArtists({ artistId: id as string })).artists
+    queryFn: async () => (await api.artists.GetArtistsRelatedArtists({ artistId: id as string })).artists
   })
 
   return arrRelatedArtists ? (

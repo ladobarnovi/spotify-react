@@ -23,7 +23,7 @@ function Artist() {
   const { data: artist } = useQuery({
     queryKey: [ "fetchArtist", id ],
     queryFn: async () => {
-      return await api.artists.getArtist({ artistId: id as string })
+      return await api.artists.GetArtist({ artistId: id as string })
     }
   })
 

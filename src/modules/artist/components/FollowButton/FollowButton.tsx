@@ -32,16 +32,16 @@ function FollowButton({ entity }: IProps) {
     const { id } = entity;
 
     isFollowed ?
-      await api.me.unfollowArtist({ artistId: id }) :
-      await api.me.followArtist({ artistId: id });
+      await api.me.UnfollowArtists({ arrArtistIds: [ id ] }) :
+      await api.me.FollowArtists({ arrArtistIds: [ id ] });
   }
 
   async function toggleShowFollow(): Promise<void> {
     const { id } = entity;
 
     isFollowed ?
-      await api.shows.followShow({ showId: id }) :
-      await api.shows.unfollowShow({ showId: id })
+      await api.me.FollowShows({ arrShowIds: [ id ] }) :
+      await api.me.UnfollowShows({ arrShowIds: [ id ] })
   }
 
   useEffect(() => {

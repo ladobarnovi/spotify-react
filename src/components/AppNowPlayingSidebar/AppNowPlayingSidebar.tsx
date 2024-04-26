@@ -18,7 +18,7 @@ function AppNowPlayingSidebar() {
   useEffect(() => {
     if (trackId == null) return;
     (async () => {
-      const response = await api.tracks.getTrack({ trackId })
+      const response = await api.tracks.GetTrack({ trackId })
       setTrack(response);
     })()
   }, [ trackId ]);
@@ -28,7 +28,7 @@ function AppNowPlayingSidebar() {
     (async () => {
       const artist = trackArtists[0];
       const artistId = getUriId(artist.uri);
-      const response = await api.artists.getArtist({ artistId });
+      const response = await api.artists.GetArtist({ artistId });
       setArtist(response);
     })()
   }, [ trackArtists ]);

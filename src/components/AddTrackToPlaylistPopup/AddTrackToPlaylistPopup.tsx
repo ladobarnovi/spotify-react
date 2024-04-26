@@ -28,7 +28,7 @@ export default function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
   const { keyword } = useSearchContext();
   const { data: arrPlaylists } = useQuery({
     queryKey: [ "fetchMyPlaylists" ],
-    queryFn: async () => (await api.me.playlists({
+    queryFn: async () => (await api.me.GetPlaylists({
       limit: 50,
       offset: 0,
     })).items,

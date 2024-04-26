@@ -17,10 +17,7 @@ function TopTracks({ artistId, onTracksFetched }: IProps) {
 
   const { data: arrTracks } = useQuery({
     queryKey: [ "artistTopTracks", artistId ],
-    queryFn: async () => {
-      const response = await api.artists.topTracks({ artistId });
-      return response.tracks;
-    }
+    queryFn: async () => (await api.artists.GetArtistTopTracks({ artistId })).tracks
   });
 
   useEffect(() => {

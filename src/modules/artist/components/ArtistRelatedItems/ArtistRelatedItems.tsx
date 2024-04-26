@@ -10,10 +10,7 @@ interface IProps {
 function ArtistRelatedItems({ artistId }: IProps) {
   const { data: arrArtists } = useQuery({
     queryKey: [ "fetchRelatedArtists", artistId ],
-    queryFn: async () => {
-      const response = await api.artists.relatedArtists({ artistId });
-      return response.artists;
-    }
+    queryFn: async () => (await api.artists.GetArtistsRelatedArtists({ artistId })).artists
   });
 
   if (arrArtists == null) return null;

@@ -16,12 +16,12 @@ function Discography() {
 
   const { data: artist } = useQuery({
     queryKey: [ "fetchArtist", id ],
-    queryFn: async () => await api.artists.getArtist({ artistId: id as string })
+    queryFn: async () => await api.artists.GetArtist({ artistId: id as string })
   })
 
   const { data: arrAlbums } = useQuery({
     queryKey: [ "artistDiscography", id ],
-    queryFn: async () => (await api.artists.albums({ artistId: id as string })).items
+    queryFn: async () => (await api.artists.GetArtistsAlbums({ artistId: id as string })).items
   })
 
 

@@ -19,10 +19,10 @@ function Track() {
 
   useEffect(() => {
     (async () => {
-      const trackResponse = await api.tracks.getTrack({ trackId: id as string })
+      const trackResponse = await api.tracks.GetTrack({ trackId: id as string })
       setTrack(trackResponse);
       const arrArtistIds = trackResponse.artists.map((artist) => artist.id);
-      const artistResponse = await api.artists.getArtists({ arrIds: arrArtistIds });
+      const artistResponse = await api.artists.GetSeveralArtists({ arrIds: arrArtistIds });
       setArrArtists(artistResponse.artists);
     })()
   }, [ id ]);

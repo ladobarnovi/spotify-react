@@ -16,8 +16,8 @@ function TrackRecommendations({ trackId }: IProps) {
 
   useEffect(() => {
     (async () => {
-      const response = await api.tracks.recommendations({ trackIds: [ trackId ] });
-      setArrTracks(response.tracks.splice(0, 5));
+      const response = await api.tracks.GetRecommendations({ trackIds: [ trackId ] })
+      setArrTracks(response.tracks.splice(0, 5))
     })()
   }, [ trackId ]);
 

@@ -19,7 +19,7 @@ function TrackArtistTopTracks({ artist }: IProps) {
 
   useEffect(() => {
     (async () => {
-      const response = await api.artists.topTracks({ artistId: artist.id });
+      const response = await api.artists.GetArtistTopTracks({ artistId: artist.id });
 
       setArrTracks(response.tracks.splice(0, 5));
     })();

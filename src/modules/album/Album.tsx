@@ -23,7 +23,7 @@ function Album() {
   const { data: album } = useQuery({
     queryKey: [ "fetchAlbum", id ],
     queryFn: async () => {
-      return await api.albums.getAlbum({ albumId: id as string });
+      return await api.albums.GetAlbum({ albumId: id as string });
     }
   });
 

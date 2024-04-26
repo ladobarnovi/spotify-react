@@ -6,7 +6,7 @@ import CardsRow from "components/EntityCard/CardsRow/CardsRow";
 function Home() {
   const { data: arrFeaturedPlaylists } = useQuery({
     queryKey: [ "fetchFeaturedItems" ],
-    queryFn: async () => (await api.browse.featured()).playlists.items
+    queryFn: async () => (await api.browse.GetFeaturedPlaylists()).playlists.items
   });
 
   return (
