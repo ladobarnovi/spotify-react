@@ -44,6 +44,7 @@ function PlaybackBar() {
           onSlideStarted={onSlideStarted}
           minValue={0}
           maxValue={trackDuration || 0}
+          value={trackPosition || 0}
         />
       </div>
       <p className={styles.playbackDuration}>

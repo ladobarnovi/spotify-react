@@ -26,7 +26,6 @@ function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue
 
     setPosition(normalisedPosX);
     onPositionUpdated(normalisedPosX);
-    setFillWidth(normalisedPosX);
   }
 
   function setFillWidth(posX: number) {
@@ -71,7 +70,12 @@ function RangeSlider({ onSlideEnded, onSlideStarted, onPositionUpdated, maxValue
 
   useEffect(() => {
     setFillWidth(position);
-  }, [ ])
+  }, [ position ])
+
+  useEffect(() => {
+    if (isActive) return;
+    setPosition(value);
+  }, [ value ]);
 
   const classIsActive = isActive ? styles.active : null;
 
