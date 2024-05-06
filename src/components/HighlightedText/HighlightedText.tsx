@@ -3,7 +3,7 @@ import { useSearchContext } from "context/SearchContext";
 
 interface IProps {
   text: string;
-  className: string;
+  className?: string;
 }
 
 const HighlightedText = ({ text, className }: IProps) => {
