@@ -1,4 +1,4 @@
-function IconAddQueue() {
+export default function IconAddQueue() {
   return (
     <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16">
       <path
@@ -6,5 +6,3 @@ function IconAddQueue() {
     </svg>
   )
 }
-
-export default IconAddQueue;

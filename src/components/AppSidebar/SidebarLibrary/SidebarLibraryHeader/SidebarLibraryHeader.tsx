@@ -4,6 +4,7 @@ import IconPlus from "components/Icons/IconPlus";
 import IconArrowRight from "components/Icons/IconArrowRight";
 import { useDispatch } from "react-redux";
 import { setIsSidebarCompact } from "store/global/globalSlice";
+import CreatePlaylistContextMenu from "./CreatePlaylistContextMenu/CreatePlaylistContextMenu";
 
 function SidebarLibraryHeader() {
   const dispatch = useDispatch();
@@ -20,11 +21,13 @@ function SidebarLibraryHeader() {
       </button>
 
       <div className={ styles.actions }>
-        <button className={ styles.addPlaylist }>
-          <IconPlus />
-        </button>
-        <button className={ styles.enlarge }>
-          <IconArrowRight />
+        <CreatePlaylistContextMenu>
+          <button className={styles.addPlaylist}>
+            <IconPlus/>
+          </button>
+        </CreatePlaylistContextMenu>
+        <button className={styles.enlarge}>
+          <IconArrowRight/>
         </button>
       </div>
     </div>
