@@ -17,7 +17,6 @@ type Props = {
 }
 
 function MainLayout({ children }: Props) {
-  console.log("Main layout")
   const dispatch = useDispatch();
   const { pathname } = useLocation()
   const { overlayScrollbar, refScrollbar } = useScroll();

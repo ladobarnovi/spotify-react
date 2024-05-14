@@ -1,8 +1,10 @@
-# Getting Started with Create React App
+### Based on Spotify's Web API and Web Playback SDK
+https://developer.spotify.com/documentation/web-api
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+https://developer.spotify.com/documentation/web-playback-sdk
 
 
-### Install Docker
-### Run `docker-compose up` inside the root folder
-### Enjoy
+- Install Docker
+- Run `docker-compose up` inside the root folder
+- Have Spotify account
+- Enjoy
