@@ -3,17 +3,17 @@ import { IEpisode } from "types/podcast";
 import EntityImage from "components/Common/EntityImage/EntityImage";
 import { NavLink, useNavigate } from "react-router-dom";
 import IconVideo from "components/Icons/IconVideo";
-import PlayButton from "components/PlayButton/PlayButton";
 import moment from "moment";
 import { getFormattedDuration } from "utils/duration";
 import { useResize } from "hooks/useResize";
 import { useEffect, useRef, useState } from "react";
+import ContextPlayButton from "../../../../components/ContextPlayButton/ContextPlayButton";
 
 interface IProps {
   episode: IEpisode;
 }
 
-function ShowEpisodeItem({ episode }: IProps) {
+export default function ShowEpisodeItem({ episode }: IProps) {
   const navigate = useNavigate();
   const refMain = useRef<HTMLDivElement>(null);
   const { addOnResize } = useResize();
@@ -71,7 +71,7 @@ function ShowEpisodeItem({ episode }: IProps) {
           <p>{ episode.description }</p>
         </div>
         <div className={styles.bottomWrapper}>
-          <PlayButton />
+          <ContextPlayButton uri={episode.uri}/>
           { elExplicit }
           <p className={styles.date}>{ date } • { duration }</p>
         </div>
@@ -79,5 +79,3 @@ function ShowEpisodeItem({ episode }: IProps) {
     </div>
   )
 }
-
-export default ShowEpisodeItem;

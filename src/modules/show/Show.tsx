@@ -29,8 +29,8 @@ function Show() {
 
   useEffect(() => {
     const destructor = addOnResize(onResize);
-    return destructor();
-  }, [ ]);
+    return () => destructor();
+  }, [ isVertical ]);
 
   const classVertical = isVertical ? styles.vertical : null;
 

@@ -6,6 +6,7 @@ import { getFormattedDuration } from "utils/duration";
 import moment from "moment";
 import PlayButton from "components/PlayButton/PlayButton";
 import { useQuery } from "react-query";
+import ContextPlayButton from "../../components/ContextPlayButton/ContextPlayButton";
 
 function Episode() {
   const { id } = useParams();
@@ -29,7 +30,7 @@ function Episode() {
         <p className={styles.date}>{ date } • { duration }</p>
 
         <div className={styles.episodeActions}>
-          <PlayButton />
+          <ContextPlayButton uri={episode.uri} />
         </div>
 
         <div className={styles.description}>

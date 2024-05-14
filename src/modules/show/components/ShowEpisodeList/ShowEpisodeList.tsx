@@ -1,35 +1,27 @@
 import styles from "./ShowEpisodeList.module.scss"
-import { useEffect, useState } from "react";
-import { IEpisode } from "types/podcast";
 import { api } from "api";
 import ShowEpisodeItem from "modules/show/components/ShowEpisodeItem/ShowEpisodeItem";
+import { useQuery } from "react-query";
 
 interface IProps {
   showId: string;
 }
 
-function ShowEpisodeList({ showId }: IProps) {
-  const [ arrEpisodes, setArrEpisodes ] = useState<IEpisode[]>([]);
+export default function ShowEpisodeList({ showId }: IProps) {
+  const { data } = useQuery({
+    queryKey: [ "fetchShowEpisodes", showId ],
+    queryFn: async () => await api.shows.GetShowEpisodes ({ showId })
+  });
 
-  useEffect(() => {
-    if (showId == null) return;
-
-    (async () => {
-      const response = await api.shows.GetShowEpisodes({ showId });
-
-      setArrEpisodes(response.items);
-    })()
-  }, [ showId ]);
-
-  const elEpisodes = arrEpisodes.map((episode) => (
-    <ShowEpisodeItem episode={episode} />
-  ));
+  if (data == null) return <></>;
 
   return (
     <div className={ styles.showEpisodeList }>
-      { elEpisodes }
+      {
+        data.items.map((episode) => (
+          <ShowEpisodeItem key={episode.id} episode={episode} />
+        ))
+      }
     </div>
   )
 }
-
-export default ShowEpisodeList;

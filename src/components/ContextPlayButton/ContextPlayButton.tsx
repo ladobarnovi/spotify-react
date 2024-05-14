@@ -51,7 +51,7 @@ function ContextPlayButton({ uri, onPlayStateChanged }: IProps) {
       await togglePlay();
     }
     else {
-      if (uriType === "track") {
+      if (uriType === "track" || uriType === "episode") {
         await playTrack([ uri ]);
       }
       else if (uriType === "artist") {
