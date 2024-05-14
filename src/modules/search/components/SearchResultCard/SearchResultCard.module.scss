@@ -83,6 +83,11 @@
       transition: 0.3s ease;
       --play-button-size: 48px;
       --play-button-icon-size: 24px;
+
+      &.active {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     &:hover {

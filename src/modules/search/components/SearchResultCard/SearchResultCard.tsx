@@ -3,28 +3,22 @@ import { IEntityBase } from "types/entityBase";
 import EntityImage from "components/Common/EntityImage/EntityImage";
 import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 import { IAlbum } from "types/album";
-import { IImage } from "types/common";
 import { ITrack } from "types/track";
 import ArtistList from "components/ArtistList/ArtistList";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface IProps {
   data: IEntityBase;
   onNavigated?: (entity: IEntityBase) => void;
 }
 
-function SearchResultCard({ data, onNavigated }: IProps) {
+export default function SearchResultCard({ data, onNavigated }: IProps) {
+  const [ isPlaying, setIsPlaying ] = useState(false);
   const navigate = useNavigate();
 
   if (data == null) return null;
 
-  const image: IImage = (() => {
-    if (data.type === "track") {
-      return (data as ITrack).album.images[0];
-    }
-
-    return data.images[0];
-  })();
   const isImageRounded = data.type === "artist" || data.type === "user";
 
   const elOwner = (() => {
@@ -89,12 +83,10 @@ function SearchResultCard({ data, onNavigated }: IProps) {
           </span>
         </div>
 
-        <div className={styles.buttonContainer}>
-          <ContextPlayButton uri={data.uri} />
+        <div className={`${styles.buttonContainer} ${isPlaying ? styles.active : ""}`}>
+          <ContextPlayButton onPlayStateChanged={setIsPlaying} uri={data.uri} />
         </div>
       </div>
     </div>
   )
 }
-
-export default SearchResultCard;

@@ -22,7 +22,7 @@ function PlayButton({ onClick, isPlaying }: IProps) {
   const elIcon = isPlaying ? <IconPause /> : <IconPlay />;
 
   return (
-    <div className={styles.playButton} onClick={onClickHandler}>
+    <div className={`${styles.playButton} ${isPlaying ? "playing" : ""}`} onClick={onClickHandler}>
       { elIcon }
     </div>
   );

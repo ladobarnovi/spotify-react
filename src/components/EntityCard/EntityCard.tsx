@@ -1,6 +1,6 @@
 import styles from "./EntityCard.module.scss";
 import { IEntityBase } from "types/entityBase";
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 import ArtistList from "components/ArtistList/ArtistList";
 import { IAlbum } from "types/album";
 import moment from "moment";
@@ -26,6 +26,7 @@ interface IProps {
 }
 
 function EntityCard({ data, options, onNavigated, onClosed }: IProps) {
+  const [ isPlaying, setIsPlaying ] = useState(false);
   const navigate = useNavigate();
   const isRounded = data.type === "artist";
   const entityUrl = `/${data.type}/${data.id}`;
@@ -101,8 +102,8 @@ function EntityCard({ data, options, onNavigated, onClosed }: IProps) {
           />
         </div>
 
-        <div className={styles.buttonContainer}>
-          <ContextPlayButton uri={data.uri} />
+        <div className={`${styles.buttonContainer} ${isPlaying ? styles.active : ""}`}>
+          <ContextPlayButton onPlayStateChanged={setIsPlaying} uri={data.uri} />
         </div>
       </div>
       <div className={styles.infoContainer}>
