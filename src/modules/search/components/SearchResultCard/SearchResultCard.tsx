@@ -21,38 +21,8 @@ export default function SearchResultCard({ data, onNavigated }: IProps) {
 
   const isImageRounded = data.type === "artist" || data.type === "user";
 
-  const elOwner = (() => {
-    if (data.type === "album") {
-      const owner = (data as IAlbum).artists[0].name;
-      return (<span className={ styles.ownerArtist }>{ owner }</span>);
-    }
-    else if (data.type === "playlist") {
-      const owner = data.owner.display_name;
-      return (
-        <span className={ styles.ownerForPlaylist }>By { owner }</span>
-      )
-    }
-    else if (data.type === "track") {
-      const track = data as ITrack;
-      const elExplicit = track.explicit ? (
-        <div className={styles.explicit}>
-          <span>E</span>
-        </div>
-      ) : null;
-      return (
-        <span className={styles.ownerForTrack}>
-          { elExplicit }
-          <ArtistList artists={track.artists} />
-        </span>
-      )
-    }
-
-    return null;
-  })();
-
   function navigateToItem() {
     if (data.type === "track") return;
-
     if (onNavigated != null) {
       onNavigated(data);
     }
@@ -74,14 +44,7 @@ export default function SearchResultCard({ data, onNavigated }: IProps) {
           />
         </div>
 
-        <p className={styles.name}>{ data.name }</p>
-        <div className={styles.additionalInfo}>
-          { elOwner }
-
-          <span className={styles.type}>
-            { data.type }
-          </span>
-        </div>
+        <CardInfo data={data} />
 
         <div className={`${styles.buttonContainer} ${isPlaying ? styles.active : ""}`}>
           <ContextPlayButton onPlayStateChanged={setIsPlaying} uri={data.uri} />
@@ -89,4 +52,57 @@ export default function SearchResultCard({ data, onNavigated }: IProps) {
       </div>
     </div>
   )
+}
+
+
+interface ICardInfoProps {
+  data: IEntityBase;
+}
+function CardInfo({ data }: ICardInfoProps) {
+  const { name, type } = data;
+
+  return (
+    <div className={styles.cardInfo}>
+      <p className={styles.name}>{name}</p>
+
+      <div className={styles.rowWrapper}>
+        <CardOwner data={data} />
+        <span className={styles.type}>
+          {type}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+interface ICardOwnerProps {
+  data: IEntityBase;
+}
+function CardOwner({ data }: ICardOwnerProps) {
+  if (data.type === "album") {
+    const owner = (data as IAlbum).artists[0].name;
+    return (<span className={ styles.ownerArtist }>{ owner }</span>);
+  }
+  else if (data.type === "playlist") {
+    const owner = data.owner.display_name;
+    return (
+      <span className={ styles.ownerForPlaylist }>By { owner }</span>
+    )
+  }
+  else if (data.type === "track") {
+    const track = data as ITrack;
+    const elExplicit = track.explicit ? (
+      <div className={styles.explicit}>
+        <span>E</span>
+      </div>
+    ) : null;
+    return (
+      <span className={styles.ownerForTrack}>
+        { elExplicit }
+        <ArtistList artists={track.artists} />
+      </span>
+    )
+  }
+
+  return <></>;
 }

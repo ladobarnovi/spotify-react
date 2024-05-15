@@ -25,48 +25,11 @@ interface IProps {
   onClosed?: (entity: IEntityBase) => void;
 }
 
-function EntityCard({ data, options, onNavigated, onClosed }: IProps) {
+export default function EntityCard({ data, options, onNavigated, onClosed }: IProps) {
   const [ isPlaying, setIsPlaying ] = useState(false);
   const navigate = useNavigate();
   const isRounded = data.type === "artist";
   const entityUrl = `/${data.type}/${data.id}`;
-
-  const elSecondaryInfo = (() => {
-    if (data.type === "album") {
-      const album = data as IAlbum;
-      if (options?.album.showReleaseYear) {
-        let info = moment(album.release_date).format("YYYY");
-
-        if (options.album.showType) {
-          info += ` • ${capitalizeFirstLetter(album.album_type)}`;
-        }
-
-        return info;
-      }
-
-      return <ArtistList artists={album.artists} />;
-    }
-
-    if (data.type === "playlist") {
-      return `By ${data.owner.display_name}`
-    }
-
-    if (data.type === "artist") {
-      return "Artist";
-    }
-
-    if (data.type === "show") {
-      return (data as IPodcast).publisher
-    }
-
-    if (data.type === "episode") {
-      const episode = data as IEpisode
-      const date = moment(episode.release_date).format("MMM DD")
-      const minutes = Math.floor(episode.duration_ms / 1000 / 60);
-
-      return `${date} • ${minutes} min`;
-    }
-  })();
 
   function navigateToItem(): void {
     if (data.type === "track") return;
@@ -106,17 +69,63 @@ function EntityCard({ data, options, onNavigated, onClosed }: IProps) {
           <ContextPlayButton onPlayStateChanged={setIsPlaying} uri={data.uri} />
         </div>
       </div>
-      <div className={styles.infoContainer}>
-        <div className={styles.primary}>
-          { data.name }
-        </div>
-        <div className={styles.secondary}>
-          { elSecondaryInfo }
-        </div>
-      </div>
+      <CardInfo data={data} options={options} />
       { elClose }
     </div>
   )
 }
 
-export default EntityCard;
+
+interface ICardInfoProps {
+  data: IEntityBase;
+  options?: ICardOptions;
+}
+function CardInfo({ data, options }: ICardInfoProps) {
+  const elSecondaryInfo = (() => {
+    if (data.type === "album") {
+      const album = data as IAlbum;
+      if (options?.album.showReleaseYear) {
+        let info = moment(album.release_date).format("YYYY");
+
+        if (options.album.showType) {
+          info += ` • ${capitalizeFirstLetter(album.album_type)}`;
+        }
+
+        return info;
+      }
+
+      return <ArtistList artists={album.artists} />;
+    }
+
+    if (data.type === "playlist") {
+      return `By ${data.owner.display_name}`
+    }
+
+    if (data.type === "artist") {
+      return "Artist";
+    }
+
+    if (data.type === "show") {
+      return (data as IPodcast).publisher
+    }
+
+    if (data.type === "episode") {
+      const episode = data as IEpisode
+      const date = moment(episode.release_date).format("MMM DD")
+      const minutes = Math.floor(episode.duration_ms / 1000 / 60);
+
+      return `${date} • ${minutes} min`;
+    }
+  })();
+
+  return (
+    <div className={styles.infoContainer}>
+      <div className={styles.primary}>
+        {data.name}
+      </div>
+      <div className={styles.secondary}>
+        {elSecondaryInfo}
+      </div>
+    </div>
+  )
+}

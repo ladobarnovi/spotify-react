@@ -5,7 +5,6 @@ import EditPlaylistPopup, { IEditPlaylistPopupData } from "components/EditPlayli
 import { IArtist } from "types/artist";
 import ArtistList from "components/ArtistList/ArtistList";
 import EntityHeaderWrapper from "components/EntityHeaderWrapper/EntityHeaderWrapper";
-import EntityHeaderTitle from "components/EntityHeaderTitle/EntityHeaderTitle";
 import { IImage } from "types/common";
 
 export interface ITrackListHeaderOptions {

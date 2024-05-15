@@ -2,6 +2,6 @@
 
 
 - Install Docker
-- Run `docker-compose up` inside the root folder
+- Run `docker-compose up --build` inside the root folder
 - Have Spotify account
 - Run on your [localhost](http://localhost:3000)

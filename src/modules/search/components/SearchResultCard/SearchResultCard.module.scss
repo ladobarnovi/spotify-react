@@ -24,53 +24,55 @@
       margin-bottom: 20px;
     }
 
-    .name {
-      font-size: 2rem;
-      font-weight: 700;
-      color: white;
-      line-height: 1;
-      margin-bottom: 8px;
-      white-space: nowrap;
-      overflow: hidden;
-      width: 100%;
-      text-overflow: ellipsis;
-    }
-
-    .additionalInfo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.875rem;
-      color: white;
-
-      .ownerForPlaylist {
-        color: #a7a7a7;
+    .cardInfo {
+      .name {
+        font-size: 2rem;
+        font-weight: 700;
+        color: white;
+        line-height: 1;
+        margin-bottom: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 100%;
+        text-overflow: ellipsis;
       }
 
-      .ownerForTrack {
+      .rowWrapper {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 12px;
+        font-size: 0.875rem;
+        color: white;
 
-        .explicit {
-          border-radius: 2px;
-          background-color: hsla(0,0%,100%,.6);
-          font-size: 9px;
-          height: 16px;
-          width: 16px;
+        .ownerForPlaylist {
+          color: #a7a7a7;
+        }
+
+        .ownerForTrack {
           display: flex;
           align-items: center;
-          justify-content: center;
-          color: #121212;
-        }
-      }
+          gap: 4px;
 
-      .type {
-        text-transform: capitalize;
-        font-weight: 700;
-        border-radius: 9999px;
-        background-color: rgba(0,0,0,.2);
-        padding: 4px 12px;
+          .explicit {
+            border-radius: 2px;
+            background-color: hsla(0,0%,100%,.6);
+            font-size: 9px;
+            height: 16px;
+            width: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #121212;
+          }
+        }
+
+        .type {
+          text-transform: capitalize;
+          font-weight: 700;
+          border-radius: 9999px;
+          background-color: rgba(0,0,0,.2);
+          padding: 4px 12px;
+        }
       }
     }
 

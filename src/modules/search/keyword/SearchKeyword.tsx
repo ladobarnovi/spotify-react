@@ -14,7 +14,7 @@ import { useSearchHistory } from "hooks/useSearchHistory";
 import { IEpisode, IPodcast } from "types/podcast";
 import { useQuery } from "react-query";
 
-function SearchKeyword() {
+export default function SearchKeyword() {
   const [ arrAlbums, setArrAlbums ] = useState<IAlbum[]>([ ]);
   const [ arrTracks, setArrTracks ] = useState<ITrack[]>([]);
   const [ arrArtists, setArrArtists ] = useState<IArtist[]>([]);
@@ -108,5 +108,3 @@ function SearchKeyword() {
     </div>
   )
 }
-
-export default SearchKeyword;
