@@ -1,13 +1,18 @@
-import styles from "./AppSidebar.module.scss";
-import SidebarNav from "components/AppSidebar/SidebarNav/SidebarNav";
-import SidebarLibrary from "components/AppSidebar/SidebarLibrary/SidebarLibrary";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import AppSidebarCompact from "./AppSidebarCompact/AppSidebarCompact";
+import AppSidebarFull from "./AppSidebarFull/AppSidebarFull";
+import { SidebarProvider } from "context/SidebarContext";
 
 function AppSidebar() {
+  const isSidebarCompact = useSelector((state: RootState) => state.globalReducer.isSidebarCompact);
+
   return (
-    <div className={ styles.appSidebar }>
-      <SidebarNav />
-      <SidebarLibrary />
-    </div>
+    <>
+      <SidebarProvider>
+        { isSidebarCompact ? (<AppSidebarCompact />) : (<AppSidebarFull />) }
+      </SidebarProvider>
+    </>
   );
 }
 

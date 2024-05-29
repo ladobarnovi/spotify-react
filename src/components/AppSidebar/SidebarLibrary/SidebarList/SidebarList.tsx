@@ -10,9 +10,9 @@ import SidebarViewTypeContextMenu, {
 import SidebarCompactView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarCompactView/SidebarCompactView";
 import SidebarListView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarListView/SidebarListView";
 import SidebarGridView from "components/AppSidebar/SidebarLibrary/SidebarList/SidebarGridView/SidebarGridView";
-import { useLibrary } from "hooks/useLibrary";
 import { useScroll } from "hooks/useScroll";
 import EntitySearchInput from "../EntitySearchInput/EntitySearchInput";
+import { useSidebarContext } from "context/SidebarContext";
 
 interface IProps {
   filterBy: string | null;
@@ -20,19 +20,19 @@ interface IProps {
 
 function SidebarList({ filterBy }: IProps) {
   const { refScrollbar } = useScroll();
-  const { arrAllEntities } = useLibrary();
+  const { arrLibrary } = useSidebarContext();
   const [ arrFilteredEntities, setArrFilteredEntities ] = useState<(IPlaylist | IAlbum | IArtist)[]>([]);
   const [ viewType, setViewType ] = useState(EViewOptions.list);
   const [ sortBy, setSortBy ] = useState(ESortingOptions.recent);
 
   useEffect(() => {
     if (filterBy == null) {
-      return setArrFilteredEntities(arrAllEntities);
+      return setArrFilteredEntities(arrLibrary);
     }
 
-    const arrFiltered = arrAllEntities.filter((item) => item.type === filterBy);
+    const arrFiltered = arrLibrary.filter((item) => item.type === filterBy);
     setArrFilteredEntities(arrFiltered);
-  }, [ filterBy, arrAllEntities ]);
+  }, [ filterBy, arrLibrary ]);
 
   const elView = (() => {
     if (viewType === EViewOptions.list) {

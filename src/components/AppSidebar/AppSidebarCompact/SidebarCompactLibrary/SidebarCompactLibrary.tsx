@@ -1,17 +1,17 @@
 import styles from "./SidebarCompactLibrary.module.scss"
-import { useLibrary } from "hooks/useLibrary";
 import IconLibrary from "components/Icons/IconLibrary";
 import { NavLink } from "react-router-dom";
 import { useScroll } from "hooks/useScroll";
 import { setIsSidebarCompact } from "store/global/globalSlice";
 import { useDispatch } from "react-redux";
+import { useSidebarContext } from "context/SidebarContext";
 
 function SidebarCompactLibrary() {
   const { refScrollbar } = useScroll();
-  const { arrAllEntities } = useLibrary();
+  const { arrLibrary } = useSidebarContext();
   const dispatch = useDispatch();
 
-  const elEntities = arrAllEntities.map((entity) => {
+  const elEntities = arrLibrary.map((entity) => {
     const imageUrl = entity.images ? entity.images[0].url : undefined;
 
 

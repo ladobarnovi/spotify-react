@@ -22,7 +22,6 @@ function MainLayout({ children }: Props) {
   const { overlayScrollbar, refScrollbar } = useScroll();
 
   const isNowPlayingActive = useSelector((state: RootState) => state.globalReducer.isNowPlayingActive);
-  const isSidebarCompact = useSelector((state: RootState) => state.globalReducer.isSidebarCompact);
 
   useEffect(() => {
     if (refScrollbar.current != null && overlayScrollbar != null) {
@@ -42,7 +41,6 @@ function MainLayout({ children }: Props) {
     });
   }, [ pathname ])
 
-  const elSidebar = isSidebarCompact ? <AppSidebarCompact /> : <AppSidebar />;
   const elNowPlaying = isNowPlayingActive ? <AppNowPlayingSidebar /> : null;
 
   const classExtendedGrid = isNowPlayingActive ? styles.extendedGrid : "";
@@ -50,7 +48,7 @@ function MainLayout({ children }: Props) {
   return (
     <div className={styles.mainContainer}>
       <div className={`${styles.mainLayout} ${classExtendedGrid}`}>
-        { elSidebar }
+        <AppSidebar />
         <div className={styles.scrollContainer}>
           <AppHeader />
 
