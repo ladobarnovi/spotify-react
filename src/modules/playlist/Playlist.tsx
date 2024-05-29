@@ -3,21 +3,19 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "api";
 import { usePlayer } from "hooks/usePlayer";
 import { useParams } from 'react-router-dom';
-import { getFullDuration } from "utils/duration";
 import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
-import TrackListHeader, { ITrackListHeaderOptions } from "components/TrackList/TrackListHeader/TracklistHeader";
 import PlaylistContextMenu from "modules/playlist/components/PlaylistContextMenu/PlaylistContextMenu";
 import LikeButton from "components/LikeButton/LikeButton";
 import TracklistViewContextMenu from "components/TrackList/TrackListViewContextMenu/TracklistViewContextMenu";
 
 import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 import { useInfiniteQuery, useQuery } from "react-query";
-import axios from "axios";
-import { ITrackContainer } from "../../types/track";
+import { ITrackContainer } from "types/track";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "store";
+import PlaylistHeader from "./components/PlaylistHeader/PlaylistHeader";
 
-function Playlist() {
+export default function Playlist() {
   const scrollDistance = useSelector((state: RootState) => state.globalReducer.scrollDistance);
   const [ isCompact, setIsCompact ] = useState(false);
   const { id } = useParams();
@@ -67,21 +65,9 @@ function Playlist() {
     await playContext(playlist.uri, index)
   }
 
-  const headerOptions: ITrackListHeaderOptions = {
-    id: playlist.id,
-    imageUrl: playlist.images[0].url,
-    image: playlist.images[0],
-    title: playlist.name,
-    owner: playlist.owner,
-    totalTracks: playlist.tracks.total,
-    description: playlist.description,
-    type: playlist.type,
-    duration: getFullDuration(playlist.tracks.items.map(item => item.track)),
-  }
-
   return (
     <div ref={mainRef} className={styles.playlist}>
-      <TrackListHeader options={headerOptions} />
+      <PlaylistHeader playlist={playlist} />
       <div className={styles.playlistBody}>
         <div className={styles.playlistControls}>
           <ContextPlayButton uri={playlist.uri} />
@@ -105,5 +91,3 @@ function Playlist() {
     </div>
   )
 }
-
-export default Playlist;

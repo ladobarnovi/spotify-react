@@ -1,0 +1,27 @@
+.description {
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  max-height: 74px;
+  overflow: hidden;
+  word-break: break-word;
+  font-size: 0.875rem;
+  color: hsla(0,0%,100%,.7);
+}
+
+.additionalInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+}
+
+.owner {
+  font-weight: 700;
+  color: white;
+  font-size: 0.875rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

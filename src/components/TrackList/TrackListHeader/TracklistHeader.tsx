@@ -27,7 +27,7 @@ interface IProps {
   options: ITrackListHeaderOptions;
 }
 
-function TracklistHeader({ options }: IProps) {
+export default function TracklistHeader({ options }: IProps) {
   const [ isIditingOn, setIsEditingOn ] = useState(false);
 
   const { id, title, description, imageUrl, image, type, owner, totalTracks, duration, artists } = options;
@@ -85,5 +85,3 @@ function TracklistHeader({ options }: IProps) {
     </EntityHeaderWrapper>
   );
 }
-
-export default TracklistHeader;
