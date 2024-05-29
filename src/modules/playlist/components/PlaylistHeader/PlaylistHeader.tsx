@@ -22,7 +22,7 @@ export default function PlaylistHeader({ playlist }: IProps) {
 
       <div className={styles.additionalInfo}>
         <Owner owner={owner}/>
-        <span> • </span>
+        <span>•</span>
         <p>{playlist.tracks.total} songs,</p>
         <p>{duration}</p>
       </div>

@@ -2,9 +2,7 @@ import styles from "./Album.module.scss";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "api";
-import TracklistHeader, { ITrackListHeaderOptions } from "components/TrackList/TrackListHeader/TracklistHeader";
 import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
-import { getFullDuration } from "utils/duration";
 import moment from "moment";
 import LikeButton from "components/LikeButton/LikeButton";
 import AlbumContextMenu from "modules/album/components/AlbumContextMenu/AlbumContextMenu";
@@ -14,6 +12,7 @@ import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 
 import { useQuery } from "react-query";
 import AlbumRelatedItems from "./components/AlbumRelatedItems/AlbumRelatedItems";
+import AlbumHeader from "./components/AlbumHeader/AlbumHeader";
 
 function Album() {
   const [ isCompact, setIsCompact ] = useState(false);
@@ -28,17 +27,6 @@ function Album() {
   });
 
   if (album == null) return null;
-
-  const headerOptions: ITrackListHeaderOptions = {
-    id: album.id,
-    imageUrl: album.images[0].url,
-    image: album.images[0],
-    type: album.album_type,
-    title: album.name,
-    totalTracks: album.tracks.items.length,
-    duration: getFullDuration(album.tracks.items),
-    artists: album.artists,
-  }
 
   const formattedDate = moment(album.release_date).format("MMMM D, yyyy");
   const elCopyright = (<ul className={styles.copyrights}>{
@@ -57,7 +45,7 @@ function Album() {
 
   return (
     <div className={styles.album}>
-      <TracklistHeader options={headerOptions} />
+      <AlbumHeader album={album} />
 
       <div className={styles.albumBody}>
         <div className={styles.albumControls}>

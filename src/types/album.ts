@@ -25,5 +25,6 @@ export interface IAlbum extends IEntityBase{
   tracks: {
     href: string;
     items: ITrack[];
+    total: number;
   };
 }
