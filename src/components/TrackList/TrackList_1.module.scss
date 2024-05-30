@@ -1,0 +1,392 @@
+.trackList {
+  &.col6 {
+    --columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [var3] minmax(120px,2fr) [last] minmax(120px,1fr);
+  }
+  &.col5 {
+    --columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [last] minmax(120px,1fr);
+  }
+  &.col4 {
+    --columns: [index] 16px [first] 4fr [var1] 2fr [last] minmax(120px,1fr);
+  }
+  &.col3 {
+    --columns: [index] 16px [first] 4fr [last] minmax(120px,1fr);
+  }
+  &.col2 {
+    --columns: [first] 4fr [last] minmax(120px,1fr);
+  }
+
+  .gridItem {
+    display: grid;
+    grid-template-columns: var(--columns);
+    grid-gap: 16px;
+    padding: 0 16px;
+    align-items: center;
+    color: #b3b3b3;
+    font-size: 0.875rem;
+
+    .colNumber {
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .colDuration {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 32px;
+      position: relative;
+    }
+  }
+
+  .listHeader {
+    margin-bottom: 16px;
+    border-bottom: 1px solid hsla(0,0%,100%,.1);
+    height: 36px;
+
+    .colDuration {
+      svg {
+        width: 16px;
+        height: 16px;
+        fill: #b3b3b3;
+      }
+    }
+
+    &.fixed {
+      position: sticky;
+      z-index: 1;
+      top: 64px;
+      background-color: #1a1a1a;
+      margin-left: -24px;
+      margin-right: -24px;
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  .listBody {
+    .trackItem {
+      height: 56px;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: background-color 0.1s;
+
+      .colNumber {
+        .index {
+          text-align: center;
+          font-size: 1rem;
+        }
+      }
+
+      &:hover {
+        background-color: hsla(0,0%,100%,.1);
+
+        .colNumber {
+          .index {
+            display: none;
+          }
+
+          .playbackActions {
+            display: block;
+          }
+        }
+
+        .colDuration {
+          .moreActions {
+            display: block;
+          }
+        }
+
+        .colTitle {
+          .imageContainer {
+            .iconContainer {
+              display: block;
+            }
+          }
+        }
+      }
+
+      &.selected {
+        background-color: hsla(0,0%,100%,.3);
+
+        .colNumber {
+          .index {
+            display: none;
+          }
+
+          .playbackActions {
+            display: block;
+          }
+        }
+
+        .colAlbum, .colTitle {
+          a {
+            color: white;
+          }
+        }
+
+        .colDuration {
+          .moreActions {
+            display: block;
+          }
+        }
+      }
+
+      &.playing {
+        .colNumber {
+          .index {
+            display: none;
+          }
+
+          .playbackActions {
+            display: block;
+
+            svg {
+              display: none;
+            }
+          }
+        }
+
+        &:hover {
+          .playbackActions {
+            svg {
+              display: block !important;
+            }
+
+            img {
+              display: none;
+            }
+          }
+        }
+      }
+
+      &.playing,
+      &.paused {
+        .colNumber {
+          .index {
+            color: #1ed760;
+          }
+        }
+
+        .colTitle {
+          .trackInfo {
+            .name {
+              color: #1ed760;
+            }
+          }
+
+          .imageContainer {
+            .iconContainer {
+              display: block;
+
+              img {
+                display: none !important;
+              }
+            }
+          }
+        }
+      }
+
+      .colNumber {
+        line-height: 1;
+
+        .playbackActions {
+          fill: white;
+          display: none;
+          font-size: 0;
+
+          svg {
+            width: 16px;
+            height: 16px;
+          }
+
+          &.pause {
+            svg {
+              display: none;
+            }
+
+            &:hover {
+              img {
+                display: none;
+              }
+
+              svg {
+                display: block;
+              }
+            }
+          }
+        }
+      }
+
+      .colTitle {
+        display: flex;
+        align-items: center;
+
+        .imageContainer {
+          position: relative;
+          margin-right: 16px;
+          font-size: 0;
+
+          img {
+            width: 40px;
+            height: 40px;
+          }
+
+          .iconContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+
+            svg {
+              width: 24px;
+              height: 24px;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              fill: white;
+            }
+          }
+        }
+
+        .trackInfo {
+          .name {
+            font-size: 1rem;
+            color: white;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            display: -webkit-box;
+            word-break: break-all;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.25;
+          }
+
+          .artists {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .explicit {
+              border-radius: 2px;
+              background-color: hsla(0,0%,100%,.6);
+              font-size: 9px;
+              height: 16px;
+              width: 16px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #121212;
+            }
+          }
+        }
+      }
+
+      .colAlbum {
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        a {
+          white-space: nowrap;
+          color: #b3b3b3;
+
+          &:hover {
+            color: white;
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .colDate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .colDuration {
+        .moreActions {
+          position: absolute;
+          top: 50%;
+          right: 0;
+          transform: translateY(-50%);
+          cursor: pointer;
+          height: 16px;
+          display: none;
+
+          svg {
+            width: 16px;
+            height: 16px;
+            fill: #a7a7a7;
+          }
+        }
+
+        p {
+          width: 36px;
+          margin-left: 24px;
+        }
+      }
+    }
+  }
+
+  &.compact {
+    .listBody {
+      .trackItem {
+        height: 32px;
+      }
+    }
+  }
+
+  .trackItemShimmering {
+    height: 56px;
+
+    .colNumber {
+      div {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        background-color: #282828;
+        background-position-x: -12px;
+      }
+    }
+
+    .colTitle {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 12px;
+
+      & > div {
+        height: 12px;
+        border-radius: 4px;
+        background-color: #282828;
+        width: 130px;
+
+        &:last-child {
+          width: 120px;
+        }
+      }
+    }
+
+    .colDuration {
+      div {
+        width: 40px;
+        height: 12px;
+        border-radius: 4px;
+        background-color: #282828;
+      }
+    }
+  }
+
+  &.searchResults {
+    .listBody {
+      .trackItem {
+        padding-left: 8px;
+      }
+    }
+  }
+}

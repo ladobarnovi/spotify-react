@@ -13,6 +13,7 @@ import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 import { useQuery } from "react-query";
 import AlbumRelatedItems from "./components/AlbumRelatedItems/AlbumRelatedItems";
 import AlbumHeader from "./components/AlbumHeader/AlbumHeader";
+import TrackList_1 from "../../components/TrackList/TrackList_1";
 
 function Album() {
   const [ isCompact, setIsCompact ] = useState(false);
@@ -58,6 +59,13 @@ function Album() {
           </div>
         </div>
 
+        <TrackList_1
+          layoutType={ETrackListLayoutType.album}
+          arrTracks={album.tracks.items}
+          isCompact={isCompact}
+          onPlay={onPlayTrack}
+          maxColCount={isCompact ? 4 : 3}
+        />
         <TrackList
           layoutType={ETrackListLayoutType.album}
           arrTracks={album.tracks.items}
