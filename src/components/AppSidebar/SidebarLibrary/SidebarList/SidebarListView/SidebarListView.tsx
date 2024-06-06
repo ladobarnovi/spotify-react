@@ -9,13 +9,16 @@ import { useSearchContext } from "context/SearchContext";
 import EntityImage from "components/Common/EntityImage/EntityImage";
 import HighlightedText from "components/HighlightedText/HighlightedText";
 import EntityOwner from "components/Common/EntityOwner/EntityOwner";
+import { usePlayer } from "hooks/usePlayer";
 
 interface IProps {
   arrData: (IPlaylist | IAlbum | IArtist)[]
 }
 
-function SidebarListView({ arrData }: IProps) {
+export default function SidebarListView({ arrData }: IProps) {
   const { keyword } = useSearchContext();
+  const { getIsInPlayback } = usePlayer();
+
   function makeUrl(entity: IEntityBase): string {
     return `/${entity.type}/${entity.id}`;
   }
@@ -23,8 +26,14 @@ function SidebarListView({ arrData }: IProps) {
   const arrFilteredData = !!keyword ? arrData.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase())) : arrData;
 
   const elItems = arrFilteredData.map((item) => {
+    const isInPlayback = getIsInPlayback(item);
+
     return (
-      <NavLink to={makeUrl(item)} key={item.id} className={({ isActive }) => isActive ? styles.active : ""}>
+      <NavLink
+        to={makeUrl(item)}
+        key={item.id}
+        className={({ isActive }) => `${isActive ? styles.active : ""} ${isInPlayback ? styles.playback : ""}`}
+      >
         <div className={styles.imageContainer}>
           <EntityImage entity={item} isRounded={false} />
         </div>
@@ -46,5 +55,3 @@ function SidebarListView({ arrData }: IProps) {
     </div>
   )
 }
-
-export default SidebarListView;

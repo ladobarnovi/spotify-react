@@ -10,6 +10,7 @@ import {
 import store, { RootState } from "store";
 import { useSelector } from "react-redux";
 import { api } from "api";
+import { IEntityBase } from "../types/entityBase";
 
 export enum ESpotifyRepeatMode {
   NO_REPEAT,
@@ -208,6 +209,20 @@ export function usePlayer() {
     return uri.split(":")[2];
   }
 
+  function getIsInPlayback(entity: IEntityBase): boolean {
+    if (entity.id === uriId && (isPlaying || isPaused)) {
+      return true;
+    }
+
+    if (entity.type === "album" || entity.type === "playlist") {
+      if (entity.uri === contextUri && (isPlaying || isPaused)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   return {
     deviceId,
     trackPosition,
@@ -241,5 +256,6 @@ export function usePlayer() {
 
     getUriId,
     getUriType,
+    getIsInPlayback,
   }
 }

@@ -45,5 +45,13 @@
         background-color: hsla(0, 0%, 100%, 0.1);
       }
     }
+
+    &.playback {
+      .infoContainer {
+        .title {
+          color: #1ed760;
+        }
+      }
+    }
   }
 }

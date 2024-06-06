@@ -4,8 +4,9 @@ import { IAlbum } from "types/album";
 import { IArtist } from "types/artist";
 import { NavLink } from "react-router-dom";
 import { capitalizeFirstLetter } from "utils/string";
-import HighlightedText from "../../../../HighlightedText/HighlightedText";
-import { useSearchContext } from "../../../../../context/SearchContext";
+import HighlightedText from "components/HighlightedText/HighlightedText";
+import { useSearchContext } from "context/SearchContext";
+import { usePlayer } from "hooks/usePlayer";
 
 interface IProps {
   arrData: (IPlaylist | IAlbum | IArtist)[]
@@ -14,10 +15,17 @@ interface IProps {
 function SidebarCompactView({ arrData }: IProps) {
   const { keyword } = useSearchContext();
   const arrFilteredData = keyword.trim() ? arrData.filter((item) => item.name.toLowerCase().includes(keyword)) : arrData;
+  const { getIsInPlayback } = usePlayer();
 
   const elItems = arrFilteredData.map((item) => {
+    const isInPlayback = getIsInPlayback(item);
+
     return (
-      <NavLink to={`/${item.type}/${item.id}`} key={item.id} className={styles.item}>
+      <NavLink
+        to={`/${item.type}/${item.id}`}
+        key={item.id}
+        className={({ isActive }) => `${isActive ? styles.active : ""} ${isInPlayback ? styles.playback : ""}`}
+      >
         <HighlightedText className={styles.title} text={ item.name } />
         <span>•</span>
         <span className={styles.entityType}>{ capitalizeFirstLetter(item.type) }</span>
