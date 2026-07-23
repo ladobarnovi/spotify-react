@@ -1,0 +1,18 @@
+.tracklistViewContextMenu {
+  font-size: 0;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    color: white;
+    color: hsla(0,0%,100%,.7);
+
+    svg {
+      fill: hsla(0,0%,100%,.7);
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

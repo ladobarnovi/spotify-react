@@ -1,0 +1,26 @@
+.volumeSlider {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 4px;
+
+  button {
+    font-size: 0 ;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: #a7a7a7;
+    }
+
+    &:hover {
+      svg {
+        fill: white;
+      }
+    }
+  }
+
+  .sliderContainer {
+    width: 92px;
+  }
+}

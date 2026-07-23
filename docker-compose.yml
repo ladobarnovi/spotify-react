@@ -1,0 +1,14 @@
+version: '1'
+
+services:
+  spotify-react:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+    stdin_open: true
+    tty: true

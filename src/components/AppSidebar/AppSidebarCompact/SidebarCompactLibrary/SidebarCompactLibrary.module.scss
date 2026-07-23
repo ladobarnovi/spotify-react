@@ -1,0 +1,55 @@
+.sidebarCompactLibrary {
+  width: 100%;
+  background-color: #121212;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  overflow: hidden;
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+    box-shadow: 0 6px 10px rgba(0,0,0,.6);
+    width: 100%;
+
+    button {
+      font-size: 0;
+
+      svg {
+        width: 24px;
+        height: 24px;
+        fill: #b3b3b3;
+      }
+    }
+  }
+
+  .scrollMain {
+    width: 72px;
+    height: 100%;
+    padding: 8px 4px;
+    display: flex;
+
+    .entityItem {
+      padding: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 0;
+      border-radius: 6px;
+
+      img {
+        width: 48px;
+        height: 48px;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      &:hover {
+        background-color: #1a1a1a;
+      }
+    }
+  }
+}

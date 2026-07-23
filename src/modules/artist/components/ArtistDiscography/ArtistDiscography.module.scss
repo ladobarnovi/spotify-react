@@ -1,0 +1,28 @@
+.artistDiscography {
+  .discographyFilters {
+    color: red;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    button {
+      font-size: 0.875rem;
+      color: white;
+      transition: all 0.2s;
+      background-color: hsla(0,0%,100%,.07);
+      border-radius: 9999px;
+      padding: 4px 12px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: hsla(0,0%,100%,.1);
+      }
+
+      &.active {
+        color: black;
+        background-color: white;
+      }
+    }
+  }
+}

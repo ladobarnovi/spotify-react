@@ -1,0 +1,18 @@
+.playlist {
+  .playlistBody {
+    position: relative;
+    z-index: 1;
+    padding: 24px;
+
+    .playlistControls {
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+      gap: 24px;
+
+      .viewSelector {
+        margin-left: auto;
+      }
+    }
+  }
+}

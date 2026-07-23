@@ -1,0 +1,94 @@
+import { createContext, ReactNode, useContext } from "react";
+import { useQuery } from "react-query";
+import { api } from "../api";
+import { IUser } from "../types/user";
+
+interface IAuthContext {
+  user: IUser | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  redirectToAuth: () => void;
+}
+
+export const AuthContext = createContext<IAuthContext | undefined>(undefined);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("AuthContext not defined");
+  }
+  return context;
+};
+
+interface IProps {
+  children: ReactNode;
+}
+export function AuthProvider({ children }: IProps) {
+  const token = localStorage.getItem("token") || null;
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["fetchUser", token],
+    queryFn: async () => await api.me.GetProfile(),
+    enabled: !!token,
+  });
+
+  function makeAuthUrl() {
+    const clientId = process.env.REACT_APP_CLIENT_ID as string;
+    const redirectUrl = process.env.REACT_APP_REDIRECT_URL as string;
+    const scopes = process.env.REACT_APP_SCOPES as string;
+
+    return `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUrl}&scope=${encodeURI(scopes)}`;
+  }
+
+  async function redirectToAuth() {
+    // window.location.href = makeAuthUrl();
+
+    const codeVerifier = generateCodeVerifier();
+    const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+    // Store verifier so you can use it after redirect back
+    localStorage.setItem("code_verifier", codeVerifier);
+
+    const clientId = process.env.REACT_APP_CLIENT_ID as string;
+    const redirectUrl = process.env.REACT_APP_REDIRECT_URL as string;
+    const scopes = process.env.REACT_APP_SCOPES as string;
+    const params = new URLSearchParams({
+      response_type: "code",
+      client_id: clientId,
+      scope: scopes,
+      code_challenge_method: "S256",
+      code_challenge: codeChallenge,
+      redirect_uri: redirectUrl,
+    });
+
+    window.location.href = `https://accounts.spotify.com/authorize?${params.toString()}`;
+  }
+
+  // Generate a random code verifier
+  function generateCodeVerifier(length = 128) {
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
+    const values = crypto.getRandomValues(new Uint8Array(length));
+    return Array.from(values, (v) => possible[v % possible.length]).join("");
+  }
+
+  // Hash it with SHA-256 and base64url-encode it → code challenge
+  async function generateCodeChallenge(verifier: string) {
+    const data = new TextEncoder().encode(verifier);
+    const digest = await crypto.subtle.digest("SHA-256", data);
+    return btoa(String.fromCharCode(...new Uint8Array(digest)))
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+  }
+
+  const value: IAuthContext = {
+    user,
+    isLoading,
+    isError,
+    redirectToAuth,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}

@@ -1,0 +1,59 @@
+.episode {
+  .episodeBody {
+    position: relative;
+    z-index: 1;
+    padding: 24px;
+
+    .date {
+      color: #a7a7a7;
+      font-size: 0.875rem;
+    }
+
+    .episodeActions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 0 32px;
+    }
+
+    .description {
+      max-width: 672px;
+      padding-bottom: 24px;
+
+      .title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 24px;
+      }
+
+      .descriptionText {
+        color: #a7a7a7;
+
+        a {
+          color: white;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .seeAll {
+      margin: 20px 0;
+      color: white;
+      border: 1px solid #727272;
+      border-radius: 9999px;
+      padding: 3px 15px;
+      display: inline-block;
+      font-size: 0.875rem;
+      font-weight: 700;
+
+      &:hover {
+        border-color: white;
+        transform: scale(1.03);
+      }
+    }
+  }
+}

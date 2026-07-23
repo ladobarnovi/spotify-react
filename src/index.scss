@@ -1,0 +1,73 @@
+@import "assets/styles/reset";
+@import "assets/styles/fonts";
+@import "assets/styles/icons";
+@import "../node_modules/overlayscrollbars/styles/overlayscrollbars.min.css";
+@import "assets/styles/scrollbar";
+@import "../node_modules/tippy.js/dist/tippy.css";
+
+body {
+  line-height: 1.6;
+  margin: 0;
+  font-family: spotify-circular, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input {
+  font-family: spotify-circular, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#root, body, html, #layout {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+}
+
+
+html {
+  --play-button-size: 56px;
+  --play-button-icon-size: 24px;
+  --play-button-color: #1ed760;
+  --play-button-highlight-color: #1fdf64;
+
+  --like-button-size: 32px;
+
+  overflow: hidden;
+}
+
+.explicit {
+  border-radius: 2px;
+  background-color: hsla(0,0%,100%,.6);
+  font-size: 9px;
+  height: 16px;
+  width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #121212;
+}

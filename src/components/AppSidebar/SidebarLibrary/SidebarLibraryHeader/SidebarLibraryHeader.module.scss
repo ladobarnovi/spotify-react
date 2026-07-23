@@ -1,0 +1,58 @@
+.sidebarLibraryHeader {
+  --color: #b3b3b3;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color);
+  fill: var(--color);
+
+  .expander {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+    padding: 0 8px;
+    color: var(--color);
+    transition: color 0.3s;
+
+    svg {
+      fill: var(--color);
+      transition: fill 0.3s;
+    }
+
+    &:hover {
+      --color: #fff;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    button {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0);
+
+      svg {
+        fill: var(--color);
+        transition: fill 0.3s;
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        transition: background-color 0.3s;
+        --color: white;
+      }
+    }
+  }
+}

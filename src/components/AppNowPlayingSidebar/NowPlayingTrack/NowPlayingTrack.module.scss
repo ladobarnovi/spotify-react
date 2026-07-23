@@ -1,0 +1,60 @@
+.nowPlayingTrack {
+  .album {
+    font-weight: 700;
+    color: white;
+    line-height: 2;
+    margin-bottom: 16px;
+    display: block;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .imageContainer {
+    display: block;
+    border-radius: 8px;
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 16px;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .bottomWrapper {
+    --like-button-size: 16px;
+
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    .trackInfo {
+      flex-grow: 1;
+      overflow: hidden;
+
+      .trackName {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

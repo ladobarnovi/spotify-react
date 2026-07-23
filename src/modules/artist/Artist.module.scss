@@ -1,0 +1,17 @@
+.artist {
+
+  .artistBody {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 16px 24px;
+    position: relative;
+    z-index: 1;
+
+    .artistControls {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+  }
+}
