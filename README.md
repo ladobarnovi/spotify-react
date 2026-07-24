@@ -1,6 +1,8 @@
 ### Spotify application clone based on [Spotify's Web API](https://developer.spotify.com/documentation/web-api) and [Web Playback SDK](https://developer.spotify.com/documentation/web-playback-sdk)
 
 
+## [Live Demo](https://ladobarnovi.github.io/spotify-react/)
+
 ## Setup
 
 1. Copy `.env.example` to `.env`
