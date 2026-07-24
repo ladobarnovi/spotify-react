@@ -84,11 +84,11 @@ export default function SearchKeyword() {
         title={"Artists"}
         arrData={arrArtists}
       />
-      <CardsRow
+      {/* <CardsRow
         onNavigated={addHistoryItem}
         title={"Playlists"}
         arrData={arrPlaylists}
-      />
+      /> */}
       <CardsRow
         onNavigated={addHistoryItem}
         title={"Albums"}
