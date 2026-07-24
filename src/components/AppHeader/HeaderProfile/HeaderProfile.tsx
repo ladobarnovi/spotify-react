@@ -15,7 +15,7 @@ function HeaderProfile() {
   function logout(): void {
     clearTokens();
     clearPendingAuth();
-    window.location.href = "/login";
+    window.location.href = (process.env.PUBLIC_URL || "") + "/login";
   }
 
   const contextMenuOptions: IContextMenuOptions = {

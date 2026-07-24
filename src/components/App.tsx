@@ -21,7 +21,7 @@ import UserFollowing from "../modules/user/following/UserFollowing";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Layout>
         <Routes>
           <Route path={"/"} element={<Home />} />

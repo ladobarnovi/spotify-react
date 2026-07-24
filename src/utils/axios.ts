@@ -33,7 +33,7 @@ export function setAxiosInterceptors(): void {
         }
 
         clearTokens();
-        window.location.href = "/login";
+        window.location.href = (process.env.PUBLIC_URL || "") + "/login";
       }
 
       return Promise.reject(error);
