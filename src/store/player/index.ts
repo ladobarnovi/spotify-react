@@ -94,6 +94,7 @@ export const playerSlice = createSlice({
         isPlaying,
         isPaused,
         repeatMode,
+        isRepeat,
         isShuffle,
         isExpanded,
         volume
@@ -102,6 +103,7 @@ export const playerSlice = createSlice({
       state.isPlaying = isPlaying;
       state.isPaused = isPaused;
       state.repeatMode = repeatMode;
+      state.isRepeat = isRepeat;
       state.isShuffle = isShuffle;
       state.isExpanded = isExpanded;
       state.volume = volume;

@@ -18,9 +18,17 @@ export enum ESpotifyRepeatMode {
   FULL_REPEAT
 }
 
-let player: Spotify.Player;
+let player: Spotify.Player | null = null;
 
 let trackPositionIntervalId: any = null;
+
+function parseUriType(uri: string | null): string | null {
+  return uri === null ? null : uri.split(":")[1];
+}
+
+function parseUriId(uri: string | null): string | null {
+  return uri === null ? null : uri.split(":")[2];
+}
 
 function setPlaybackInterval(state: Spotify.PlaybackState) {
   const { position, paused } = state;
@@ -39,12 +47,10 @@ function playerReadyListener({ device_id }: Spotify.WebPlaybackInstance): void {
 }
 
 function playerStateChangedListener(state: Spotify.PlaybackState): void {
-  console.log(state);
-
   const currentTrack = state.track_window.current_track;
   const contextUri = state?.context.uri;
-  const uriId = contextUri === null ? null : contextUri.split(":")[2];
-  const uriType = contextUri === null ? null : contextUri.split(":")[1];
+  const uriId = parseUriId(contextUri);
+  const uriType = parseUriType(contextUri);
 
   const playerTrackData: IPlayerTrackData = {
     trackId: currentTrack?.id,
@@ -59,7 +65,7 @@ function playerStateChangedListener(state: Spotify.PlaybackState): void {
     uriType,
   }
 
-  const linkedFromId = currentTrack.linked_from?.id;
+  const linkedFromId = currentTrack?.linked_from?.id;
   if (linkedFromId != null) {
     playerTrackData.trackId = linkedFromId;
   }
@@ -189,24 +195,27 @@ export function usePlayer() {
   }
 
   async function togglePlay(): Promise<void> {
+    if (player == null) return;
     await player.togglePlay();
   }
 
   async function seek(position: number): Promise<void> {
+    if (player == null) return;
     await player.seek(position);
   }
 
   async function setVolume(value: number): Promise<void> {
+    if (player == null) return;
     store.dispatch(setPlayerVolume(value));
     await player.setVolume(value);
   }
 
   function getUriType(uri: string): string {
-    return uri.split(":")[1];
+    return parseUriType(uri) as string;
   }
 
   function getUriId(uri: string): string {
-    return uri.split(":")[2];
+    return parseUriId(uri) as string;
   }
 
   function getIsInPlayback(entity: IEntityBase): boolean {
