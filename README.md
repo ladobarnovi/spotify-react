@@ -3,10 +3,8 @@
 
 ## Setup
 
-1. Copy `.env.example` to `.env` and fill in the values:
-   - `REACT_APP_CLIENT_ID` — your app's Client ID from the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-   - `REACT_APP_USER_TOKEN` — an OAuth bearer token for your Spotify account with the scopes listed in `REACT_APP_SCOPES`
-   - `REACT_APP_SCOPES`, `REACT_APP_REDIRECT_URL`, `REACT_APP_BASE_URL` — defaults in `.env.example` work for local development
+1. Copy `.env.example` to `.env`
+   - You can swap `REACT_APP_CLIENT_ID` with your own ID, but Spotify deprecated some of it's API endpoints for new clients, and it's only available for older ones. And the endpoint's like that will just return 403 response.
 2. Have a Spotify account (Premium required for playback via the Web Playback SDK)
 
 ## Run with Docker

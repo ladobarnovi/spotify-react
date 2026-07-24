@@ -10,6 +10,7 @@ import { useAuth } from "context/AuthContext";
 import EntitySearchInput from "../AppSidebar/SidebarLibrary/EntitySearchInput/EntitySearchInput";
 import { useSearchContext } from "../../context/SearchContext";
 import HighlightedText from "../HighlightedText/HighlightedText";
+import { filterByKeyword } from "../../utils/string";
 
 interface IProps {
   onClose: () => void,
@@ -39,7 +40,7 @@ export default function AddTrackToPlaylistPopup({ onClose, trackId }: IProps) {
   const arrFilteredPlaylists = (() => {
     let arrTemp = arrPlaylists || [];
     arrTemp = arrTemp.filter((playlist) => playlist.owner.id === user!.id)
-    arrTemp = !!keyword ? arrTemp.filter((playlist) => playlist.name.toLowerCase().includes(keyword.toLowerCase())) : arrTemp;
+    arrTemp = filterByKeyword(arrTemp, keyword);
     return arrTemp
   })()
 

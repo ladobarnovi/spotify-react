@@ -4,7 +4,7 @@ import { IPlaylist } from "types/playlist";
 import { IAlbum } from "types/album";
 import { IArtist } from "types/artist";
 import { NavLink } from "react-router-dom";
-import { capitalizeFirstLetter } from "utils/string";
+import { capitalizeFirstLetter, filterByKeyword } from "utils/string";
 import { useSearchContext } from "context/SearchContext";
 import EntityImage from "components/Common/EntityImage/EntityImage";
 import HighlightedText from "components/HighlightedText/HighlightedText";
@@ -23,7 +23,7 @@ export default function SidebarListView({ arrData }: IProps) {
     return `/${entity.type}/${entity.id}`;
   }
 
-  const arrFilteredData = !!keyword ? arrData.filter((item) => item.name.toLowerCase().includes(keyword.toLowerCase())) : arrData;
+  const arrFilteredData = filterByKeyword(arrData, keyword);
 
   const elItems = arrFilteredData.map((item) => {
     const isInPlayback = getIsInPlayback(item);

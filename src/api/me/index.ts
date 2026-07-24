@@ -8,3 +8,4 @@ export * from "./GetProfile";
 export * from "./UnfollowAlbums";
 export * from "./UnfollowArtists";
 export * from "./UnfollowShows";
+export * from "./GetTopItems";

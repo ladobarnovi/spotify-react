@@ -1,25 +1,23 @@
 import styles from "./SidebarGridView.module.scss"
-import { IPlaylist } from "types/playlist";
-import { IAlbum } from "types/album";
-import { IArtist } from "types/artist";
+import { IEntityBase } from "types/entityBase";
 import { NavLink } from "react-router-dom";
 import EntityImage from "components/Common/EntityImage/EntityImage";
-import { capitalizeFirstLetter } from "utils/string";
-import EntityOwner from "../../../../Common/EntityOwner/EntityOwner";
-import { useSearchContext } from "../../../../../context/SearchContext";
-import HighlightedText from "../../../../HighlightedText/HighlightedText";
+import { capitalizeFirstLetter, filterByKeyword } from "utils/string";
+import EntityOwner from "components/Common/EntityOwner/EntityOwner";
+import { useSearchContext } from "context/SearchContext";
+import HighlightedText from "components/HighlightedText/HighlightedText";
 
 interface IProps {
-  arrData: (IPlaylist | IAlbum | IArtist)[]
+  arrData: IEntityBase[]
 }
 
 function SidebarGridView({ arrData }: IProps) {
   const { keyword } = useSearchContext();
-  const arrFilteredData = keyword.trim() ? arrData.filter((item) => item.name.toLowerCase().includes(keyword)) : arrData;
+  const arrFilteredData = filterByKeyword(arrData, keyword);
 
   const elItems = arrFilteredData.map((item) => {
     return (
-      <NavLink to={`/`} key={item.id} className={styles.item}>
+      <NavLink to={`/${item.type}/${item.id}`} key={item.id} className={styles.item}>
         <div className={styles.imageContainer}>
           <EntityImage
             entity={item}
@@ -31,7 +29,6 @@ function SidebarGridView({ arrData }: IProps) {
           <span className={styles.entityType}>{ capitalizeFirstLetter(item.type) }</span>
           <EntityOwner entity={item} />
         </p>
-
       </NavLink>
     )
   })

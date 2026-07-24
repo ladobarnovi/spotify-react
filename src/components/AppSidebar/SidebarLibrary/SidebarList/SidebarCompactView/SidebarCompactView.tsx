@@ -3,7 +3,7 @@ import { IPlaylist } from "types/playlist";
 import { IAlbum } from "types/album";
 import { IArtist } from "types/artist";
 import { NavLink } from "react-router-dom";
-import { capitalizeFirstLetter } from "utils/string";
+import { capitalizeFirstLetter, filterByKeyword } from "utils/string";
 import HighlightedText from "components/HighlightedText/HighlightedText";
 import { useSearchContext } from "context/SearchContext";
 import { usePlayer } from "hooks/usePlayer";
@@ -14,7 +14,7 @@ interface IProps {
 
 function SidebarCompactView({ arrData }: IProps) {
   const { keyword } = useSearchContext();
-  const arrFilteredData = keyword.trim() ? arrData.filter((item) => item.name.toLowerCase().includes(keyword)) : arrData;
+  const arrFilteredData = filterByKeyword(arrData, keyword);
   const { getIsInPlayback } = usePlayer();
 
   const elItems = arrFilteredData.map((item) => {
