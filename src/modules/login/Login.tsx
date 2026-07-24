@@ -17,7 +17,7 @@ function Login() {
 
   return (
     <div className={styles.login}>
-      <img src="/svg/spotify.svg" alt="Spotify" />
+      <img src={`${process.env.PUBLIC_URL}/svg/spotify.svg`} alt="Spotify" />
       <AuthButton onClick={redirectToAuth}>
         Log In
       </AuthButton>

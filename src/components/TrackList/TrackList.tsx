@@ -262,7 +262,7 @@ function TrackItem({
       return (
         <div className={styles.iconContainer}>
           <IconPause />
-          <img className={styles.eq} src="/svg/eq.svg" alt="EQ"/>
+          <img className={styles.eq} src={`${process.env.PUBLIC_URL}/svg/eq.svg`} alt="EQ"/>
         </div>
       )
     }
