@@ -21,6 +21,7 @@ export enum ETrackListLayoutType {
   playlist = "playlist",
   topTracks = "topTracks",
   searchResults = "searchResults",
+  discography = "discography",
 }
 
 interface ITrackListProps {

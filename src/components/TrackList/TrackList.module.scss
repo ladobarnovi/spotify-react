@@ -32,7 +32,7 @@
     --columns: [index] 16px [first] 4fr [last] minmax(120px,1fr);
   }
   &.col2 {
-    --columns: [first] 4fr [last] minmax(120px,1fr);
+    --columns: [first] 16px [last] minmax(120px,1fr);
   }
 
   .gridItem {

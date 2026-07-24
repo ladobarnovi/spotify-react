@@ -53,6 +53,7 @@ function DiscographyListItem({ album }: IProps) {
         layoutType={ETrackListLayoutType.album}
         canHeaderStick={false}
         onPlay={() => {}}
+        maxColCount={3}
       />
     </div>
   )

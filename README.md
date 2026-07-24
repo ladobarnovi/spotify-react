@@ -6,7 +6,7 @@
 ## Setup
 
 1. Copy `.env.example` to `.env`
-   - You can swap `REACT_APP_CLIENT_ID` with your own ID, but Spotify deprecated some of it's API endpoints for new clients, and it's only available for older ones. And the endpoint's like that will just return 403 response.
+   - You can swap `REACT_APP_CLIENT_ID` with your own ID, but Spotify deprecated some of it's API endpoints for new clients, and it's only available for older ones. Few endpoint will return 403 error response, so some parts of the app will appear broken.
 2. Have a Spotify account (Premium required for playback via the Web Playback SDK)
 
 ## Run with Docker
