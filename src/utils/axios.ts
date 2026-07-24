@@ -1,5 +1,10 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { AUTH_TOKEN_KEY } from "utils/auth";
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { refreshAccessToken } from "utils/auth";
+import { clearTokens } from "utils/tokenStorage";
+
+interface IRetriableConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
 
 export function setAxiosBaseUrl(): void {
   axios.defaults.baseURL = process.env.REACT_APP_BASE_URL as string;
@@ -14,13 +19,24 @@ export function setAxiosToken(token: string): void {
 export function setAxiosInterceptors(): void {
   axios.interceptors.response.use(
     (response): AxiosResponse => response,
-    (res: AxiosError) => {
-      if (res.response?.status === 401) {
-        // localStorage.setItem(AUTH_TOKEN_KEY, "");
-        // window.location.href = "/login";
+    async (error: AxiosError) => {
+      const config = error.config as IRetriableConfig | undefined;
+
+      if (error.response?.status === 401 && config && !config._retry) {
+        config._retry = true;
+
+        const newToken = await refreshAccessToken();
+        if (newToken) {
+          setAxiosToken(newToken);
+          config.headers["Authorization"] = "Bearer " + newToken;
+          return axios(config);
+        }
+
+        clearTokens();
+        window.location.href = "/login";
       }
 
-      return Promise.reject(res);
+      return Promise.reject(error);
     }
   )
 }

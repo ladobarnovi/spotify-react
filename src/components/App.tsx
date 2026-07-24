@@ -13,6 +13,7 @@ import Show from "../modules/show/Show";
 import Episode from "../modules/episode/Episode";
 import Track from "../modules/track/Track";
 import Login from "../modules/login/Login";
+import Callback from "../modules/callback/Callback";
 import Layout from "../layouts/Layout";
 import User from "../modules/user/User";
 import UserPlaylists from "../modules/user/playlists/UserPlaylists";
@@ -41,6 +42,7 @@ export default function App() {
           <Route path={"user/:userId/playlists"} element={<UserPlaylists />} />
           <Route path={"user/:userId/following"} element={<UserFollowing />} />
           <Route path={"/login"} element={<Login />} />
+          <Route path={"/callback"} element={<Callback />} />
         </Routes>
       </Layout>
     </BrowserRouter>

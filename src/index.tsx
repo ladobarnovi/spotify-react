@@ -6,14 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from "react-redux";
 import { initPlayer } from "hooks/usePlayer";
 import { setAxiosBaseUrl } from "utils/axios";
-import { tryGetAuthToken } from "utils/auth";
 import { QueryClient, QueryClientProvider } from "react-query";
 import App from "./components/App";
 import { AuthProvider } from "./context/AuthContext";
 
 initPlayer();
 setAxiosBaseUrl();
-tryGetAuthToken();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

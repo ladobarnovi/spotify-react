@@ -1,73 +1,115 @@
-import { setAxiosToken } from "utils/axios";
+import { generateCodeVerifier, generateCodeChallenge, generateState } from "utils/pkce";
+import { setPendingAuth, getPendingAuth, clearPendingAuth } from "utils/oauthSession";
+import { setTokens, getRefreshToken, clearTokens } from "utils/tokenStorage";
 
-export const AUTH_TOKEN_KEY = "token";
+const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
 
-export async function tryGetAuthToken() {
-  // const hash = window.location.hash;
-  // let token;
-  // if (hash.includes("code")) {
-  //   const start = window.location.hash.indexOf("=") + 1;
-  //   const end = window.location.hash.indexOf("&");
-  //   token = hash.substring(start, end);
+export async function buildAuthorizeUrl(): Promise<string> {
+  const verifier = generateCodeVerifier();
+  const challenge = await generateCodeChallenge(verifier);
+  const state = generateState();
 
-  //   localStorage.setItem(AUTH_TOKEN_KEY, token);
-  //   window.history.replaceState(
-  //     {},
-  //     document.title,
-  //     window.location.pathname + window.location.search
-  //   );
-  // } else {
-  //   token = localStorage.getItem(AUTH_TOKEN_KEY);
-
-  //   if (token == null || token === "") {
-  //     window.history.pushState("", "", "/login");
-  //     return;
-  //   }
-  // }
-
-  // setAxiosToken(token ?? "");
-  // return token;
-
-  if (localStorage.getItem(AUTH_TOKEN_KEY)) {
-    return setAxiosToken(localStorage.getItem(AUTH_TOKEN_KEY) ?? "")
-  }
-
-  const code = new URLSearchParams(window.location.search).get("code") as string;
-  const codeVerifier = localStorage.getItem("code_verifier") as string;
-
-  if (!code) return;
+  setPendingAuth({ verifier, state });
 
   const clientId = process.env.REACT_APP_CLIENT_ID as string;
   const redirectUrl = process.env.REACT_APP_REDIRECT_URL as string;
   const scopes = process.env.REACT_APP_SCOPES as string;
   const params = new URLSearchParams({
+    response_type: "code",
     client_id: clientId,
-    grant_type: "authorization_code",
-    code: code,
+    scope: scopes,
+    code_challenge_method: "S256",
+    code_challenge: challenge,
     redirect_uri: redirectUrl,
-    code_verifier: codeVerifier,
+    state,
   });
 
-  const response = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params,
-  });
+  return `https://accounts.spotify.com/authorize?${params.toString()}`;
+}
 
-  const data = await response.json();
+export async function redirectToAuth(): Promise<void> {
+  window.location.href = await buildAuthorizeUrl();
+}
 
-  console.log(response)
-  if (!response.ok) {
-    console.error("Token exchange failed:", data);
-    throw new Error(data.error_description || "Token exchange failed");
+export async function exchangeCodeForToken(code: string, state: string): Promise<void> {
+  try {
+    const pending = getPendingAuth();
+    if (!pending.state || !pending.verifier || pending.state !== state) {
+      console.error("PKCE state mismatch during token exchange");
+      throw new Error("PKCE state mismatch");
+    }
+
+    const clientId = process.env.REACT_APP_CLIENT_ID as string;
+    const redirectUrl = process.env.REACT_APP_REDIRECT_URL as string;
+    const params = new URLSearchParams({
+      client_id: clientId,
+      grant_type: "authorization_code",
+      code,
+      redirect_uri: redirectUrl,
+      code_verifier: pending.verifier,
+    });
+
+    const response = await fetch(TOKEN_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params,
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      console.error("Token exchange failed:", data);
+      throw new Error(data.error_description || "Token exchange failed");
+    }
+
+    setTokens(data);
+  } finally {
+    clearPendingAuth();
   }
+}
 
-  // data.access_token, data.refresh_token, data.expires_in
-  localStorage.setItem(AUTH_TOKEN_KEY, data.access_token);
-  localStorage.setItem("refresh_token", data.refresh_token);
-  setAxiosToken(data.access_token ?? "");
+let inFlightRefresh: Promise<string | null> | null = null;
 
-  console.log(data)
+export function refreshAccessToken(): Promise<string | null> {
+  if (inFlightRefresh) return inFlightRefresh;
 
-  return data;
+  inFlightRefresh = (async () => {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) {
+      console.error("No refresh token available");
+      return null;
+    }
+
+    const clientId = process.env.REACT_APP_CLIENT_ID as string;
+    const params = new URLSearchParams({
+      client_id: clientId,
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+    });
+
+    try {
+      const response = await fetch(TOKEN_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params,
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        console.error("Token refresh failed:", data);
+        clearTokens();
+        return null;
+      }
+
+      setTokens(data);
+      return data.access_token as string;
+    } catch (err) {
+      console.error("Token refresh failed:", err);
+      clearTokens();
+      return null;
+    }
+  })().finally(() => {
+    inFlightRefresh = null;
+  });
+
+  return inFlightRefresh;
 }

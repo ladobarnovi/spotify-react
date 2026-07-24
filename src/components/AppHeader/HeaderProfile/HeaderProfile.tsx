@@ -1,7 +1,8 @@
 import styles from "./HeaderProfile.module.scss"
 import { useAuth } from "context/AuthContext";
 import ContextMenu, { IContextMenuOptions } from "components/ContextMenu/ContextMenu";
-import { AUTH_TOKEN_KEY } from "utils/auth";
+import { clearTokens } from "utils/tokenStorage";
+import { clearPendingAuth } from "utils/oauthSession";
 import { useNavigate } from "react-router-dom";
 
 function HeaderProfile() {
@@ -12,7 +13,8 @@ function HeaderProfile() {
   const userName = user?.display_name;
 
   function logout(): void {
-    localStorage.setItem(AUTH_TOKEN_KEY, "");
+    clearTokens();
+    clearPendingAuth();
     window.location.href = "/login";
   }
 
