@@ -11,6 +11,7 @@ import AppSidebar from "components/AppSidebar/AppSidebar";
 import AppHeader from "components/AppHeader/AppHeader";
 import AppFooter from "components/AppFooter/AppFooter";
 import AppNowPlayingSidebar from "components/AppNowPlayingSidebar/AppNowPlayingSidebar";
+import { ScrollParentProvider } from "context/ScrollParentContext";
 
 type Props = {
   children: ReactNode
@@ -22,6 +23,9 @@ function MainLayout({ children }: Props) {
   const { overlayScrollbar, refScrollbar } = useScroll();
 
   const isNowPlayingActive = useSelector((state: RootState) => state.globalReducer.isNowPlayingActive);
+
+  // OverlayScrollbars restructures the DOM internally — this is the actual scrollable node, not refScrollbar.current
+  const scrollParent = overlayScrollbar?.elements().scrollOffsetElement;
 
   useEffect(() => {
     if (refScrollbar.current != null && overlayScrollbar != null) {
@@ -55,7 +59,9 @@ function MainLayout({ children }: Props) {
           <div className={styles.content}>
             <div className={styles.scroll} ref={refScrollbar}>
               <div className={styles.wrapper}>
-                { children }
+                <ScrollParentProvider scrollParent={scrollParent}>
+                  { children }
+                </ScrollParentProvider>
 
                 <AppFooter />
               </div>
