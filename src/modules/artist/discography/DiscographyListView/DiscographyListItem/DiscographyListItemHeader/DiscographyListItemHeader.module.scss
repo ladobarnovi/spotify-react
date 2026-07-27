@@ -37,32 +37,15 @@
     }
 
     .albumActions {
+      --play-button-size: 32px;
+      --play-button-icon-size: 20px;
+      --play-button-color: white;
+      --play-button-highlight-color: white;
+
       margin-top: auto;
       display: flex;
       gap: 16px;
       align-items: center;
-
-      .playButton {
-        width: 32px;
-        height: 32px;
-        background-color: white;
-        border-radius: 50%;
-        position: relative;
-        cursor: pointer;
-
-        &:hover {
-          transform: scale(1.03);
-        }
-
-        svg {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 20px;
-          height: 20px;
-        }
-      }
 
       .likeButton {
         width: 24px;

@@ -3,8 +3,8 @@ import { IAlbum } from "types/album";
 import { NavLink } from "react-router-dom";
 import { capitalizeFirstLetter } from "utils/string";
 import dayjs from "dayjs";
-import IconPlay from "components/Icons/IconPlay";
 import IconHeart from "components/Icons/IconHeart";
+import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 
 interface IProps {
   album: IAlbum;
@@ -35,9 +35,7 @@ function DiscographyListItemHeader({ album }: IProps) {
         </p>
 
         <div className={styles.albumActions}>
-          <div className={styles.playButton}>
-            <IconPlay />
-          </div>
+          <ContextPlayButton uri={album.uri} />
 
           <div className={styles.likeButton}>
             <IconHeart />
