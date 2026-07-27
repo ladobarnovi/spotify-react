@@ -1,17 +1,16 @@
 import styles from "./TopTracks.module.scss";
 import { ITrackContainer } from "types/track";
 import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePlayer } from "hooks/usePlayer";
 import { useQuery } from "react-query";
 import { api } from "../../../../api";
 
 interface IProps {
   artistId: string;
-  onTracksFetched: (arrUris: string[]) => void
 }
 
-function TopTracks({ artistId, onTracksFetched }: IProps) {
+function TopTracks({ artistId }: IProps) {
   const [ isExpanded, setIsExpanded ] = useState(false);
   const { playTrack } = usePlayer();
 
@@ -19,12 +18,6 @@ function TopTracks({ artistId, onTracksFetched }: IProps) {
     queryKey: [ "artistTopTracks", artistId ],
     queryFn: async () => (await api.artists.GetArtistTopTracks({ artistId })).tracks
   });
-
-  useEffect(() => {
-    if (arrTracks != null) {
-      onTracksFetched(arrTracks.map((track => track.uri)));
-    }
-  }, [ arrTracks ]);
 
   if (arrTracks == null) return null;
 
