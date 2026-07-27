@@ -1,16 +1,15 @@
 import styles from "./Discography.module.scss"
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { api } from "api";
-import { EAlbumType, IAlbum } from "types/album";
+import { EAlbumType } from "types/album";
 import DiscographyHeader, { EDiscographyLayoutTypes } from "modules/artist/discography/DiscographyHeader/DiscographyHeader";
 import DiscographyListView from "modules/artist/discography/DiscographyListView/DiscographyListView";
 import DiscographyGridView from "modules/artist/discography/DiscographyGridView/DiscographyGridView";
 
 function Discography() {
   const { id } = useParams();
-  const [ arrFilteredAlbums, setArrFilteredAlbums ] = useState<IAlbum[]>([])
   const [ layoutType, setLayoutType ] = useState<EDiscographyLayoutTypes>(EDiscographyLayoutTypes.grid);
   const [ albumType, setAlbumType ] = useState(EAlbumType.all);
 
@@ -24,21 +23,11 @@ function Discography() {
     queryFn: async () => (await api.artists.GetArtistsAlbums({ artistId: id as string })).items
   })
 
+  if (artist == null || arrAlbums == null) return null;
 
-  useEffect(() => {
-    if (arrAlbums == null) return;
-
-    if (albumType === EAlbumType.all) {
-      setArrFilteredAlbums(arrAlbums);
-    }
-    else {
-      setArrFilteredAlbums(arrAlbums.filter((album) => (
-        album.album_type === albumType
-      )));
-    }
-  }, [ albumType, arrAlbums ])
-
-  if (artist == null) return null;
+  const arrFilteredAlbums = albumType === EAlbumType.all
+    ? arrAlbums
+    : arrAlbums.filter((album) => album.album_type === albumType);
 
   const elView = (() => {
     if (layoutType === EDiscographyLayoutTypes.list) {

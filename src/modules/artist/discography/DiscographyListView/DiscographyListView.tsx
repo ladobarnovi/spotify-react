@@ -9,7 +9,7 @@ interface IProps {
 
 function DiscographyListView({ arrAlbums }: IProps) {
   const elItems = arrAlbums.map((album) => (
-    <DiscographyListItem album={album} />
+    <DiscographyListItem key={album.id} album={album} />
   ));
 
   return (

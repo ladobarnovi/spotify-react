@@ -15,7 +15,7 @@ function DiscographyGridView({ arrAlbums }: IProps) {
   };
 
   const elCards = arrAlbums.map(album => (
-    <EntityCard data={album} options={cardOptions} />
+    <EntityCard key={album.id} data={album} options={cardOptions} />
   ));
 
   return (

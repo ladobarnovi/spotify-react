@@ -4,6 +4,8 @@ import TrackList, { ETrackListLayoutType } from "components/TrackList/TrackList"
 import { ITrackContainer } from "types/track";
 import { useEffect, useRef, useState } from "react";
 import { api } from "api";
+import { useQuery } from "react-query";
+import { usePlayer } from "hooks/usePlayer";
 import DiscographyListItemHeader
   from "modules/artist/discography/DiscographyListView/DiscographyListItem/DiscographyListItemHeader/DiscographyListItemHeader";
 import { useSelector } from "react-redux";
@@ -15,22 +17,22 @@ interface IProps {
 
 function DiscographyListItem({ album }: IProps) {
   const mainRef = useRef<HTMLDivElement>(null);
-  const [ arrTrackContainers, setArrTrackContainers ] = useState<ITrackContainer[]|null>(null);
   const [ canLoad, setCanLoad ] = useState(false);
 
   const scrollDistance = useSelector((state: RootState) => state.globalReducer.scrollDistance);
+  const { playContext } = usePlayer();
 
-  useEffect(() => {
-    (async () => {
-      if (!canLoad) return;
-
+  const { data: arrTrackContainers } = useQuery({
+    queryKey: [ "fetchAlbum", album.id ],
+    queryFn: async () => {
       const albumResponse = await api.albums.GetAlbum({ albumId: album.id });
-      setArrTrackContainers(albumResponse.tracks.items.map((track) => ({
+      return albumResponse.tracks.items.map((track): ITrackContainer => ({
         added_at: "",
         track,
-      })));
-    })()
-  }, [ canLoad ]);
+      }));
+    },
+    enabled: canLoad,
+  });
 
   useEffect(() => {
     if (mainRef.current == null) return;
@@ -42,17 +44,19 @@ function DiscographyListItem({ album }: IProps) {
     }
   }, [ scrollDistance ])
 
-
+  async function onPlay(index: number): Promise<void> {
+    await playContext(album.uri, index);
+  }
 
   return (
     <div ref={mainRef} className={ styles.discographyListItem }>
       <DiscographyListItemHeader album={album} />
 
       <TrackList
-        arrTrackContainer={arrTrackContainers}
+        arrTrackContainer={arrTrackContainers ?? null}
         layoutType={ETrackListLayoutType.album}
         canHeaderStick={false}
-        onPlay={() => {}}
+        onPlay={onPlay}
         maxColCount={3}
       />
     </div>
