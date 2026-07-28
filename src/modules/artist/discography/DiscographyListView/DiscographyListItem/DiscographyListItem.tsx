@@ -40,6 +40,7 @@ function DiscographyListItem({ album }: IProps) {
         canHeaderStick={false}
         onPlay={onPlay}
         maxColCount={3}
+        isVirtualized={false}
       />
     </div>
   )

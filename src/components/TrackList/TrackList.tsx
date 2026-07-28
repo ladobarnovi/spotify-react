@@ -2,9 +2,12 @@ import styles from "./TrackList.module.scss";
 import IconDuration from "components/Icons/IconDuration";
 import { useRef } from "react";
 import dayjs from "dayjs";
+import { Virtuoso } from "react-virtuoso";
+import { ITrackContainer } from "types/track";
 import { useTrackListColumns } from "hooks/useTrackListColumns";
 import { useStickyHeader } from "hooks/useStickyHeader";
 import { useTrackSelection } from "hooks/useTrackSelection";
+import { useScrollParentContext } from "context/ScrollParentContext";
 import TrackItem from "./TrackItem";
 import TrackItemShimmering from "./TrackItemShimmering";
 import { ETrackListLayoutType, ITrackListProps } from "./TrackList.types";
@@ -12,12 +15,16 @@ import { getTrackContainers } from "./TrackList.utils";
 
 export { ETrackListLayoutType };
 
-function TrackList({ arrTrackContainer, arrTracks, layoutType, canHeaderStick = true, isCompact, onPlay, maxColCount = 6 }: ITrackListProps) {
+const TRACK_ITEM_HEIGHT = 56;
+const TRACK_ITEM_HEIGHT_COMPACT = 32;
+
+function TrackList({ arrTrackContainer, arrTracks, layoutType, canHeaderStick = true, isCompact, onPlay, maxColCount = 6, isVirtualized = true }: ITrackListProps) {
   const headerRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
 
   const isHeaderFixed = useStickyHeader(headerRef, canHeaderStick);
   const { selectedTrackId, toggleTrackSelection } = useTrackSelection();
+  const { scrollParent } = useScrollParentContext();
 
   const { colCount, isColDateHidden, isColAlbumHidden, isColArtistHidden, isColPlaysHidden } = useTrackListColumns({
     mainRef,
@@ -37,34 +44,59 @@ function TrackList({ arrTrackContainer, arrTracks, layoutType, canHeaderStick = 
   })();
   const classIsCompact = isCompact ? styles.compact : "";
 
-  const elTrackItems = (() => {
+  function renderTrackItem(trackContainer: ITrackContainer, index: number) {
+    const track = trackContainer.track;
+    const date = trackContainer.added_at.split("T")[0];
+    const formattedDate = dayjs(date).format("MMM DD, YYYY");
+
+    return (
+      <TrackItem
+        key={track.id}
+        track={track}
+        date={formattedDate}
+        index={index + 1}
+        layoutType={layoutType}
+        isSelected={track.id === selectedTrackId}
+        onSelect={toggleTrackSelection}
+        isCompact={isCompact}
+        onPlay={() => onPlay(index)}
+        isColAlbumHidden={isColAlbumHidden}
+        isColArtistHidden={isColArtistHidden}
+        isColDateHidden={isColDateHidden}
+        isColPlaysHidden={isColPlaysHidden}
+      />
+    );
+  }
+
+  const elListBody = (() => {
     if (trackContainers == null || trackContainers.length === 0) {
-      return Array.from({ length: 8 }, () => <TrackItemShimmering />)
+      return (
+        <div className={styles.listBody}>
+          { Array.from({ length: 8 }, (_, index) => <TrackItemShimmering key={index} />) }
+        </div>
+      );
     }
 
-    return trackContainers.map((trackContainer, index) => {
-      const track = trackContainer.track;
-      const date = trackContainer.added_at.split("T")[0];
-      const formattedDate = dayjs(date).format("MMM DD, YYYY");
-
+    // scrollParent is undefined until OverlayScrollbars initialises — Virtuoso needs it up front
+    if (isVirtualized && scrollParent != null) {
       return (
-        <TrackItem
-          key={track.id}
-          track={track}
-          date={formattedDate}
-          index={index + 1}
-          layoutType={layoutType}
-          isSelected={track.id === selectedTrackId}
-          onSelect={toggleTrackSelection}
-          isCompact={isCompact}
-          onPlay={() => onPlay(index)}
-          isColAlbumHidden={isColAlbumHidden}
-          isColArtistHidden={isColArtistHidden}
-          isColDateHidden={isColDateHidden}
-          isColPlaysHidden={isColPlaysHidden}
+        <Virtuoso
+          className={styles.listBody}
+          customScrollParent={scrollParent}
+          data={trackContainers}
+          computeItemKey={(index, trackContainer) => `${trackContainer.track.id}-${index}`}
+          defaultItemHeight={isCompact ? TRACK_ITEM_HEIGHT_COMPACT : TRACK_ITEM_HEIGHT}
+          overscan={800}
+          itemContent={(index, trackContainer) => renderTrackItem(trackContainer, index)}
         />
       );
-    });
+    }
+
+    return (
+      <div className={styles.listBody}>
+        { trackContainers.map((trackContainer, index) => renderTrackItem(trackContainer, index)) }
+      </div>
+    );
   })()
 
   const elColNumber = layoutType !== "searchResults" ? (<div className={styles.colNumber}>#</div>) : null;
@@ -96,9 +128,7 @@ function TrackList({ arrTrackContainer, arrTracks, layoutType, canHeaderStick = 
   return (
     <div key={"key"} ref={mainRef} className={`${styles.trackList} ${trackListLayoutClass} ${classColCount} ${classIsCompact}`}>
       { elHeader }
-      <div className={styles.listBody}>
-        { elTrackItems }
-      </div>
+      { elListBody }
     </div>
   );
 }

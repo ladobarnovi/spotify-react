@@ -17,4 +17,5 @@ export interface ITrackListProps {
   isCompact?: boolean;
   onPlay: (index: number) => void;
   maxColCount?: number;
+  isVirtualized?: boolean; // default: true. Disable when the list is already inside a virtualized item
 }
