@@ -31,8 +31,8 @@ function Album() {
 
   const headerOptions: ITrackListHeaderOptions = {
     id: album.id,
-    imageUrl: album.images[0].url,
-    image: album.images[0],
+    imageUrl: album?.images[0].url,
+    image: album?.images[0],
     type: album.album_type,
     title: album.name,
     totalTracks: album.tracks.items.length,
