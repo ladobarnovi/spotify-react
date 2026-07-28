@@ -2,12 +2,11 @@ import styles from "./ShowEpisodeItem.module.scss"
 import { IEpisode } from "types/podcast";
 import EntityImage from "components/Common/EntityImage/EntityImage";
 import { NavLink, useNavigate } from "react-router-dom";
-import IconVideo from "components/Icons/IconVideo";
 import dayjs from "dayjs";
 import { getFormattedDuration } from "utils/duration";
 import { useResize } from "hooks/useResize";
 import { useEffect, useRef, useState } from "react";
-import ContextPlayButton from "../../../../components/ContextPlayButton/ContextPlayButton";
+import ContextPlayButton from "components/ContextPlayButton/ContextPlayButton";
 
 interface IProps {
   episode: IEpisode;
@@ -22,7 +21,7 @@ export default function ShowEpisodeItem({ episode }: IProps) {
   const url = `/episode/${episode.id}`
   const date = dayjs(episode.release_date).format("MMM DD");
   const duration = getFormattedDuration(episode.duration_ms);
-  const elExplicit = !episode.explicit ? (
+  const elExplicit = episode.explicit ? (
     <div className={`${styles.explicit} explicit`}>
       <span>E</span>
     </div>
@@ -48,24 +47,20 @@ export default function ShowEpisodeItem({ episode }: IProps) {
 
   return (
     <div ref={refMain} className={`${styles.showEpisodeItem} ${classCompact}`} onClick={onClickHandler}>
-      <div className={styles.imageContainer}>
-        <EntityImage entity={episode} isRounded={false} />
-      </div>
+      { !isCompact && (
+        <div className={styles.imageContainer}>
+          <EntityImage entity={episode} isRounded={false} />
+        </div>
+      ) }
 
       <div className={styles.infoContainer}>
         <div className={styles.topWrapper}>
-          <div className={styles.imageContainer}>
-            <EntityImage entity={episode} isRounded={false} />
-          </div>
-          <div>
-            <NavLink className={styles.title} to={url}>{ episode.name }</NavLink>
-            <div className={styles.type}>
-              <div className={styles.iconContainer}>
-                <IconVideo />
-              </div>
-              <p>Video</p>
+          { isCompact && (
+            <div className={styles.imageContainer}>
+              <EntityImage entity={episode} isRounded={false} />
             </div>
-          </div>
+          ) }
+          <NavLink className={styles.title} to={url}>{ episode.name }</NavLink>
         </div>
         <div className={styles.midWrapper}>
           <p>{ episode.description }</p>
