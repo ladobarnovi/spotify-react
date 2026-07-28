@@ -1,6 +1,6 @@
 import styles from "./SearchKeyword.module.scss"
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "api";
 import { IAlbum } from "types/album";
 import { ITrack } from "types/track";
@@ -21,9 +21,8 @@ export default function SearchKeyword() {
   const [ arrShows, setArrShows ] = useState<IPodcast[]>([]);
   const [ arrEpisodes, setArrEpisodes ] = useState<IEpisode[]>([]);
   const [ colCount, setColCount ] = useState(9);
-  const [ isWrapperd, setIsWrapper ] = useState(false);
 
-  const [ timeoutId, setTimeoutId ] = useState<NodeJS.Timeout>();
+  const timeoutId = useRef<NodeJS.Timeout>();
   const [ isLoading, setIsLoading ] = useState(true);
 
   const { addHistoryItem } = useSearchHistory();
@@ -52,21 +51,17 @@ export default function SearchKeyword() {
   }
 
   useEffect(() => {
-    clearTimeout(timeoutId);
-    setTimeoutId(setTimeout(async () => {
+    clearTimeout(timeoutId.current);
+    timeoutId.current = setTimeout(async () => {
       await search()
-    }, 100));
+    }, 100);
 
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId.current);
   }, [ keyword ]);
-
-  useEffect(() => {
-    setIsWrapper(colCount <= 3);
-  }, [ colCount ])
 
   if (isLoading) return null;
 
-  const classIsWrapped = isWrapperd ? styles.wrapped : null;
+  const classIsWrapped = colCount <= 3 ? styles.wrapped : null;
 
   return (
     <div className={`${styles.searchKeyword} ${classIsWrapped}`}>
